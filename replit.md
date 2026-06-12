@@ -1,6 +1,6 @@
-# [Project name]
+# Regulatory Communications Command Center
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An internal operations app for a Director of Compliance & Regulatory Communications to track regulatory matters, agency communications, deficiencies, escalations, follow-ups, and institutional knowledge — all persisted in the browser.
 
 ## Run & Operate
 

@@ -1,0 +1,294 @@
+Build a professional internal operations app called Regulatory Communications Command Center.
+
+This app is for Emily Jones, Director of Compliance and Regulatory Communications. Emily leads the company’s communication and follow-up with government agencies, regulatory departments, licensing boards, Departments of Revenue, Departments of Transportation, Environmental Protection Agencies, Secretary of State offices, tax agencies, permitting offices, and any other compliance-related authority.
+
+The app should function as Emily’s command center for tracking agency communications, regulatory matters, deadlines, deficiencies, follow-ups, escalations, and agency knowledge.
+
+Primary user:
+Emily Jones
+
+Secondary users:
+Rose / leadership, compliance staff, account managers, and future members of Emily’s department.
+
+Build the app as an internal operational dashboard with the following sections:
+
+1. Dashboard
+Show high-level visibility into:
+- Open regulatory matters
+- Overdue follow-ups
+- Upcoming deadlines
+- High-risk matters
+- Agency delays
+- Open deficiencies or agency requests
+- Escalations needing review
+- Matters waiting on client
+- Matters waiting on internal team
+- Team workload
+
+2. Agency Directory
+Create a directory for government agencies and regulatory contacts.
+
+Each agency record should include:
+- Agency name
+- Agency type
+- State / region
+- Department category
+- Website
+- Portal link
+- Login/access notes
+- Main phone number
+- Main email
+- Contact person
+- Preferred communication method
+- Follow-up timing rules
+- Known processing patterns
+- Common issues
+- Escalation notes
+- Active / inactive status
+
+Agency types should include:
+- Licensing Board
+- Contractor Licensing Board
+- Department of Revenue
+- Department of Transportation
+- Environmental Agency / EPA
+- Secretary of State
+- Tax Agency
+- Local Permitting Office
+- Other Government Agency
+
+3. Regulatory Matters Tracker
+Create a main tracker for all open regulatory matters.
+
+Each matter should include:
+- Matter title
+- Client or company name
+- Agency
+- Matter type
+- State / jurisdiction
+- Current status
+- Priority / risk level
+- Internal owner
+- Emily owner status
+- Date opened
+- Last contact date
+- Next follow-up date
+- Deadline / renewal date
+- Submission date
+- Waiting on
+- Next action
+- Notes
+- Linked communications
+- Linked deficiencies
+- Linked documents or reference links
+
+Matter types should include:
+- License Application
+- License Renewal
+- Registration
+- Tax / Revenue
+- DOT
+- Environmental / EPA
+- Secretary of State
+- Permit
+- Deficiency Response
+- Status Follow-Up
+- Agency Research
+- Compliance Issue
+- Other
+
+Statuses should include:
+- Not Started
+- Preparing
+- Submitted
+- Waiting on Agency
+- Waiting on Client
+- Waiting on Internal Team
+- Deficiency Received
+- In Review
+- Escalated
+- Approved / Completed
+- Closed
+- On Hold
+
+Risk levels should include:
+- Low
+- Medium
+- High
+- Critical
+
+4. Communication Log
+Create a communication log tied to regulatory matters and agencies.
+
+Each communication entry should include:
+- Date and time
+- Agency
+- Related matter
+- Contact method
+- Person contacted
+- Summary of communication
+- Outcome
+- Next step
+- Follow-up needed yes/no
+- Follow-up date
+- Logged by
+- Attachments or reference links
+
+Contact methods should include:
+- Phone
+- Email
+- Portal Message
+- Letter
+- Website / Public Search
+- Internal Note
+- Other
+
+5. Deficiency / Agency Request Queue
+Create a queue for agency requests, deficiencies, missing items, corrections, and follow-up needs.
+
+Each item should include:
+- Related matter
+- Agency
+- Request or deficiency type
+- Description
+- Date received
+- Due date
+- Assigned internal owner
+- Status
+- Required response
+- Documents needed
+- Risk level
+- Resolution notes
+
+Statuses should include:
+- New
+- Assigned
+- Waiting on Client
+- Waiting on Internal Team
+- Ready to Respond
+- Submitted to Agency
+- Resolved
+- Escalated
+
+6. Follow-Up Calendar
+Create a calendar/list view showing:
+- Today’s follow-ups
+- Upcoming follow-ups
+- Overdue follow-ups
+- Portal checks
+- Agency calls
+- Email follow-ups
+- Deadline reminders
+- Stalled matters
+
+The calendar should be filterable by:
+- Agency
+- Client/company
+- Matter type
+- Risk level
+- Owner
+- Status
+
+7. Escalation Queue
+Create an escalation view for high-risk or unclear matters.
+
+Escalation reasons should include:
+- Legal review needed
+- Compliance interpretation needed
+- Tax review needed
+- Leadership decision needed
+- Deadline risk
+- Agency delay
+- Client impact
+- Missing critical document
+- Conflicting agency information
+- Other
+
+Each escalation should include:
+- Related matter
+- Reason for escalation
+- Summary
+- Recommended next step
+- Assigned reviewer
+- Date escalated
+- Due date
+- Status
+- Resolution notes
+
+8. Agency Knowledge Library
+Create a searchable knowledge library for agency-specific learning.
+
+Each knowledge entry should include:
+- Agency
+- State / jurisdiction
+- Topic
+- Summary
+- Detailed notes
+- Portal instructions
+- Follow-up timing guidance
+- Common deficiencies
+- Required forms or links
+- Contact preferences
+- Internal tips
+- Last verified date
+- Verified by
+
+9. SOP + Training Center
+Create a section for Emily’s department training and procedures.
+
+Include starter SOP categories:
+- Agency Communication SOP
+- Documentation Standards
+- Deficiency Routing SOP
+- Escalation Rules
+- Portal Check Procedure
+- Approved Status Language
+- New Team Member Training
+- Quality Review Checklist
+
+Each SOP/training item should include:
+- Title
+- Category
+- Purpose
+- Steps
+- Owner
+- Last updated
+- Status
+- Notes
+
+10. Reporting
+Create reports showing:
+- Open matters by agency type
+- Open matters by risk level
+- Overdue follow-ups
+- Average days waiting on agency
+- Deficiencies by agency
+- Matters by internal owner
+- Completed matters
+- Escalation volume
+- Stalled matters
+
+Important design requirements:
+- The app should feel like a clean professional internal command center, not a marketing website.
+- Use a left sidebar navigation.
+- Use clear dashboard cards, tables, filters, badges, and detail drawers or modals.
+- Make the interface dense enough for operations work but still easy to read.
+- Use professional colors, not playful or overly bright styling.
+- Do not use decorative landing-page sections.
+- Build the usable app as the first screen.
+- Include realistic sample data for testing.
+- Make add/edit forms work for agencies, matters, communications, deficiencies, escalations, and knowledge entries.
+- Make table filters and search functional.
+- Make status/risk badges visually clear.
+- Include empty states.
+- Include a role boundary reminder that Emily tracks communication, follow-up, documentation, and routing, but does not provide legal advice, final compliance opinions, tax advice, pricing decisions, refund approvals, contract changes, or guaranteed agency outcomes.
+
+Data persistence:
+For this first build, use browser localStorage or the simplest Replit-supported persistence so edits survive refresh. Structure the data clearly so it can later become a Zoho CRM or database-backed system.
+
+Architecture note:
+This app is a prototype / workflow definition tool unless later approved as the permanent system of record. It should help define the future Zoho CRM or production database requirements for regulatory communications.
+
+Do not add automated email sending, agency portal login automation, legal advice generation, tax advice generation, or automatic client-facing communication. All external communication should remain human-reviewed.
+
+Build the full working prototype now.

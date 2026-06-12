@@ -1,0 +1,1 @@
+- [Cartographer JSX generics](cartographer-jsx-generics.md) — never write `<Component<T>` in TSX; cartographer babel plugin can't parse it (tsc passes, Vite dev fails).
