@@ -24,6 +24,8 @@ function load(): Database {
       escalations: parsed.escalations ?? seed.escalations,
       knowledge: parsed.knowledge ?? seed.knowledge,
       sops: parsed.sops ?? seed.sops,
+      tasks: parsed.tasks ?? seed.tasks,
+      alerts: parsed.alerts ?? seed.alerts,
     };
   } catch {
     return buildSeed();

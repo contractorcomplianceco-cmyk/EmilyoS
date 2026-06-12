@@ -235,6 +235,33 @@ export interface Sop {
   createdAt: string;
 }
 
+export type TaskPriority = "Low" | "Medium" | "High";
+export type TaskStatus = "Open" | "In Progress" | "Completed" | "Blocked";
+
+export interface Task {
+  id: string;
+  title: string;
+  priority: TaskPriority;
+  dueDate: string;
+  status: TaskStatus;
+  assignedTo: string;
+  relatedAgencyId: string;
+  createdAt: string;
+}
+
+export type AlertType = "New" | "Update" | "Overdue" | "Deadline";
+export type AlertSeverity = "Info" | "Warning" | "Critical";
+
+export interface Alert {
+  id: string;
+  title: string;
+  detail: string;
+  severity: AlertSeverity;
+  type: AlertType;
+  date: string;
+  createdAt: string;
+}
+
 export interface Database {
   agencies: Agency[];
   matters: Matter[];
@@ -243,6 +270,8 @@ export interface Database {
   escalations: Escalation[];
   knowledge: KnowledgeEntry[];
   sops: Sop[];
+  tasks: Task[];
+  alerts: Alert[];
 }
 
 export type Collection = keyof Database;

@@ -137,3 +137,22 @@ export const sopFields: FieldDef[] = [
   { key: "steps", label: "Steps", type: "textarea" },
   { key: "notes", label: "Notes", type: "textarea" },
 ];
+
+export function taskFields(agencyOptions: Option[]): FieldDef[] {
+  return [
+    { key: "title", label: "Task Title", type: "text", required: true, full: true },
+    { key: "priority", label: "Priority", type: "select", options: ["Low", "Medium", "High"], required: true },
+    { key: "status", label: "Status", type: "select", options: ["Open", "In Progress", "Completed", "Blocked"], required: true },
+    { key: "dueDate", label: "Due Date", type: "date", required: true },
+    { key: "assignedTo", label: "Assigned To", type: "text", required: true },
+    { key: "relatedAgencyId", label: "Related Agency", type: "select", options: agencyOptions },
+  ];
+}
+
+export const alertFields: FieldDef[] = [
+  { key: "title", label: "Alert Title", type: "text", required: true, full: true },
+  { key: "type", label: "Type", type: "select", options: ["New", "Update", "Overdue", "Deadline"], required: true },
+  { key: "severity", label: "Severity", type: "select", options: ["Info", "Warning", "Critical"], required: true },
+  { key: "date", label: "Date", type: "date", required: true },
+  { key: "detail", label: "Details", type: "textarea", required: true },
+];

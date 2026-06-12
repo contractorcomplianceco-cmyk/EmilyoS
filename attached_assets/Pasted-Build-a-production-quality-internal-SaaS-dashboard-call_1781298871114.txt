@@ -1,0 +1,134 @@
+Build a production-quality internal SaaS dashboard called:
+
+“CCA EmilyOS – Compliance & Regulatory Communications Command Center”
+
+This is an internal operations system for Contractor Compliance Authority (CCA).
+
+PRIMARY DESIGN GOAL:
+Recreate a high-end enterprise compliance dashboard UI with the same structure as a modern SaaS control center:
+- Clean white/soft gray background
+- Deep navy + electric purple CCA branding accents
+- Subtle gradients (purple/indigo glow)
+- Card-based layout
+- Left sidebar navigation
+- Dense operational dashboard layout (not marketing site)
+
+BRAND STYLE:
+- Brand name: CCA (Contractor Compliance Authority)
+- Logo text: “CCA”
+- Tagline: “Powered by clarity. Driven by compliance.”
+- Accent colors:
+  - Navy (#0B1220)
+  - Deep Indigo (#1B1F3A)
+  - Electric Purple (#6D5EF7)
+  - Soft Blue highlights (#6EC1FF)
+  - Success Green (#2ED47A)
+  - Warning Orange (#FFB020)
+  - Danger Red (#FF5A5A)
+- Use modern glassmorphism cards + soft shadows
+
+PAGE LAYOUT (MUST MATCH EXACT STRUCTURE):
+
+LEFT SIDEBAR (fixed):
+- CCA Logo at top
+- Dashboard
+- Agency Directory
+- Communications Hub
+- Regulatory Tracker
+- Tasks & Approvals
+- Reports & Analytics
+- Intelligence
+- Laws & Regulations
+- Policy Library
+- Change Monitor
+- Team Directory
+- Settings
+
+MAIN DASHBOARD (top header):
+- Greeting: “Good morning, Emily!”
+- Subtitle: “Director of Compliance & Regulatory Communications”
+- Search bar (top center)
+- Notification bell + user avatar (top right)
+- Date/time widget
+
+TOP KPI ROW (cards):
+- Active Agencies
+- Active Projects
+- Compliance Items
+- Upcoming Deadlines
+
+RIGHT SIDEBAR PANEL:
+- “My Priorities” checklist (high/medium/low tags)
+- “Upcoming Calendar” mini list
+- “Alerts & Updates” (overdue items, warnings, updates)
+
+CENTER SECTION 1:
+“Agency Engagement Overview” table:
+Columns:
+- Agency Name
+- Engagement Type
+- Status (Active / Monitoring / Pending)
+- Last Contact
+- Next Action
+Include:
+- Department of Revenue
+- Department of Transportation
+- EPA
+- State Contractors Board
+- OSHA
+
+CENTER SECTION 2:
+Two side-by-side widgets:
+
+LEFT:
+“Compliance Status Ring Chart”
+- Total items count
+- Breakdown: compliant / in progress / at risk / overdue
+
+RIGHT:
+“Regulatory Change Monitor”
+- List of updates with tags: New / Update
+
+BOTTOM SECTION:
+
+LEFT:
+“Recent Communications Log”
+- From / Agency / Subject / Status / Date
+
+RIGHT:
+“Alerts & Risk Panel”
+- Overdue compliance items
+- New regulation updates
+- Upcoming deadlines
+
+FUNCTIONAL REQUIREMENTS:
+- All tables must support filtering + search
+- All cards must be clickable
+- Use dummy data seeded for 5 agencies and 10+ compliance items
+- Include status badges with color coding
+- Include hover animations on all cards
+- Sidebar navigation must be persistent
+- Mobile responsive layout (collapse sidebar into hamburger menu)
+
+DATA MODEL (LOCAL STORAGE):
+- agencies[]
+- matters[]
+- communications[]
+- alerts[]
+- tasks[]
+
+TECH STACK:
+- React + Vite
+- Tailwind CSS
+- Recharts for charts
+- Lucide React icons
+
+IMPORTANT UX RULES:
+- This is NOT a marketing site
+- This is an internal command center dashboard
+- Everything should feel like an enterprise operations cockpit
+- Dense information layout is expected
+- Prioritize clarity, speed, and operational control
+
+FINAL OUTPUT:
+A fully working dashboard UI that visually matches a modern compliance operations command center for CCA EmilyOS with strong purple/navy branding and clean SaaS aesthetics.

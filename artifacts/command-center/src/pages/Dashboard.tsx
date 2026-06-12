@@ -1,320 +1,442 @@
-import { Link } from "wouter";
-import {
-  FolderKanban,
-  AlertTriangle,
-  Siren,
-  CalendarClock,
-  ArrowRight,
-  Building2,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { PageHeader } from "@/components/shared/PageHeader";
-import {
-  RiskBadge,
-  MatterStatusBadge,
-  EscalationStatusBadge,
-} from "@/components/shared/Badges";
-import { EmptyState } from "@/components/shared/EmptyState";
+import React from "react";
 import { useDatabase } from "@/lib/store";
-import { agencyName } from "@/lib/lookups";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  fmtDate,
-  daysUntil,
-  isOverdue,
-  isDueToday,
-} from "@/lib/format";
-import {
-  OPEN_MATTER_STATUSES,
-  OPEN_DEFICIENCY_STATUSES,
-  OPEN_ESCALATION_STATUSES,
-} from "@/lib/types";
-import type { Matter } from "@/lib/types";
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { 
+  Building2, 
+  FolderKanban, 
+  AlertTriangle, 
+  Clock, 
+  ChevronRight,
+  Activity,
+  ArrowUpRight
+} from "lucide-react";
+import { Link } from "wouter";
+import { fmtDate, isOverdue, fmtDateTime, daysUntil } from "@/lib/format";
 
-function StatCard({
-  label,
-  value,
-  hint,
-  icon: Icon,
-  href,
-  tone,
-}: {
-  label: string;
-  value: number | string;
-  hint?: string;
-  icon: React.ComponentType<{ className?: string }>;
-  href: string;
-  tone: string;
-}) {
-  return (
-    <Link href={href}>
-      <Card className="cursor-pointer transition-shadow hover:shadow-md">
-        <CardContent className="flex items-start justify-between p-5">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">{label}</p>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">
-              {value}
-            </p>
-            {hint ? (
-              <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
-            ) : null}
-          </div>
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-lg ${tone}`}
-          >
-            <Icon className="h-5 w-5" />
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
-  );
-}
+const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-function dueLabel(value?: string | null): { text: string; tone: string } {
-  const n = daysUntil(value);
-  if (n === null) return { text: "No date", tone: "text-muted-foreground" };
-  if (isOverdue(value))
-    return { text: `${Math.abs(n)}d overdue`, tone: "text-red-600 font-medium" };
-  if (isDueToday(value)) return { text: "Due today", tone: "text-amber-600 font-medium" };
-  return { text: `in ${n}d`, tone: "text-muted-foreground" };
+function parseDateParts(value?: string | null): { month: string; day: string } {
+  if (!value) return { month: "—", day: "—" };
+  const [, mo, dy] = value.slice(0, 10).split("-");
+  const idx = Number(mo) - 1;
+  return { month: MONTHS[idx] ?? "—", day: dy ?? "—" };
 }
 
 export default function Dashboard() {
   const db = useDatabase();
 
-  const openMatters = db.matters.filter((m) =>
-    OPEN_MATTER_STATUSES.includes(m.currentStatus),
-  );
-  const openDeficiencies = db.deficiencies.filter((d) =>
-    OPEN_DEFICIENCY_STATUSES.includes(d.status),
-  );
-  const openEscalations = db.escalations.filter((e) =>
-    OPEN_ESCALATION_STATUSES.includes(e.status),
-  );
+  // Metrics
+  const activeAgencies = db.agencies.filter(a => a.activeStatus === "Active").length;
+  const activeMatters = db.matters.filter(m => !["Closed", "Approved / Completed"].includes(m.currentStatus)).length;
+  const openDeficiencies = db.deficiencies.filter(d => !["Resolved", "Submitted to Agency"].includes(d.status)).length;
+  const upcomingTasks = db.tasks.filter(t => t.status !== "Completed" && !isOverdue(t.dueDate)).length;
 
-  const followUps = db.matters
-    .filter((m) => m.nextFollowUpDate && OPEN_MATTER_STATUSES.includes(m.currentStatus))
-    .sort((a, b) => a.nextFollowUpDate.localeCompare(b.nextFollowUpDate));
+  // Chart Data
+  const mattersByStatus = db.matters.reduce((acc, m) => {
+    let cat = "In Progress";
+    if (m.currentStatus === "Approved / Completed") cat = "Compliant";
+    else if (["Deficiency Received", "Escalated"].includes(m.currentStatus)) cat = "At Risk";
+    else if (m.currentStatus === "Not Started") cat = "Pending";
+    
+    // Check overdue separately if needed, for simplicity let's stick to status
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
-  const dueSoon = followUps.filter(
-    (m) => isOverdue(m.nextFollowUpDate) || (daysUntil(m.nextFollowUpDate) ?? 99) <= 7,
-  );
+  const chartData = [
+    { name: "Compliant", value: mattersByStatus["Compliant"] || 0, color: "hsl(147, 68%, 50%)" }, // Success Green
+    { name: "In Progress", value: mattersByStatus["In Progress"] || 0, color: "hsl(206, 100%, 72%)" }, // Soft Blue
+    { name: "At Risk", value: mattersByStatus["At Risk"] || 0, color: "hsl(39, 100%, 56%)" }, // Warning Orange
+    { name: "Pending", value: mattersByStatus["Pending"] || 0, color: "hsl(232, 36%, 40%)" }, // Muted
+  ].filter(d => d.value > 0);
 
-  const attention = [...openMatters]
-    .filter(
-      (m) =>
-        m.priorityRiskLevel === "Critical" ||
-        m.priorityRiskLevel === "High" ||
-        isOverdue(m.nextFollowUpDate),
-    )
+  const totalChartItems = chartData.reduce((sum, d) => sum + d.value, 0);
+
+  // Recent tables
+  const agencyOverview = db.agencies.slice(0, 5).map(agency => {
+    const latestMatter = db.matters.filter(m => m.agencyId === agency.id).sort((a, b) => new Date(b.lastContactDate).getTime() - new Date(a.lastContactDate).getTime())[0];
+    return {
+      id: agency.id,
+      name: agency.name,
+      type: agency.agencyType,
+      status: latestMatter ? "Active" : "Monitoring",
+      lastContact: latestMatter?.lastContactDate || "N/A",
+      nextAction: latestMatter?.nextAction || "None"
+    };
+  });
+
+  const recentComms = [...db.communications]
+    .sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime())
+    .slice(0, 5);
+
+  const priorityTasks = [...db.tasks]
+    .filter(t => t.status !== "Completed")
     .sort((a, b) => {
-      const rank: Record<string, number> = { Critical: 0, High: 1, Medium: 2, Low: 3 };
-      return rank[a.priorityRiskLevel] - rank[b.priorityRiskLevel];
+      const p = { High: 0, Medium: 1, Low: 2 };
+      return p[a.priority as keyof typeof p] - p[b.priority as keyof typeof p];
     })
-    .slice(0, 6);
+    .slice(0, 4);
+
+  const activeAlerts = [...db.alerts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 4);
+
+  // Derived risk signals (kept in sync with live CRUD data)
+  const overdueTasks = db.tasks.filter(
+    (t) => t.status !== "Completed" && isOverdue(t.dueDate),
+  ).length;
+  const overdueDeficiencies = db.deficiencies.filter(
+    (d) => !["Resolved", "Submitted to Agency"].includes(d.status) && isOverdue(d.dueDate),
+  ).length;
+  const totalOverdue = overdueTasks + overdueDeficiencies;
+
+  const riskAlerts = [...db.alerts]
+    .filter((a) => a.severity === "Critical" || a.severity === "Warning")
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
+
+  const upcomingCalendar = db.matters
+    .filter((m) => m.deadlineRenewalDate && (daysUntil(m.deadlineRenewalDate) ?? -1) >= 0)
+    .sort(
+      (a, b) =>
+        new Date(a.deadlineRenewalDate).getTime() - new Date(b.deadlineRenewalDate).getTime(),
+    )
+    .slice(0, 3)
+    .map((m) => ({
+      id: m.id,
+      date: m.deadlineRenewalDate,
+      title: m.title,
+      sub: db.agencies.find((a) => a.id === m.agencyId)?.name || m.clientOrCompanyName || "",
+    }));
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Dashboard"
-        description="Operational overview of regulatory matters, deficiencies, escalations, and follow-ups."
-      />
+    <div className="flex flex-col xl:flex-row gap-6">
+      {/* Main Content Area */}
+      <div className="min-w-0 flex-1 space-y-6">
+        
+        {/* KPI Row */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-primary/10 text-primary rounded-lg">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Agencies</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">{activeAgencies}</div>
+          </Card>
+          
+          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                <FolderKanban className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Projects</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">{activeMatters}</div>
+          </Card>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="Open Matters"
-          value={openMatters.length}
-          hint={`${db.matters.length} total tracked`}
-          icon={FolderKanban}
-          href="/matters"
-          tone="bg-blue-50 text-blue-700"
-        />
-        <StatCard
-          label="Open Deficiencies"
-          value={openDeficiencies.length}
-          hint="Agency requests awaiting response"
-          icon={AlertTriangle}
-          href="/deficiencies"
-          tone="bg-amber-50 text-amber-700"
-        />
-        <StatCard
-          label="Active Escalations"
-          value={openEscalations.length}
-          hint="Routed for review or decision"
-          icon={Siren}
-          href="/escalations"
-          tone="bg-red-50 text-red-700"
-        />
-        <StatCard
-          label="Follow-Ups Due (7d)"
-          value={dueSoon.length}
-          hint="Includes overdue items"
-          icon={CalendarClock}
-          href="/calendar"
-          tone="bg-violet-50 text-violet-700"
-        />
-      </div>
+          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-amber-100 text-amber-600 rounded-lg">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Compliance Items</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">{openDeficiencies}</div>
+          </Card>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base">Matters Needing Attention</CardTitle>
-            <Link href="/matters">
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-                View all <ArrowRight className="h-3 w-3" />
-              </span>
+          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
+                <Clock className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Upcoming Deadlines</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">{upcomingTasks}</div>
+          </Card>
+        </div>
+
+        {/* Center Section 1: Agency Engagement */}
+        <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 overflow-hidden">
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <h3 className="font-bold text-slate-800 text-lg">Agency Engagement Overview</h3>
+            <Link href="/agencies" className="text-sm text-primary font-medium hover:underline flex items-center">
+              View All <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
-          </CardHeader>
-          <CardContent>
-            {attention.length === 0 ? (
-              <EmptyState
-                title="Nothing urgent"
-                description="No high-risk or overdue matters right now."
-              />
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Matter</TableHead>
-                    <TableHead>Agency</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Risk</TableHead>
-                    <TableHead className="text-right">Follow-Up</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attention.map((m: Matter) => {
-                    const due = dueLabel(m.nextFollowUpDate);
-                    return (
-                      <TableRow key={m.id}>
-                        <TableCell>
-                          <Link href="/matters">
-                            <span className="cursor-pointer font-medium text-foreground hover:underline">
-                              {m.title}
-                            </span>
-                          </Link>
-                          <div className="text-xs text-muted-foreground">
-                            {m.clientOrCompanyName}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {agencyName(db, m.agencyId)}
-                        </TableCell>
-                        <TableCell>
-                          <MatterStatusBadge value={m.currentStatus} />
-                        </TableCell>
-                        <TableCell>
-                          <RiskBadge value={m.priorityRiskLevel} />
-                        </TableCell>
-                        <TableCell className={`text-right text-xs ${due.tone}`}>
-                          {due.text}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-50/50 text-slate-500 font-medium border-b border-slate-100">
+                <tr>
+                  <th className="px-5 py-3">Agency Name</th>
+                  <th className="px-5 py-3">Engagement Type</th>
+                  <th className="px-5 py-3">Status</th>
+                  <th className="px-5 py-3">Last Contact</th>
+                  <th className="px-5 py-3">Next Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {agencyOverview.map((row) => (
+                  <tr key={row.id} className="hover:bg-slate-50/50 transition-colors group cursor-pointer">
+                    <td className="px-5 py-3 font-medium text-slate-800">{row.name}</td>
+                    <td className="px-5 py-3 text-slate-600">{row.type}</td>
+                    <td className="px-5 py-3">
+                      <Badge variant="outline" className={row.status === "Active" ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-slate-100 text-slate-700 border-slate-200"}>
+                        {row.status}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3 text-slate-600">{fmtDate(row.lastContact)}</td>
+                    <td className="px-5 py-3 text-slate-600 truncate max-w-[200px]">{row.nextAction}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base">Active Escalations</CardTitle>
-            <Link href="/escalations">
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-                View all <ArrowRight className="h-3 w-3" />
-              </span>
-            </Link>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {openEscalations.length === 0 ? (
-              <EmptyState title="No active escalations" />
-            ) : (
-              openEscalations.slice(0, 5).map((e) => (
-                <div
-                  key={e.id}
-                  className="rounded-md border p-3 text-sm"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-foreground">
-                      {e.reasonForEscalation}
-                    </span>
-                    <EscalationStatusBadge value={e.status} />
-                  </div>
-                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                    {e.summary}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Due {fmtDate(e.dueDate)} · {e.assignedReviewer || "Unassigned"}
-                  </p>
+        {/* Center Section 2: Split Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Ring Chart */}
+          <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 p-5 flex flex-col">
+            <h3 className="font-bold text-slate-800 text-lg mb-6">Compliance Status</h3>
+            <div className="relative flex-1 min-h-[250px] flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={90}
+                    paddingAngle={2}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-4xl font-bold text-slate-800">{totalChartItems}</span>
+                <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Total Items</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-4 mt-4">
+              {chartData.map(d => (
+                <div key={d.name} className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: d.color }}></div>
+                  {d.name} ({d.value})
                 </div>
-              ))
-            )}
-          </CardContent>
+              ))}
+            </div>
+          </Card>
+
+          {/* Change Monitor List */}
+          <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 flex flex-col">
+            <div className="p-5 border-b border-slate-100 flex justify-between items-center">
+              <h3 className="font-bold text-slate-800 text-lg">Regulatory Change Monitor</h3>
+              <Link href="/change-monitor" className="text-sm text-primary font-medium hover:underline flex items-center">
+                All Updates <ChevronRight className="w-4 h-4 ml-1" />
+              </Link>
+            </div>
+            <div className="flex-1 p-5 space-y-4">
+              {activeAlerts.map(alert => (
+                <div key={alert.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group border border-transparent hover:border-slate-100">
+                  <div className={`p-2 rounded-md shrink-0 mt-0.5 ${alert.type === 'New' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                    <Activity className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="text-sm font-semibold text-slate-800 truncate group-hover:text-primary transition-colors">{alert.title}</h4>
+                      <Badge variant="outline" className={alert.type === 'New' ? "bg-purple-50 text-purple-700 border-purple-200 text-[10px] px-1.5" : "bg-blue-50 text-blue-700 border-blue-200 text-[10px] px-1.5"}>
+                        {alert.type}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-500 line-clamp-2">{alert.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* Bottom Section: Recent Comms */}
+        <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 overflow-hidden">
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <h3 className="font-bold text-slate-800 text-lg">Recent Communications Log</h3>
+            <Link href="/communications" className="text-sm text-primary font-medium hover:underline flex items-center">
+              View Log <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-50/50 text-slate-500 font-medium border-b border-slate-100">
+                <tr>
+                  <th className="px-5 py-3">From</th>
+                  <th className="px-5 py-3">Agency</th>
+                  <th className="px-5 py-3">Subject / Summary</th>
+                  <th className="px-5 py-3">Date</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {recentComms.map((comm) => {
+                  const agency = db.agencies.find(a => a.id === comm.agencyId);
+                  return (
+                    <tr key={comm.id} className="hover:bg-slate-50/50 transition-colors group cursor-pointer">
+                      <td className="px-5 py-3 font-medium text-slate-800">{comm.loggedBy}</td>
+                      <td className="px-5 py-3 text-slate-600">{agency?.name || "Unknown"}</td>
+                      <td className="px-5 py-3 text-slate-600 truncate max-w-[300px]">{comm.summary}</td>
+                      <td className="px-5 py-3 text-slate-500 text-xs">{fmtDateTime(comm.dateTime)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </Card>
+
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-base">Upcoming Follow-Ups</CardTitle>
-          <Link href="/calendar">
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-              Open calendar <ArrowRight className="h-3 w-3" />
-            </span>
-          </Link>
-        </CardHeader>
-        <CardContent>
-          {followUps.length === 0 ? (
-            <EmptyState
-              icon={Building2}
-              title="No scheduled follow-ups"
-              description="Follow-up dates set on open matters will appear here."
-            />
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Matter</TableHead>
-                  <TableHead>Agency</TableHead>
-                  <TableHead>Owner</TableHead>
-                  <TableHead className="text-right">When</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {followUps.slice(0, 8).map((m) => {
-                  const due = dueLabel(m.nextFollowUpDate);
-                  return (
-                    <TableRow key={m.id}>
-                      <TableCell className="text-sm">
-                        {fmtDate(m.nextFollowUpDate)}
-                      </TableCell>
-                      <TableCell className="font-medium">{m.title}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {agencyName(db, m.agencyId)}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {m.internalOwner || "—"}
-                      </TableCell>
-                      <TableCell className={`text-right text-xs ${due.tone}`}>
-                        {due.text}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
+      {/* Right Rail */}
+      <div className="w-full xl:w-[320px] 2xl:w-[380px] shrink-0 space-y-6">
+        
+        {/* Priorities */}
+        <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20">
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 className="font-bold text-slate-800">My Priorities</h3>
+            <Link href="/tasks" className="text-primary hover:bg-primary/10 p-1 rounded transition-colors">
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="p-2">
+            {priorityTasks.length > 0 ? priorityTasks.map(task => (
+              <div key={task.id} className="p-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer group">
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h4 className="text-sm font-semibold text-slate-700 leading-tight group-hover:text-primary">{task.title}</h4>
+                  <Badge variant="outline" className={`shrink-0 text-[10px] px-1.5 py-0 ${
+                    task.priority === 'High' ? 'bg-red-50 text-red-700 border-red-200' :
+                    task.priority === 'Medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                    'bg-slate-50 text-slate-700 border-slate-200'
+                  }`}>
+                    {task.priority}
+                  </Badge>
+                </div>
+                <div className="flex items-center text-[11px] text-slate-500 mt-2">
+                  <Clock className="w-3 h-3 mr-1" />
+                  <span className={isOverdue(task.dueDate) ? "text-destructive font-medium" : ""}>
+                    {fmtDate(task.dueDate)}
+                  </span>
+                </div>
+              </div>
+            )) : (
+              <div className="p-6 text-center text-sm text-slate-500">No priorities right now.</div>
+            )}
+          </div>
+        </Card>
+
+        {/* Upcoming Calendar Mini */}
+        <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20">
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 className="font-bold text-slate-800">Upcoming Calendar</h3>
+            <Link href="/calendar" className="text-primary hover:bg-primary/10 p-1 rounded transition-colors">
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="p-4 space-y-4">
+            {upcomingCalendar.length > 0 ? (
+              upcomingCalendar.map((item, i) => {
+                const { month, day } = parseDateParts(item.date);
+                return (
+                  <div key={item.id} className="flex gap-4">
+                    <div
+                      className={`flex flex-col items-center justify-center w-12 h-12 rounded-lg border shrink-0 ${
+                        i === 0
+                          ? "bg-primary/5 border-primary/10 text-primary"
+                          : "bg-slate-100 border-slate-200 text-slate-600"
+                      }`}
+                    >
+                      <span className="text-[10px] font-bold uppercase">{month}</span>
+                      <span className="text-lg font-bold leading-none">{day}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-semibold text-slate-800 line-clamp-1">
+                        {item.title}
+                      </h4>
+                      {item.sub ? (
+                        <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{item.sub}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-sm text-slate-500 text-center py-4">
+                No upcoming deadlines.
+              </p>
+            )}
+          </div>
+        </Card>
+
+        {/* Alerts & Risk Panel */}
+        <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 border-t-4 border-t-amber-500">
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <h3 className="font-bold text-slate-800 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              Alerts & Risk Panel
+            </h3>
+          </div>
+          <div className="p-2 space-y-1">
+            {totalOverdue > 0 && (
+              <div className="p-3 bg-red-50/50 rounded-md border border-red-100">
+                <h4 className="text-xs font-bold text-red-800 mb-1 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500"></span> Overdue Items
+                </h4>
+                <p className="text-xs text-red-700/80 leading-relaxed">
+                  {overdueTasks} {overdueTasks === 1 ? "task" : "tasks"} and {overdueDeficiencies}{" "}
+                  {overdueDeficiencies === 1 ? "compliance deficiency" : "compliance deficiencies"}{" "}
+                  require immediate attention.
+                </p>
+              </div>
+            )}
+            {riskAlerts.map((alert) => (
+              <div
+                key={alert.id}
+                className="p-3 hover:bg-slate-50 rounded-md transition-colors cursor-pointer border border-transparent hover:border-slate-100"
+              >
+                <h4 className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      alert.severity === "Critical" ? "bg-red-500" : "bg-amber-500"
+                    }`}
+                  ></span>{" "}
+                  {alert.title}
+                </h4>
+                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{alert.detail}</p>
+              </div>
+            ))}
+            {totalOverdue === 0 && riskAlerts.length === 0 && (
+              <div className="p-6 text-center text-sm text-slate-500">
+                No active risks or overdue items.
+              </div>
+            )}
+          </div>
+        </Card>
+
+      </div>
     </div>
   );
 }

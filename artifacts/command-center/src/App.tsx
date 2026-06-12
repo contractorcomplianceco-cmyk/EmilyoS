@@ -15,6 +15,11 @@ import Escalations from "@/pages/Escalations";
 import Knowledge from "@/pages/Knowledge";
 import Sops from "@/pages/Sops";
 import Reports from "@/pages/Reports";
+import Tasks from "@/pages/Tasks";
+import Intelligence from "@/pages/Intelligence";
+import ChangeMonitor from "@/pages/ChangeMonitor";
+import Team from "@/pages/Team";
+import Settings from "@/pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +37,14 @@ function Router() {
         <Route path="/knowledge" component={Knowledge} />
         <Route path="/sops" component={Sops} />
         <Route path="/reports" component={Reports} />
+        
+        {/* New Routes */}
+        <Route path="/tasks" component={Tasks} />
+        <Route path="/intelligence" component={Intelligence} />
+        <Route path="/change-monitor" component={ChangeMonitor} />
+        <Route path="/team" component={Team} />
+        <Route path="/settings" component={Settings} />
+
         <Route component={NotFound} />
       </Switch>
     </AppLayout>
