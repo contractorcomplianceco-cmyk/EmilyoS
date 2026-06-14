@@ -124,51 +124,64 @@ export default function Dashboard() {
         
         {/* KPI Row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-primary/10 text-primary rounded-lg">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Agencies</span>
-            </div>
-            <div className="text-3xl font-bold text-slate-800">{activeAgencies}</div>
-          </Card>
-          
-          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                <FolderKanban className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Active Projects</span>
-            </div>
-            <div className="text-3xl font-bold text-slate-800">{activeMatters}</div>
-          </Card>
-
-          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-amber-100 text-amber-600 rounded-lg">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Compliance Items</span>
-            </div>
-            <div className="text-3xl font-bold text-slate-800">{openDeficiencies}</div>
-          </Card>
-
-          <Card className="p-5 bg-white/70 backdrop-blur-md shadow-sm border-white/20 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
-                <Clock className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Upcoming Deadlines</span>
-            </div>
-            <div className="text-3xl font-bold text-slate-800">{upcomingTasks}</div>
-          </Card>
+          {[
+            {
+              label: "Active Agencies",
+              value: activeAgencies,
+              icon: Building2,
+              gradient: "from-indigo-600 to-violet-600",
+              shadow: "hover:shadow-indigo-500/30",
+            },
+            {
+              label: "Active Projects",
+              value: activeMatters,
+              icon: FolderKanban,
+              gradient: "from-sky-500 to-blue-600",
+              shadow: "hover:shadow-blue-500/30",
+            },
+            {
+              label: "Compliance Items",
+              value: openDeficiencies,
+              icon: AlertTriangle,
+              gradient: "from-amber-500 to-orange-600",
+              shadow: "hover:shadow-amber-500/30",
+            },
+            {
+              label: "Upcoming Deadlines",
+              value: upcomingTasks,
+              icon: Clock,
+              gradient: "from-emerald-500 to-teal-600",
+              shadow: "hover:shadow-emerald-500/30",
+            },
+          ].map((kpi) => {
+            const Icon = kpi.icon;
+            return (
+              <Card
+                key={kpi.label}
+                className={`relative overflow-hidden p-5 border-0 rounded-2xl text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} hover:shadow-2xl transition-all hover:-translate-y-1`}
+              >
+                <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+                <div className="relative flex items-start justify-between mb-3">
+                  <div className="text-4xl font-extrabold tracking-tight leading-none">{kpi.value}</div>
+                  <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl ring-1 ring-white/30">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                </div>
+                <span className="relative block text-xs font-semibold text-white/85 uppercase tracking-wider">
+                  {kpi.label}
+                </span>
+              </Card>
+            );
+          })}
         </div>
 
         {/* Center Section 1: Agency Engagement */}
         <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 overflow-hidden">
           <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-            <h3 className="font-bold text-slate-800 text-lg">Agency Engagement Overview</h3>
+            <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2.5">
+              <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+              Agency Engagement Overview
+            </h3>
             <Link href="/agencies" className="text-sm text-primary font-medium hover:underline flex items-center">
               View All <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
@@ -207,7 +220,10 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Ring Chart */}
           <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 p-5 flex flex-col">
-            <h3 className="font-bold text-slate-800 text-lg mb-6">Compliance Status</h3>
+            <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2.5">
+              <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />
+              Compliance Status
+            </h3>
             <div className="relative flex-1 min-h-[250px] flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -248,7 +264,10 @@ export default function Dashboard() {
           {/* Change Monitor List */}
           <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 flex flex-col">
             <div className="p-5 border-b border-slate-100 flex justify-between items-center">
-              <h3 className="font-bold text-slate-800 text-lg">Regulatory Change Monitor</h3>
+              <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2.5">
+                <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+                Regulatory Change Monitor
+              </h3>
               <Link href="/change-monitor" className="text-sm text-primary font-medium hover:underline flex items-center">
                 All Updates <ChevronRight className="w-4 h-4 ml-1" />
               </Link>
@@ -277,7 +296,10 @@ export default function Dashboard() {
         {/* Bottom Section: Recent Comms */}
         <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 overflow-hidden">
           <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-            <h3 className="font-bold text-slate-800 text-lg">Recent Communications Log</h3>
+            <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2.5">
+              <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
+              Recent Communications Log
+            </h3>
             <Link href="/communications" className="text-sm text-primary font-medium hover:underline flex items-center">
               View Log <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
