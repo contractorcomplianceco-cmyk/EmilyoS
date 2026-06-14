@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import {
   PlayCircle,
   Play,
@@ -23,7 +24,7 @@ const SEGMENT_COUNT = CHAPTERS.length;
 const segUrl = (i: number) => `${import.meta.env.BASE_URL}walkthrough/s${i + 1}.mp3`;
 const bedUrl = `${import.meta.env.BASE_URL}walkthrough/bed.mp3`;
 const guideUrl = `${import.meta.env.BASE_URL}walkthrough/EmilyOS-User-Guide.pdf`;
-const BED_VOLUME = 0.24;
+const DEFAULT_BED_VOLUME = 0.12;
 
 type Status = "idle" | "playing" | "paused" | "finished";
 type Mode = "video" | "guided";
@@ -34,11 +35,13 @@ export default function Walkthrough() {
   const [scene, setScene] = useState(0);
   const [cycle, setCycle] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [bedVolume, setBedVolume] = useState(DEFAULT_BED_VOLUME);
   const [sceneProgress, setSceneProgress] = useState(0);
 
   const narrationRef = useRef<HTMLAudioElement | null>(null);
   const bedRef = useRef<HTMLAudioElement | null>(null);
   const mutedRef = useRef(false);
+  const bedVolumeRef = useRef(DEFAULT_BED_VOLUME);
   const { toast } = useToast();
 
   const stopAll = () => {
@@ -69,6 +72,17 @@ export default function Walkthrough() {
   useEffect(() => {
     mutedRef.current = muted;
   }, [muted]);
+
+  useEffect(() => {
+    bedVolumeRef.current = bedVolume;
+    if (bedRef.current) bedRef.current.volume = mutedRef.current ? 0 : bedVolume;
+  }, [bedVolume]);
+
+  const handleBedVolumeChange = (vals: number[]) => {
+    const next = (vals[0] ?? 0) / 100;
+    setBedVolume(next);
+    if (next > 0 && muted) setMuted(false);
+  };
 
   useEffect(() => stopAll, []);
 
@@ -118,7 +132,7 @@ export default function Walkthrough() {
     if (!bedRef.current) {
       const bed = new Audio(bedUrl);
       bed.loop = true;
-      bed.volume = mutedRef.current ? 0 : BED_VOLUME;
+      bed.volume = mutedRef.current ? 0 : bedVolumeRef.current;
       bedRef.current = bed;
       bed.play().catch(() => {});
     }
@@ -168,7 +182,7 @@ export default function Walkthrough() {
     setMuted((m) => {
       const nm = !m;
       if (narrationRef.current) narrationRef.current.volume = nm ? 0 : 1;
-      if (bedRef.current) bedRef.current.volume = nm ? 0 : BED_VOLUME;
+      if (bedRef.current) bedRef.current.volume = nm ? 0 : bedVolumeRef.current;
       return nm;
     });
   };
@@ -362,11 +376,25 @@ export default function Walkthrough() {
                 variant="outline"
                 size="icon"
                 onClick={toggleMute}
-                className="h-9 w-9 rounded-full"
+                className="h-9 w-9 shrink-0 rounded-full"
                 aria-label={muted ? "Unmute" : "Mute"}
               >
                 {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </Button>
+              <div className="flex shrink-0 items-center gap-2">
+                <Slider
+                  value={[muted ? 0 : Math.round(bedVolume * 100)]}
+                  onValueChange={handleBedVolumeChange}
+                  min={0}
+                  max={100}
+                  step={1}
+                  className="w-20 sm:w-28"
+                  aria-label="Music volume"
+                />
+                <span className="hidden w-9 text-right text-xs tabular-nums text-slate-400 sm:inline">
+                  {muted ? 0 : Math.round(bedVolume * 100)}%
+                </span>
+              </div>
             </>
           ) : (
             <>
