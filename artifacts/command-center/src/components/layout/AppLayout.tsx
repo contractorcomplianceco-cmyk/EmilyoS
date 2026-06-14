@@ -110,11 +110,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10" />
 
         {/* Top Header */}
-        <header className="h-16 bg-white/80 backdrop-blur-md border-b border-border flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 shrink-0">
-          <div className="flex items-center gap-4">
+        <header className="relative h-20 overflow-hidden bg-gradient-to-r from-[#0c1230] via-indigo-900 to-violet-800 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 shrink-0 shadow-lg">
+          <div className="pointer-events-none absolute -top-16 right-1/4 h-48 w-48 rounded-full bg-violet-500/20 blur-3xl" />
+          <div className="relative flex items-center gap-4">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
+                <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10 hover:text-white">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -124,37 +125,37 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Sheet>
 
             <div className="hidden md:block">
-              <h2 className="text-lg font-bold text-slate-800">Good morning, Emily!</h2>
-              <p className="text-xs text-slate-500 font-medium">Director of Compliance & Regulatory Communications</p>
+              <h2 className="text-xl font-bold tracking-tight text-white">Good morning, Emily!</h2>
+              <p className="text-xs font-medium text-white/60">Director of Compliance &amp; Regulatory Communications</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 md:gap-6">
+          <div className="relative flex items-center gap-3 md:gap-5">
             <div className="relative hidden lg:flex items-center w-64">
-              <Search className="absolute left-3 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 w-4 h-4 text-white/50" />
               <Input 
                 placeholder="Search agencies, matters..." 
-                className="pl-9 h-9 bg-slate-100/50 border-slate-200 focus-visible:ring-primary/30 rounded-full text-sm"
+                className="pl-9 h-9 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus-visible:ring-white/30 focus-visible:border-white/40 rounded-full text-sm"
               />
             </div>
             
-            <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-full border border-slate-200">
-              <Clock className="w-4 h-4 text-primary" />
+            <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-white/90 bg-white/10 px-3 py-1.5 rounded-full border border-white/20 backdrop-blur-sm">
+              <Clock className="w-4 h-4 text-white/70" />
               {format(new Date(), "MMM d, yyyy")}
             </div>
 
-            <div className="flex items-center gap-3 border-l border-border pl-4 md:pl-6">
-              <Button variant="ghost" size="icon" className="relative rounded-full text-slate-500 hover:text-primary hover:bg-primary/10">
+            <div className="flex items-center gap-3 border-l border-white/15 pl-3 md:pl-5">
+              <Button variant="ghost" size="icon" className="relative rounded-full text-white/80 hover:text-white hover:bg-white/10">
                 <Bell className="h-5 w-5" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border border-white"></span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border border-[#1a1f47]"></span>
               </Button>
               
               <div className="flex items-center gap-2 cursor-pointer group">
-                <Avatar className="h-9 w-9 border-2 border-white shadow-sm group-hover:border-primary/20 transition-colors">
+                <Avatar className="h-9 w-9 border-2 border-white/30 shadow-sm group-hover:border-white/60 transition-colors">
                   <AvatarImage src="" />
-                  <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">EJ</AvatarFallback>
+                  <AvatarFallback className="bg-white/20 text-white font-bold text-xs">EJ</AvatarFallback>
                 </Avatar>
-                <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors hidden sm:block" />
+                <ChevronDown className="w-4 h-4 text-white/50 group-hover:text-white/80 transition-colors hidden sm:block" />
               </div>
             </div>
           </div>
