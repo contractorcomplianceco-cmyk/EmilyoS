@@ -1,0 +1,35 @@
+APP DESIGN PROMPT — Structure & Layout (no visual styling specifics)
+
+Build a professional internal web app with the following structure. Keep all decisions about color, typography, and visual identity open — focus on layout, hierarchy, and interaction patterns.
+
+1. App shell
+
+Persistent left sidebar for primary navigation, collapsing into a slide-over drawer on mobile.
+Top of sidebar: product wordmark + a one-line descriptor.
+Nav items grouped into labeled sections (e.g. "Overview", "Operations", "Knowledge & Insights"), each item an icon + label, with a clear active state.
+A pinned info/footer block at the bottom (status note, role boundary, or account).
+Persistent top header: contextual greeting/page context on the left; global search, a date/status pill, notifications, and an account avatar with menu on the right.
+Main content area scrolls independently beneath the sticky header.
+2. Standard page template (reuse for every list/management screen)
+
+Page header: title, short subtitle, and a primary action button (e.g. "Add …") aligned right.
+Toolbar: search field + filters/segmented controls.
+Primary view: a data table (desktop) / card list (mobile) of records, with status badges and a meaningful empty state when there's no data.
+Detail panel: clicking a row opens a side sheet/drawer showing the full record with edit and delete actions.
+Create/Edit dialog: a modal form for adding and editing records.
+Confirm-delete dialog: a guarded confirmation before destructive actions.
+3. Dashboard / home composition
+
+A row of KPI summary cards at the top (each: big number, label, icon).
+A two-column body: a wide primary panel (key table or chart) on the left, and a right rail of smaller modules (priorities, upcoming calendar, alerts/risk) on the right.
+Every panel is data-derived from the live data source — never hardcoded — so it stays truthful after edits.
+4. Cross-cutting patterns
+
+Config-driven forms: define each entity's fields in a central config; render add/edit forms from that config with one shared form component. Adding a field = edit the config, not the dialog.
+Shared building blocks: one reusable component each for PageHeader, Toolbar, Table/List, DetailSheet, RecordFormDialog, ConfirmDelete, EmptyState, and Badges — used consistently across all pages.
+One canonical reference page: build one screen fully, then replicate its exact pattern for the rest.
+Responsive: desktop sidebar → mobile drawer; tables → stacked cards; right rail → below content.
+States: always handle loading, empty, and error states; show toasts for success/failure of actions.
+Consistency over novelty: identical spacing rhythm, card treatment, and interaction patterns on every page.
+Quality bar: typecheck passes; navigation works across all pages; CRUD (create/read/update/delete + search/filter) works on every entity; the app is fully usable on mobile.
+
