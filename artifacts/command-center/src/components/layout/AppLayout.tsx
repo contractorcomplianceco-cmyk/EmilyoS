@@ -14,6 +14,8 @@ import {
   Users, 
   Settings as SettingsIcon,
   UserCircle,
+  IdCard,
+  LogOut,
   TrendingUp,
   Coins,
   Trophy,
@@ -30,7 +32,23 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+
+const profileMenu = [
+  { name: "My Account", href: "/account", icon: UserCircle },
+  { name: "Employee Profile", href: "/employee-account", icon: IdCard },
+  { name: "My Benefits", href: "/benefits", icon: HeartHandshake },
+  { name: "Settings", href: "/settings", icon: SettingsIcon },
+];
 
 const navSections = [
   {
@@ -59,11 +77,9 @@ const navSections = [
   {
     label: "My Workspace",
     items: [
-      { name: "My Employee Profile", href: "/profile", icon: UserCircle },
       { name: "Leadership Track", href: "/leadership-track", icon: TrendingUp },
       { name: "Bonus Tracker", href: "/bonus-tracker", icon: Coins },
       { name: "My Wins", href: "/my-wins", icon: Trophy },
-      { name: "My Benefits", href: "/my-benefits", icon: HeartHandshake },
     ],
   },
   {
@@ -128,8 +144,9 @@ function SidebarContent({ location }: { location: string }) {
 }
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
 
   return (
     <div className="flex h-screen bg-[#f3f4f6] text-foreground overflow-hidden font-sans">
@@ -186,13 +203,47 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border border-[#1a1f47]"></span>
               </Button>
               
-              <div className="flex items-center gap-2 cursor-pointer group">
-                <Avatar className="h-9 w-9 border-2 border-white/30 shadow-sm group-hover:border-white/60 transition-colors">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-white/20 text-white font-bold text-xs">EJ</AvatarFallback>
-                </Avatar>
-                <ChevronDown className="w-4 h-4 text-white/50 group-hover:text-white/80 transition-colors hidden sm:block" />
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-full">
+                    <Avatar className="h-9 w-9 border-2 border-white/30 shadow-sm group-hover:border-white/60 transition-colors">
+                      <AvatarImage src="" />
+                      <AvatarFallback className="bg-white/20 text-white font-bold text-xs">EJ</AvatarFallback>
+                    </Avatar>
+                    <ChevronDown className="w-4 h-4 text-white/50 group-hover:text-white/80 transition-colors hidden sm:block" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-60">
+                  <DropdownMenuLabel className="flex flex-col gap-0.5">
+                    <span className="text-sm font-semibold text-slate-800">Emily Jones</span>
+                    <span className="text-xs font-normal text-slate-400">emily.jones@cca.com</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {profileMenu.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <DropdownMenuItem
+                        key={item.href}
+                        onSelect={() => setLocation(item.href)}
+                        className="cursor-pointer gap-2.5"
+                      >
+                        <Icon className="h-4 w-4 text-slate-500" />
+                        {item.name}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() =>
+                      toast({ title: "Signed out", description: "You have been signed out." })
+                    }
+                    className="cursor-pointer gap-2.5 text-destructive focus:text-destructive"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </header>
