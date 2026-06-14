@@ -22,7 +22,7 @@ import {
 import ccaCrest from "@assets/cca-crest-inset_1781445846297.png";
 
 const crestFilter =
-  "hue-rotate(55deg) saturate(1.3) drop-shadow(0 0 18px rgba(124,58,237,0.7))";
+  "hue-rotate(-32deg) saturate(1.45) drop-shadow(0 0 18px rgba(20,184,166,0.75))";
 
 export const CHAPTERS = [
   { title: "Welcome", icon: Sparkles },
@@ -39,7 +39,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 function SceneShell({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0a0f2c] via-indigo-950 to-violet-900"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0a0f2c] via-indigo-950 to-teal-900"
       initial={{ opacity: 0, scale: 1.02 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.99 }}
@@ -47,7 +47,7 @@ function SceneShell({ children }: { children: React.ReactNode }) {
     >
       {/* drifting glow accents */}
       <motion.div
-        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-violet-600/30 blur-3xl"
+        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-teal-600/30 blur-3xl"
         animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -102,7 +102,7 @@ function Eyebrow({ icon: Icon, label }: { icon: any; label: string }) {
   return (
     <motion.div
       {...fadeUp(0.1)}
-      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-violet-200 backdrop-blur-sm"
+      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-200 backdrop-blur-sm"
     >
       <Icon className="h-3.5 w-3.5" />
       {label}
@@ -122,7 +122,7 @@ function Welcome() {
           transition={{ duration: 0.9, ease: EASE }}
         >
           <motion.div
-            className="absolute inset-0 -m-6 rounded-full border border-violet-400/30"
+            className="absolute inset-0 -m-6 rounded-full border border-teal-400/30"
             animate={{ rotate: 360 }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           />
@@ -143,7 +143,7 @@ function Welcome() {
           className="text-5xl md:text-6xl font-black tracking-tight text-white"
         >
           CCA{" "}
-          <span className="bg-gradient-to-r from-violet-300 to-purple-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
             EmilyOS
           </span>
         </motion.h1>
@@ -156,7 +156,7 @@ function Welcome() {
         </motion.p>
         <motion.div
           {...fadeUp(1.1)}
-          className="mt-6 h-[3px] w-40 rounded-full bg-gradient-to-r from-transparent via-violet-400 to-transparent"
+          className="mt-6 h-[3px] w-40 rounded-full bg-gradient-to-r from-transparent via-teal-400 to-transparent"
         />
       </div>
     </SceneShell>
@@ -194,7 +194,7 @@ function Dashboard() {
                   {...fadeUp(0.45 + i * 0.12)}
                   className="rounded-xl border border-white/10 bg-white/[0.06] p-4 backdrop-blur-sm"
                 >
-                  <div className="mb-3 inline-flex rounded-lg bg-violet-500/20 p-2 text-violet-200">
+                  <div className="mb-3 inline-flex rounded-lg bg-teal-500/20 p-2 text-teal-200">
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="text-3xl font-black text-white">
@@ -214,7 +214,7 @@ function Dashboard() {
                     {...fadeUp(0.9 + i * 0.14)}
                     className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2"
                   >
-                    <span className="h-2 w-2 rounded-full bg-violet-400" />
+                    <span className="h-2 w-2 rounded-full bg-teal-400" />
                     <span className="text-sm text-white/80">{t}</span>
                     <span className="ml-auto text-[11px] text-white/40">High</span>
                   </motion.div>
@@ -253,8 +253,8 @@ function Dashboard() {
                 />
                 <defs>
                   <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#a78bfa" />
-                    <stop offset="100%" stopColor="#7c3aed" />
+                    <stop offset="0%" stopColor="#5eead4" />
+                    <stop offset="100%" stopColor="#06b6d4" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -312,7 +312,7 @@ function AgenciesComms() {
                 transition={{ duration: 0.55, ease: EASE, delay: 0.4 + i * 0.16 }}
                 className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-3"
               >
-                <div className="rounded-md bg-violet-500/20 p-2 text-violet-200">
+                <div className="rounded-md bg-teal-500/20 p-2 text-teal-200">
                   <Building2 className="h-4 w-4" />
                 </div>
                 <span className="text-sm leading-snug text-white/85">{a}</span>
@@ -334,11 +334,11 @@ function AgenciesComms() {
                   transition={{ duration: 0.5, ease: EASE, delay: 0.6 + i * 0.22 }}
                   className={`flex max-w-[88%] items-start gap-2.5 rounded-xl border px-3 py-2.5 ${
                     out
-                      ? "ml-auto border-violet-400/30 bg-violet-500/20"
+                      ? "ml-auto border-teal-400/30 bg-teal-500/20"
                       : "border-white/10 bg-white/[0.05]"
                   }`}
                 >
-                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-violet-200" />
+                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-teal-200" />
                   <div>
                     <p className="text-[11px] font-semibold text-white/55">{c.who}</p>
                     <p className="text-sm text-white/85">{c.text}</p>
@@ -371,7 +371,7 @@ function RegulatoryTracker() {
           <div className="relative">
             <div className="absolute left-0 right-0 top-5 h-[3px] bg-white/10" />
             <motion.div
-              className="absolute left-0 top-5 h-[3px] rounded-full bg-gradient-to-r from-violet-400 to-purple-500"
+              className="absolute left-0 top-5 h-[3px] rounded-full bg-gradient-to-r from-teal-400 to-cyan-500"
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
               transition={{ duration: 2.2, ease: EASE, delay: 0.5 }}
@@ -385,7 +385,7 @@ function RegulatoryTracker() {
                   transition={{ duration: 0.5, ease: EASE, delay: 0.6 + i * 0.45 }}
                   className="flex flex-col items-center"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-violet-400 bg-[#0a0f2c] text-sm font-bold text-white">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-teal-400 bg-[#0a0f2c] text-sm font-bold text-white">
                     {i + 1}
                   </span>
                   <span className="mt-2 text-xs font-medium text-white/75">{s}</span>
@@ -407,7 +407,7 @@ function RegulatoryTracker() {
                   {...fadeUp(1.4 + i * 0.18)}
                   className="rounded-xl border border-white/10 bg-white/[0.05] p-4"
                 >
-                  <Icon className="mb-2 h-5 w-5 text-violet-300" />
+                  <Icon className="mb-2 h-5 w-5 text-teal-300" />
                   <p className="text-sm font-semibold text-white">{c.t}</p>
                   <p className="text-xs text-white/50">{c.d}</p>
                 </motion.div>
@@ -449,7 +449,7 @@ function TasksMonitor() {
                 className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-3"
               >
                 <motion.span
-                  className="flex h-5 w-5 items-center justify-center rounded-md bg-violet-500/30 text-violet-200"
+                  className="flex h-5 w-5 items-center justify-center rounded-md bg-teal-500/30 text-teal-200"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.9 + i * 0.3 }}
@@ -466,15 +466,15 @@ function TasksMonitor() {
             </p>
             <motion.div
               {...fadeUp(0.7)}
-              className="relative rounded-2xl border border-violet-400/30 bg-violet-500/15 p-5"
+              className="relative rounded-2xl border border-teal-400/30 bg-teal-500/15 p-5"
             >
               <span className="absolute right-4 top-4 flex h-3 w-3">
                 <motion.span
-                  className="absolute inline-flex h-full w-full rounded-full bg-violet-400"
+                  className="absolute inline-flex h-full w-full rounded-full bg-teal-400"
                   animate={{ scale: [1, 2.2], opacity: [0.7, 0] }}
                   transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                 />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-violet-300" />
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-teal-300" />
               </span>
               <div className="mb-3 inline-flex rounded-lg bg-white/10 p-2 text-violet-100">
                 <Bell className="h-5 w-5" />
@@ -514,14 +514,14 @@ function KnowledgeInsight() {
             className="flex flex-col rounded-xl border border-white/10 bg-white/[0.06] p-5"
           >
             <div className="mb-1 flex items-center gap-2 text-white/70">
-              <BarChart3 className="h-4 w-4 text-violet-300" />
+              <BarChart3 className="h-4 w-4 text-teal-300" />
               <span className="text-sm font-semibold">Reports & Analytics</span>
             </div>
             <div className="flex flex-1 items-end justify-between gap-3 pt-4">
               {bars.map((h, i) => (
                 <motion.div
                   key={i}
-                  className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-purple-400"
+                  className="w-full rounded-t-md bg-gradient-to-t from-teal-600 to-cyan-400"
                   initial={{ height: 0 }}
                   animate={{ height: `${h}%` }}
                   transition={{ duration: 0.9, ease: EASE, delay: 0.6 + i * 0.12 }}
@@ -541,7 +541,7 @@ function KnowledgeInsight() {
                 className="rounded-xl border border-white/10 bg-white/[0.05] p-4"
               >
                 <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-violet-500/20 p-2 text-violet-200">
+                  <div className="rounded-lg bg-teal-500/20 p-2 text-teal-200">
                     <Lightbulb className="h-4 w-4" />
                   </div>
                   <div>
@@ -567,7 +567,7 @@ function Outro() {
           {...fadeUp(0.2)}
           className="mb-6 flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-sm"
         >
-          <ShieldCheck className="h-4 w-4 text-violet-300" />
+          <ShieldCheck className="h-4 w-4 text-teal-300" />
           Communication, follow-up &amp; documentation — not legal advice
         </motion.div>
         <motion.div
@@ -591,7 +591,7 @@ function Outro() {
         </motion.h2>
         <motion.h2
           {...fadeUp(0.85)}
-          className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-violet-300 to-purple-400 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent"
         >
           Driven by compliance.
         </motion.h2>

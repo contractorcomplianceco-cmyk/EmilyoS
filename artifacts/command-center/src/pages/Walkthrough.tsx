@@ -170,7 +170,7 @@ export default function Walkthrough() {
     <div className="space-y-6">
       {/* Hero header */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-teal-500/20 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
         <div className="relative flex items-start gap-4">
           <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
@@ -205,7 +205,7 @@ export default function Walkthrough() {
                 transition={{ duration: 0.35 }}
                 className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-[#0a0f2c]/60 backdrop-blur-[2px]"
               >
-                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-violet-600/90 text-white shadow-[0_0_40px_rgba(124,58,237,0.7)] transition-transform hover:scale-105">
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-teal-600/90 text-white shadow-[0_0_40px_rgba(20,184,166,0.75)] transition-transform hover:scale-105">
                   {status === "finished" ? (
                     <RotateCcw className="h-9 w-9" />
                   ) : (
@@ -231,7 +231,7 @@ export default function Walkthrough() {
               return (
                 <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-white/20">
                   <div
-                    className="h-full rounded-full bg-violet-400 transition-[width] duration-150 ease-linear"
+                    className="h-full rounded-full bg-teal-400 transition-[width] duration-150 ease-linear"
                     style={{ width: `${fill * 100}%` }}
                   />
                 </div>
@@ -245,7 +245,7 @@ export default function Walkthrough() {
           <Button
             size="icon"
             onClick={togglePlay}
-            className="h-9 w-9 rounded-full bg-violet-600 text-white hover:bg-violet-700"
+            className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
             aria-label={status === "playing" ? "Pause" : "Play"}
           >
             {status === "playing" ? (
@@ -286,7 +286,7 @@ export default function Walkthrough() {
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-teal-600" />
             Chapters
           </h3>
           <span className="text-sm font-medium text-slate-500">{SEGMENT_COUNT} sections</span>
@@ -300,13 +300,13 @@ export default function Walkthrough() {
                 key={ch.title}
                 type="button"
                 onClick={() => jumpTo(i)}
-                className={`flex items-center gap-3 bg-white p-4 text-left transition-colors hover:bg-violet-50/60 ${
-                  active ? "bg-violet-50" : ""
+                className={`flex items-center gap-3 bg-white p-4 text-left transition-colors hover:bg-teal-50/60 ${
+                  active ? "bg-teal-50" : ""
                 }`}
               >
                 <span
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                    active ? "bg-violet-600 text-white" : "bg-violet-50 text-violet-600"
+                    active ? "bg-teal-600 text-white" : "bg-teal-50 text-teal-600"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
