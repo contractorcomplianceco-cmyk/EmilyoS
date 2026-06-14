@@ -40,7 +40,7 @@ function bucketOf(date: string): "overdue" | "today" | "week" | "later" {
 
 function sourceColor(source: Source): string {
   switch (source) {
-    case "Matter": return "from-blue-500 to-indigo-600";
+    case "Matter": return "from-purple-500 to-indigo-600";
     case "Deficiency": return "from-amber-500 to-orange-600";
     case "Escalation": return "from-red-500 to-rose-600";
     case "Communication": return "from-emerald-500 to-teal-600";
@@ -151,8 +151,8 @@ export default function Calendar() {
       label: "Next 7 Days",
       value: groups.week.length,
       icon: Target,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Total Scheduled",
@@ -171,7 +171,7 @@ export default function Calendar() {
   }[] = [
     { key: "overdue", label: "Overdue", icon: AlertCircle, accentClass: "from-red-500 to-rose-600" },
     { key: "today", label: "Due Today", icon: Clock, accentClass: "from-amber-500 to-orange-600" },
-    { key: "week", label: "Next 7 Days", icon: CalendarDays, accentClass: "from-blue-500 to-indigo-600" },
+    { key: "week", label: "Next 7 Days", icon: CalendarDays, accentClass: "from-purple-500 to-indigo-600" },
     { key: "later", label: "Later", icon: CheckCircle2, accentClass: "from-slate-400 to-slate-500" },
   ];
 
@@ -306,7 +306,7 @@ export default function Calendar() {
                                     ? "text-red-600"
                                     : today
                                       ? "text-amber-600"
-                                      : "text-blue-600"
+                                      : "text-purple-600"
                                 }`}
                               >
                                 {over

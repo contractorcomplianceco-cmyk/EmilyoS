@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   const chartData = [
     { name: "Compliant", value: mattersByStatus["Compliant"] || 0, color: "hsl(147, 68%, 50%)" }, // Success Green
-    { name: "In Progress", value: mattersByStatus["In Progress"] || 0, color: "hsl(206, 100%, 72%)" }, // Soft Blue
+    { name: "In Progress", value: mattersByStatus["In Progress"] || 0, color: "hsl(282, 78%, 66%)" }, // Magenta Purple
     { name: "At Risk", value: mattersByStatus["At Risk"] || 0, color: "hsl(39, 100%, 56%)" }, // Warning Orange
     { name: "Pending", value: mattersByStatus["Pending"] || 0, color: "hsl(232, 36%, 40%)" }, // Muted
   ].filter(d => d.value > 0);
@@ -136,8 +136,8 @@ export default function Dashboard() {
               label: "Active Projects",
               value: activeMatters,
               icon: FolderKanban,
-              gradient: "from-sky-500 to-blue-600",
-              shadow: "hover:shadow-blue-500/30",
+              gradient: "from-violet-500 to-purple-600",
+              shadow: "hover:shadow-purple-500/30",
             },
             {
               label: "Compliance Items",
@@ -265,7 +265,7 @@ export default function Dashboard() {
           <Card className="bg-white/80 backdrop-blur-md shadow-sm border-white/20 flex flex-col">
             <div className="p-5 border-b border-slate-100 flex justify-between items-center">
               <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2.5">
-                <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+                <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
                 Regulatory Change Monitor
               </h3>
               <Link href="/change-monitor" className="text-sm text-primary font-medium hover:underline flex items-center">
@@ -275,13 +275,13 @@ export default function Dashboard() {
             <div className="flex-1 p-5 space-y-4">
               {activeAlerts.map(alert => (
                 <div key={alert.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group border border-transparent hover:border-slate-100">
-                  <div className={`p-2 rounded-md shrink-0 mt-0.5 ${alert.type === 'New' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                  <div className={`p-2 rounded-md shrink-0 mt-0.5 ${alert.type === 'New' ? 'bg-purple-100 text-purple-700' : 'bg-indigo-100 text-indigo-700'}`}>
                     <Activity className="w-4 h-4" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h4 className="text-sm font-semibold text-slate-800 truncate group-hover:text-primary transition-colors">{alert.title}</h4>
-                      <Badge variant="outline" className={alert.type === 'New' ? "bg-purple-50 text-purple-700 border-purple-200 text-[10px] px-1.5" : "bg-blue-50 text-blue-700 border-blue-200 text-[10px] px-1.5"}>
+                      <Badge variant="outline" className={alert.type === 'New' ? "bg-purple-50 text-purple-700 border-purple-200 text-[10px] px-1.5" : "bg-indigo-50 text-indigo-700 border-indigo-200 text-[10px] px-1.5"}>
                         {alert.type}
                       </Badge>
                     </div>

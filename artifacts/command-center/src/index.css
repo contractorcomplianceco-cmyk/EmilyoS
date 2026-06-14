@@ -82,7 +82,7 @@
   --primary-foreground: 0 0% 100%;
   --secondary: 232 36% 16%; /* Deep Indigo */
   --secondary-foreground: 0 0% 100%;
-  --accent: 206 100% 72%; /* Soft Blue */
+  --accent: 258 92% 76%; /* Light Violet */
   --accent-foreground: 224 49% 8%;
   --destructive: 0 100% 68%; /* Danger Red */
   --destructive-foreground: 0 0% 100%;
@@ -99,7 +99,7 @@
   --sidebar-ring: 246 90% 67%;
 
   --chart-1: 246 90% 67%; /* Electric Purple */
-  --chart-2: 206 100% 72%; /* Soft Blue */
+  --chart-2: 282 78% 66%; /* Magenta Purple */
   --chart-3: 147 68% 50%; /* Success Green */
   --chart-4: 39 100% 56%; /* Warning Orange */
   --chart-5: 0 100% 68%; /* Danger Red */
@@ -124,7 +124,7 @@
   --primary-foreground: 0 0% 100%;
   --secondary: 232 36% 25%;
   --secondary-foreground: 210 40% 98%;
-  --accent: 206 100% 72%;
+  --accent: 258 92% 76%;
   --accent-foreground: 224 49% 8%;
   --destructive: 0 100% 68%;
   --destructive-foreground: 0 0% 100%;

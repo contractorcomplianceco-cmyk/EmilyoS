@@ -149,7 +149,7 @@ export default function AccountSettings() {
         <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md self-start">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-base font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
               Preferences
             </h3>
           </div>

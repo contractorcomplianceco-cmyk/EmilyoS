@@ -113,8 +113,8 @@ export default function Agencies() {
       label: "Agency Types",
       value: stats.types,
       icon: Layers,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "States / Regions",

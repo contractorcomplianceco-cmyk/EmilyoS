@@ -19,7 +19,7 @@ import {
 
 const TIME_OFF = [
   { label: "Vacation (PTO)", used: 9, total: 25, gradient: "from-indigo-500 to-violet-600" },
-  { label: "Sick Leave", used: 3, total: 10, gradient: "from-sky-500 to-blue-600" },
+  { label: "Sick Leave", used: 3, total: 10, gradient: "from-violet-500 to-purple-600" },
   { label: "Personal Days", used: 1, total: 5, gradient: "from-amber-500 to-orange-600" },
 ];
 
@@ -71,7 +71,7 @@ const PERKS = [
     value: "$3,000 / year",
     detail: "Certifications, conferences, and courses.",
     icon: GraduationCap,
-    gradient: "from-sky-500 to-blue-600",
+    gradient: "from-violet-500 to-purple-600",
   },
   {
     title: "Wellness Credit",
@@ -148,7 +148,7 @@ export default function Benefits() {
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
             Health &amp; Insurance Plans
           </h3>
           <span className="text-sm font-medium text-slate-500">{PLANS.length} plans</span>
@@ -160,7 +160,7 @@ export default function Benefits() {
               <div key={p.name} className="bg-white p-5">
                 <div className="mb-3 flex items-start justify-between">
                   <div className="flex items-start gap-3">
-                    <div className="rounded-lg bg-sky-50 p-2 text-sky-600">
+                    <div className="rounded-lg bg-violet-50 p-2 text-violet-600">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>

@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import ccaCrest from "@assets/cca-crest-inset_1781445846297.png";
 
 const profileMenu = [
   { name: "My Account", href: "/account", icon: UserCircle },
@@ -95,9 +96,12 @@ function SidebarContent({ location }: { location: string }) {
   return (
     <>
       <div className="p-6 flex items-center gap-3">
-        <div className="bg-primary text-primary-foreground rounded-lg p-2 font-bold text-xl flex items-center justify-center w-10 h-10 shadow-[0_0_15px_rgba(109,94,247,0.5)]">
-          CCA
-        </div>
+        <img
+          src={ccaCrest}
+          alt="CCA crest"
+          className="h-11 w-11 shrink-0 object-contain"
+          style={{ filter: "hue-rotate(55deg) saturate(1.25) drop-shadow(0 0 10px rgba(124,58,237,0.6))" }}
+        />
         <div>
           <h1 className="text-lg font-bold tracking-tight text-white leading-tight">EmilyOS</h1>
           <p className="text-[10px] text-white/60 tracking-wider uppercase mt-0.5">Command Center</p>

@@ -70,7 +70,7 @@ export default function Knowledge() {
 
   const kpis = [
     { label: "Total Entries", value: stats.total, icon: Library, gradient: "from-indigo-600 to-violet-600", shadow: "hover:shadow-indigo-500/30" },
-    { label: "Agencies Covered", value: stats.agenciesCovered, icon: BookOpen, gradient: "from-sky-500 to-blue-600", shadow: "hover:shadow-blue-500/30" },
+    { label: "Agencies Covered", value: stats.agenciesCovered, icon: BookOpen, gradient: "from-violet-500 to-purple-600", shadow: "hover:shadow-purple-500/30" },
     { label: "Verified (<30d)", value: stats.recent, icon: CheckCircle2, gradient: "from-emerald-500 to-teal-600", shadow: "hover:shadow-emerald-500/30" },
     { label: "Unverified", value: stats.unverified, icon: ShieldAlert, gradient: "from-amber-500 to-orange-600", shadow: "hover:shadow-amber-500/30" },
   ];

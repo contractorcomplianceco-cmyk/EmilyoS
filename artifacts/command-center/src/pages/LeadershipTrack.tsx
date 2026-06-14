@@ -13,7 +13,7 @@ import {
 
 const COMPETENCIES = [
   { name: "Strategic Communication", progress: 90, gradient: "from-indigo-500 to-violet-600" },
-  { name: "Team Leadership & Mentoring", progress: 72, gradient: "from-sky-500 to-blue-600" },
+  { name: "Team Leadership & Mentoring", progress: 72, gradient: "from-violet-500 to-purple-600" },
   { name: "Cross-Functional Influence", progress: 65, gradient: "from-amber-500 to-orange-600" },
   { name: "Regulatory Strategy", progress: 84, gradient: "from-emerald-500 to-teal-600" },
   { name: "Executive Presence", progress: 58, gradient: "from-rose-500 to-red-600" },
@@ -63,8 +63,8 @@ export default function LeadershipTrack() {
       label: "Competencies",
       value: COMPETENCIES.length,
       icon: Target,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Milestones Reached",

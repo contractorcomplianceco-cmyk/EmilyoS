@@ -52,8 +52,8 @@ export default function Intelligence() {
       label: "Tracked Entities",
       value: db.agencies.length + db.matters.length,
       icon: Target,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
   ];
 
@@ -184,14 +184,14 @@ export default function Intelligence() {
         <Card className="md:col-span-2 overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
               Database Health
             </h3>
           </div>
           <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="flex items-center gap-4">
               <div className="w-full bg-slate-100 rounded-full h-2">
-                <div className="bg-sky-500 h-2 rounded-full" style={{ width: healthPct(db.agencies.length) }}></div>
+                <div className="bg-violet-500 h-2 rounded-full" style={{ width: healthPct(db.agencies.length) }}></div>
               </div>
               <span className="text-sm font-semibold whitespace-nowrap">{db.agencies.length} Agencies</span>
             </div>

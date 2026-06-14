@@ -91,7 +91,7 @@ export default function Escalations() {
   const kpis = [
     { label: "Total Escalations", value: stats.total, icon: Scale, gradient: "from-indigo-600 to-violet-600", shadow: "hover:shadow-indigo-500/30" },
     { label: "Active & Open", value: stats.open, icon: Siren, gradient: "from-amber-500 to-orange-600", shadow: "hover:shadow-amber-500/30" },
-    { label: "Awaiting Decision", value: stats.awaitingDecision, icon: ShieldAlert, gradient: "from-sky-500 to-blue-600", shadow: "hover:shadow-blue-500/30" },
+    { label: "Awaiting Decision", value: stats.awaitingDecision, icon: ShieldAlert, gradient: "from-violet-500 to-purple-600", shadow: "hover:shadow-purple-500/30" },
     { label: "Overdue", value: stats.overdue, icon: AlertTriangle, gradient: "from-red-500 to-rose-600", shadow: "hover:shadow-red-500/30" },
   ];
 

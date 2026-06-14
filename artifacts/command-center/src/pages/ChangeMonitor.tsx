@@ -34,7 +34,7 @@ function typeClass(type: string) {
     case "New":
       return "bg-violet-50 text-violet-700 border-violet-200";
     case "Update":
-      return "bg-blue-50 text-blue-700 border-blue-200";
+      return "bg-purple-50 text-purple-700 border-purple-200";
     case "Overdue":
       return "bg-red-50 text-red-700 border-red-200";
     case "Deadline":
@@ -51,7 +51,7 @@ function severityIcon(severity: string) {
     case "Warning":
       return <AlertTriangle className="h-5 w-5 text-amber-500" />;
     default:
-      return <Info className="h-5 w-5 text-blue-500" />;
+      return <Info className="h-5 w-5 text-purple-500" />;
   }
 }
 
@@ -130,8 +130,8 @@ export default function ChangeMonitor() {
       label: "Overdue Items",
       value: stats.overdue,
       icon: Clock,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
   ];
 
@@ -200,12 +200,12 @@ export default function ChangeMonitor() {
           <div className="h-4 w-full flex rounded-full overflow-hidden mb-4">
             <div style={{ width: `${(severityBreakdown.crit / severityBreakdown.total) * 100}%` }} className="bg-red-500" />
             <div style={{ width: `${(severityBreakdown.warn / severityBreakdown.total) * 100}%` }} className="bg-amber-500" />
-            <div style={{ width: `${(severityBreakdown.info / severityBreakdown.total) * 100}%` }} className="bg-blue-500" />
+            <div style={{ width: `${(severityBreakdown.info / severityBreakdown.total) * 100}%` }} className="bg-purple-500" />
           </div>
           <div className="flex justify-between text-sm font-medium">
             <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-red-500" /> Critical ({severityBreakdown.crit})</div>
             <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-amber-500" /> Warning ({severityBreakdown.warn})</div>
-            <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-500" /> Info ({severityBreakdown.info})</div>
+            <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-purple-500" /> Info ({severityBreakdown.info})</div>
           </div>
         </CardContent>
       </Card>
@@ -231,7 +231,7 @@ export default function ChangeMonitor() {
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
             Alert Feed
           </h3>
           <span className="text-sm text-muted-foreground">

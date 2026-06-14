@@ -157,8 +157,8 @@ export default function Deficiencies() {
             label: "Open Requests",
             value: stats.open,
             icon: CheckCircle,
-            gradient: "from-sky-500 to-blue-600",
-            shadow: "hover:shadow-blue-500/30",
+            gradient: "from-violet-500 to-purple-600",
+            shadow: "hover:shadow-purple-500/30",
           },
           {
             label: "Overdue",

@@ -333,7 +333,7 @@ export default function Matters() {
           <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
                 Status Distribution
               </h3>
             </div>
@@ -346,7 +346,7 @@ export default function Matters() {
                   </div>
                   <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-sky-500 to-blue-500" 
+                      className="h-full bg-gradient-to-r from-violet-500 to-purple-500" 
                       style={{ width: `${Math.max(5, (count / stats.total) * 100)}%` }}
                     />
                   </div>

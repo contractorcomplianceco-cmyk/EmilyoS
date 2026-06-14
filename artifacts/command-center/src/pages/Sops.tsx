@@ -85,7 +85,7 @@ export default function Sops() {
     { label: "Total SOPs", value: stats.total, icon: ClipboardList, gradient: "from-indigo-600 to-violet-600", shadow: "hover:shadow-indigo-500/30" },
     { label: "Active Policies", value: stats.active, icon: CheckSquare, gradient: "from-emerald-500 to-teal-600", shadow: "hover:shadow-emerald-500/30" },
     { label: "Under Review", value: stats.needsReview, icon: AlertTriangle, gradient: "from-amber-500 to-orange-600", shadow: "hover:shadow-amber-500/30" },
-    { label: "Drafts", value: stats.drafts, icon: Clock, gradient: "from-sky-500 to-blue-600", shadow: "hover:shadow-blue-500/30" },
+    { label: "Drafts", value: stats.drafts, icon: Clock, gradient: "from-violet-500 to-purple-600", shadow: "hover:shadow-purple-500/30" },
   ];
 
   return (

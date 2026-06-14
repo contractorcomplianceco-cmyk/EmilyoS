@@ -42,7 +42,7 @@ export default function BonusTracker() {
       actual: deficienciesResolved,
       target: 4,
       award: 3000,
-      gradient: "from-sky-500 to-blue-600",
+      gradient: "from-violet-500 to-purple-600",
     },
     {
       name: "Tasks Completed",
@@ -79,8 +79,8 @@ export default function BonusTracker() {
       label: "Target Bonus",
       value: currency(targetBonus),
       icon: Target,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Progress to Target",

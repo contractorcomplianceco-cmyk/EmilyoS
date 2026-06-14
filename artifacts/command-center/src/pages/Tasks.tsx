@@ -36,7 +36,7 @@ function statusClass(status: string) {
     case "Completed":
       return "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "In Progress":
-      return "bg-blue-50 text-blue-700 border-blue-200";
+      return "bg-purple-50 text-purple-700 border-purple-200";
     case "Blocked":
       return "bg-red-50 text-red-700 border-red-200";
     default:
@@ -98,7 +98,7 @@ export default function Tasks() {
 
   const kpis = [
     { label: "Total Tasks", value: stats.total, icon: ListTodo, gradient: "from-indigo-600 to-violet-600", shadow: "hover:shadow-indigo-500/30" },
-    { label: "Active", value: stats.active, icon: Activity, gradient: "from-sky-500 to-blue-600", shadow: "hover:shadow-blue-500/30" },
+    { label: "Active", value: stats.active, icon: Activity, gradient: "from-violet-500 to-purple-600", shadow: "hover:shadow-purple-500/30" },
     { label: "High Priority", value: stats.high, icon: AlertCircle, gradient: "from-amber-500 to-orange-600", shadow: "hover:shadow-amber-500/30" },
     { label: "Overdue", value: stats.overdue, icon: Clock, gradient: "from-red-500 to-rose-600", shadow: "hover:shadow-red-500/30" },
   ];
@@ -249,7 +249,7 @@ export default function Tasks() {
           <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
                 Task Progress
               </h3>
             </div>
@@ -269,7 +269,7 @@ export default function Tasks() {
                           className={`h-full rounded-full ${
                             status === "Completed" ? "bg-emerald-500" :
                             status === "Blocked" ? "bg-red-500" :
-                            status === "In Progress" ? "bg-blue-500" : "bg-slate-300"
+                            status === "In Progress" ? "bg-purple-500" : "bg-slate-300"
                           }`} 
                           style={{ width: `${pct}%` }} 
                         />

@@ -22,7 +22,7 @@ const TEAM_MEMBERS = [
     phone: "(555) 010-1002",
     location: "Los Angeles, CA",
     initials: "ML",
-    color: "from-sky-500 to-blue-600"
+    color: "from-violet-500 to-purple-600"
   },
   {
     id: "t_03",
@@ -73,8 +73,8 @@ export default function Team() {
       label: "Unique Roles",
       value: uniqueRoles,
       icon: Target,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Office Locations",

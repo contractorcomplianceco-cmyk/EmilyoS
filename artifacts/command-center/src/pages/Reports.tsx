@@ -74,8 +74,8 @@ export default function Reports() {
       label: "Open Deficiencies",
       value: stats.deficiencies,
       icon: FileWarning,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Active Escalations",
@@ -292,7 +292,7 @@ export default function Reports() {
           <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md flex-1">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
                 Communications by Method
               </h3>
             </div>
@@ -305,7 +305,7 @@ export default function Reports() {
                      <div key={m.name} className="flex items-center gap-3 mb-3 last:mb-0">
                        <span className="text-sm font-medium w-32 truncate">{m.name}</span>
                        <div className="flex-1 bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                         <div className="bg-blue-500 h-full rounded-full" style={{ width: `${(m.value / Math.max(...commsByMethod.map(x => x.value))) * 100}%` }}></div>
+                         <div className="bg-purple-500 h-full rounded-full" style={{ width: `${(m.value / Math.max(...commsByMethod.map(x => x.value))) * 100}%` }}></div>
                        </div>
                        <span className="text-sm font-bold w-8 text-right">{m.value}</span>
                      </div>

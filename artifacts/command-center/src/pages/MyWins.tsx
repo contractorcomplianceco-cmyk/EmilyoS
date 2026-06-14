@@ -81,7 +81,7 @@ export default function MyWins() {
 
   const toneMap: Record<string, { chip: string; iconBg: string }> = {
     indigo: { chip: "bg-indigo-50 text-indigo-700 border-indigo-100", iconBg: "bg-indigo-100 text-indigo-600" },
-    sky: { chip: "bg-sky-50 text-sky-700 border-sky-100", iconBg: "bg-sky-100 text-sky-600" },
+    sky: { chip: "bg-violet-50 text-violet-700 border-violet-100", iconBg: "bg-violet-100 text-violet-600" },
     amber: { chip: "bg-amber-50 text-amber-700 border-amber-100", iconBg: "bg-amber-100 text-amber-600" },
     emerald: { chip: "bg-emerald-50 text-emerald-700 border-emerald-100", iconBg: "bg-emerald-100 text-emerald-600" },
   };
@@ -98,8 +98,8 @@ export default function MyWins() {
       label: "Matters Completed",
       value: mattersClosed.length,
       icon: FolderKanban,
-      gradient: "from-sky-500 to-blue-600",
-      shadow: "hover:shadow-blue-500/30",
+      gradient: "from-violet-500 to-purple-600",
+      shadow: "hover:shadow-purple-500/30",
     },
     {
       label: "Deficiencies Resolved",
@@ -119,7 +119,7 @@ export default function MyWins() {
 
   const byCategory = [
     { name: "Matters Completed", count: mattersClosed.length, gradient: "from-indigo-500 to-violet-600" },
-    { name: "Deficiencies Resolved", count: deficienciesResolved.length, gradient: "from-sky-500 to-blue-600" },
+    { name: "Deficiencies Resolved", count: deficienciesResolved.length, gradient: "from-violet-500 to-purple-600" },
     { name: "Tasks Completed", count: tasksCompleted.length, gradient: "from-amber-500 to-orange-600" },
     { name: "Escalations Resolved", count: escalationsResolved.length, gradient: "from-emerald-500 to-teal-600" },
   ];
