@@ -11,6 +11,7 @@ import {
   ESCALATION_STATUSES,
   SOP_CATEGORIES,
   SOP_STATUSES,
+  BONUS_TONES,
 } from "./types";
 
 export const agencyFields: FieldDef[] = [
@@ -155,4 +156,24 @@ export const alertFields: FieldDef[] = [
   { key: "severity", label: "Severity", type: "select", options: ["Info", "Warning", "Critical"], required: true },
   { key: "date", label: "Date", type: "date", required: true },
   { key: "detail", label: "Details", type: "textarea", required: true },
+];
+
+export const bonusOpportunityFields: FieldDef[] = [
+  { key: "name", label: "Bonus Name", type: "text", required: true, full: true },
+  { key: "amount", label: "Amount", type: "text", required: true },
+  { key: "status", label: "Status Label", type: "text", required: true },
+  { key: "tone", label: "Accent Color", type: "select", options: BONUS_TONES, required: true },
+  { key: "criteria", label: "Criteria", type: "textarea" },
+  { key: "meta", label: "Footnote", type: "text", full: true },
+];
+
+export const compensationFields: FieldDef[] = [
+  { key: "baseRate", label: "Base Hourly Rate", type: "text", required: true },
+  { key: "schedule", label: "Weekly Schedule", type: "text", required: true },
+];
+
+export const reviewTargetFields: FieldDef[] = [
+  { key: "label", label: "Milestone", type: "text", required: true, full: true },
+  { key: "value", label: "Target Rate", type: "text", required: true },
+  { key: "detail", label: "Detail", type: "textarea" },
 ];

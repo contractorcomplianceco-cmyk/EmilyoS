@@ -761,6 +761,91 @@ export function buildSeed(): Database {
     },
   ];
 
+  const bonusOpportunities = [
+    {
+      id: "bo_library",
+      name: "Board Knowledge Library Buildout Bonus",
+      amount: "$500 – $1,500 / project",
+      criteria:
+        "Earned per completed buildout project — documenting agency knowledge, portal instructions, and reusable SOPs into the institutional library.",
+      status: "Data-derived",
+      tone: "blue" as const,
+      meta: "Projected live from logged contributions.",
+      dataDerived: true,
+      createdAt: dt(-50),
+    },
+    {
+      id: "bo_stipend",
+      name: "Board Communications Lead Stipend",
+      amount: "$250 – $750 / month",
+      criteria:
+        "Monthly stipend for leading board and agency communications — coordinating outreach, follow-ups, and routing across regulatory matters.",
+      status: "Monthly",
+      tone: "purple" as const,
+      meta: "Paid monthly while serving as communications lead.",
+      createdAt: dt(-49),
+    },
+    {
+      id: "bo_teamlead",
+      name: "Team Lead Override / Bonus",
+      amount: "Project-based or monthly",
+      criteria:
+        "Awarded for leading team members on projects or licensing operations — structured as a per-project override or a recurring monthly amount.",
+      status: "Variable",
+      tone: "amber" as const,
+      meta: "Triggered when leading a team on a project or operation.",
+      createdAt: dt(-48),
+    },
+    {
+      id: "bo_equity",
+      name: "Performance-Based Profit / Equity Consideration",
+      amount: "1% – 3% (future)",
+      criteria:
+        "Future consideration for sustained performance — subject to a separate written agreement. Not currently active.",
+      status: "Future",
+      tone: "green" as const,
+      meta: "Requires a separate written agreement.",
+      createdAt: dt(-47),
+    },
+    {
+      id: "bo_path",
+      name: "Licensing Operations Manager Path",
+      amount: "Reviewed separately",
+      criteria:
+        "Advancement path into licensing operations management — compensation reviewed separately as the role expands.",
+      status: "Path",
+      tone: "slate" as const,
+      meta: "Compensation reviewed separately upon advancement.",
+      createdAt: dt(-46),
+    },
+  ];
+
+  const compensation = [
+    {
+      id: "comp_main",
+      baseRate: "$30.00 / hr",
+      schedule: "35–40 hrs / week",
+      createdAt: dt(-120),
+    },
+  ];
+
+  const reviewTargets = [
+    {
+      id: "rt_090",
+      label: "90-Day Review Target",
+      value: "$32–34 / hr",
+      detail: "Performance-based increase at first review milestone.",
+      createdAt: dt(-120),
+    },
+    {
+      id: "rt_180",
+      label: "180-Day Review Target",
+      value: "$35+ / hr",
+      detail: "Performance-based increase at second review milestone.",
+      createdAt: dt(-119),
+    },
+  ];
+
   return {
     agencies,
     matters,
@@ -771,5 +856,8 @@ export function buildSeed(): Database {
     sops,
     tasks,
     alerts,
+    bonusOpportunities,
+    compensation,
+    reviewTargets,
   };
 }

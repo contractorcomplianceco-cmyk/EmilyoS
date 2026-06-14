@@ -1,8 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TonePill } from "@/components/shared/Badges";
+import { RecordFormDialog } from "@/components/shared/RecordFormDialog";
+import { ConfirmDelete } from "@/components/shared/ConfirmDelete";
 import { useToast } from "@/hooks/use-toast";
+import { useDatabase, saveRecord, deleteRecord } from "@/lib/store";
+import { compensationFields, reviewTargetFields } from "@/lib/fields";
+import type { Compensation, ReviewTarget } from "@/lib/types";
 import {
   IdCard,
   Mail,
@@ -19,6 +24,9 @@ import {
   ShieldAlert,
   Coins,
   TrendingUp,
+  Plus,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 
 const RECORD = {
@@ -33,23 +41,6 @@ const RECORD = {
   startDate: "Mar 3, 2021",
   employmentType: "Full-time · Hourly (Non-Exempt)",
   emergencyContact: "Michael Jones — Spouse · (555) 010-2002",
-};
-
-const COMPENSATION = {
-  baseRate: "$30.00 / hr",
-  schedule: "35–40 hrs / week",
-  reviews: [
-    {
-      label: "90-Day Review Target",
-      value: "$32–34 / hr",
-      detail: "Performance-based increase at first review milestone.",
-    },
-    {
-      label: "180-Day Review Target",
-      value: "$35+ / hr",
-      detail: "Performance-based increase at second review milestone.",
-    },
-  ],
 };
 
 const DOCUMENTS = [
@@ -74,8 +65,31 @@ const GATED = [
   },
 ];
 
+const emptyReviewTarget: Partial<ReviewTarget> = {
+  label: "",
+  value: "",
+  detail: "",
+};
+
 export default function EmployeeAccount() {
   const { toast } = useToast();
+  const db = useDatabase();
+
+  const compensation = db.compensation[0];
+
+  const [compOpen, setCompOpen] = useState(false);
+  const [targetOpen, setTargetOpen] = useState(false);
+  const [editingTarget, setEditingTarget] = useState<Partial<ReviewTarget>>(emptyReviewTarget);
+  const [targetToDelete, setTargetToDelete] = useState<ReviewTarget | null>(null);
+
+  const openAddTarget = () => {
+    setEditingTarget(emptyReviewTarget);
+    setTargetOpen(true);
+  };
+  const openEditTarget = (t: ReviewTarget) => {
+    setEditingTarget(t);
+    setTargetOpen(true);
+  };
 
   const details = [
     { label: "Full Name", value: RECORD.name, icon: UserCircle },
@@ -217,7 +231,12 @@ export default function EmployeeAccount() {
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
             Compensation Summary
           </h3>
-          <TonePill label="Hourly · Non-Exempt" tone="blue" />
+          <div className="flex items-center gap-2">
+            <TonePill label="Hourly · Non-Exempt" tone="blue" />
+            <Button variant="outline" size="sm" onClick={() => setCompOpen(true)}>
+              <Pencil className="mr-1.5 h-3.5 w-3.5" /> Edit
+            </Button>
+          </div>
         </div>
         <div className="p-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -225,7 +244,7 @@ export default function EmployeeAccount() {
               <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
                 <div className="text-3xl font-extrabold leading-none tracking-tight">
-                  {COMPENSATION.baseRate}
+                  {compensation?.baseRate ?? "—"}
                 </div>
                 <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
                   <Coins className="h-5 w-5" />
@@ -239,7 +258,7 @@ export default function EmployeeAccount() {
               <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
                 <div className="text-3xl font-extrabold leading-none tracking-tight">
-                  {COMPENSATION.schedule}
+                  {compensation?.schedule ?? "—"}
                 </div>
                 <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
                   <CalendarDays className="h-5 w-5" />
@@ -251,21 +270,46 @@ export default function EmployeeAccount() {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {COMPENSATION.reviews.map((r) => (
+          <div className="mt-5 flex items-center justify-between">
+            <h4 className="text-sm font-semibold text-slate-700">Review Targets</h4>
+            <Button variant="outline" size="sm" onClick={openAddTarget}>
+              <Plus className="mr-1.5 h-3.5 w-3.5" /> Add Target
+            </Button>
+          </div>
+
+          <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {db.reviewTargets.map((r) => (
               <div
-                key={r.label}
-                className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-4"
+                key={r.id}
+                className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-4"
               >
                 <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 text-indigo-600">
                   <TrendingUp className="h-4 w-4" />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-slate-800">{r.label}</p>
                     <span className="text-sm font-bold text-indigo-600">{r.value}</span>
                   </div>
                   <p className="mt-0.5 text-xs text-slate-500">{r.detail}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => openEditTarget(r)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setTargetToDelete(r)}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -315,6 +359,44 @@ export default function EmployeeAccount() {
           ))}
         </div>
       </Card>
+
+      <RecordFormDialog
+        open={compOpen}
+        onOpenChange={setCompOpen}
+        title="Edit Compensation"
+        description="Keep your base rate and schedule current as proposal terms change."
+        fields={compensationFields}
+        initial={compensation ?? {}}
+        onSubmit={(values) =>
+          saveRecord("compensation", {
+            ...compensation,
+            ...values,
+            id: compensation?.id ?? "comp_main",
+          } as Compensation)
+        }
+      />
+
+      <RecordFormDialog
+        open={targetOpen}
+        onOpenChange={setTargetOpen}
+        title={editingTarget.id ? "Edit Review Target" : "Add Review Target"}
+        description="Performance-based milestones tracked toward your next rate review."
+        fields={reviewTargetFields}
+        initial={editingTarget}
+        onSubmit={(values) =>
+          saveRecord("reviewTargets", { ...editingTarget, ...values } as ReviewTarget)
+        }
+      />
+
+      <ConfirmDelete
+        open={!!targetToDelete}
+        onOpenChange={(o) => !o && setTargetToDelete(null)}
+        itemLabel={targetToDelete?.label}
+        onConfirm={() => {
+          if (targetToDelete) deleteRecord("reviewTargets", targetToDelete.id);
+          setTargetToDelete(null);
+        }}
+      />
     </div>
   );
 }

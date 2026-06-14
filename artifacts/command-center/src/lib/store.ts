@@ -26,6 +26,9 @@ function load(): Database {
       sops: parsed.sops ?? seed.sops,
       tasks: parsed.tasks ?? seed.tasks,
       alerts: parsed.alerts ?? seed.alerts,
+      bonusOpportunities: parsed.bonusOpportunities ?? seed.bonusOpportunities,
+      compensation: parsed.compensation ?? seed.compensation,
+      reviewTargets: parsed.reviewTargets ?? seed.reviewTargets,
     };
   } catch {
     return buildSeed();

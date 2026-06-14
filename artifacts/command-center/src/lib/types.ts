@@ -100,6 +100,8 @@ export const SOP_STATUSES = ["Draft", "Active", "Under Review", "Archived"] as c
 
 export const ACTIVE_STATUSES = ["Active", "Inactive"] as const;
 
+export const BONUS_TONES = ["blue", "purple", "amber", "green", "slate"] as const;
+
 export type AgencyType = (typeof AGENCY_TYPES)[number];
 export type CommunicationMethod = (typeof COMMUNICATION_METHODS)[number];
 export type MatterType = (typeof MATTER_TYPES)[number];
@@ -111,6 +113,7 @@ export type EscalationStatus = (typeof ESCALATION_STATUSES)[number];
 export type SopCategory = (typeof SOP_CATEGORIES)[number];
 export type SopStatus = (typeof SOP_STATUSES)[number];
 export type ActiveStatus = (typeof ACTIVE_STATUSES)[number];
+export type BonusTone = (typeof BONUS_TONES)[number];
 
 export interface Agency {
   id: string;
@@ -262,6 +265,34 @@ export interface Alert {
   createdAt: string;
 }
 
+export interface BonusOpportunity {
+  id: string;
+  name: string;
+  amount: string;
+  criteria: string;
+  status: string;
+  tone: BonusTone;
+  meta: string;
+  /** When true, the card meta is computed live from contributions (not user-edited). */
+  dataDerived?: boolean;
+  createdAt: string;
+}
+
+export interface Compensation {
+  id: string;
+  baseRate: string;
+  schedule: string;
+  createdAt: string;
+}
+
+export interface ReviewTarget {
+  id: string;
+  label: string;
+  value: string;
+  detail: string;
+  createdAt: string;
+}
+
 export interface Database {
   agencies: Agency[];
   matters: Matter[];
@@ -272,6 +303,9 @@ export interface Database {
   sops: Sop[];
   tasks: Task[];
   alerts: Alert[];
+  bonusOpportunities: BonusOpportunity[];
+  compensation: Compensation[];
+  reviewTargets: ReviewTarget[];
 }
 
 export type Collection = keyof Database;
