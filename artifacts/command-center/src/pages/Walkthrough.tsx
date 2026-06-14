@@ -23,7 +23,7 @@ const SEGMENT_COUNT = CHAPTERS.length;
 const segUrl = (i: number) => `${import.meta.env.BASE_URL}walkthrough/s${i + 1}.mp3`;
 const bedUrl = `${import.meta.env.BASE_URL}walkthrough/bed.mp3`;
 const guideUrl = `${import.meta.env.BASE_URL}walkthrough/EmilyOS-User-Guide.pdf`;
-const BED_VOLUME = 0.16;
+const BED_VOLUME = 0.24;
 
 type Status = "idle" | "playing" | "paused" | "finished";
 type Mode = "video" | "guided";
