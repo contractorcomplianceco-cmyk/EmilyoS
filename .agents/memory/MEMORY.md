@@ -1,1 +1,2 @@
 - [Cartographer JSX generics](cartographer-jsx-generics.md) — never write `<Component<T>` in TSX; cartographer babel plugin can't parse it (tsc passes, Vite dev fails).
+- [Executive design pattern](executive-design-pattern.md) — command-center's app-wide visual system: gradient heroes, gradient KPI cards, accent bars, glassmorphism; match Dashboard/Agencies.
