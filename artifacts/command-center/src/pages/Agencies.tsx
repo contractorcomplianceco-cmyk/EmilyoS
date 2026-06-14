@@ -1,5 +1,14 @@
 import { useMemo, useState } from "react";
-import { Plus, Pencil, Trash2, ExternalLink, Building2 } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  ExternalLink,
+  Building2,
+  CircleCheck,
+  Layers,
+  MapPin,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PageHeader } from "@/components/shared/PageHeader";
 import { Toolbar } from "@/components/shared/Toolbar";
 import { ActiveBadge, TonePill } from "@/components/shared/Badges";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -29,6 +37,13 @@ const emptyAgency: Partial<Agency> = {
   activeStatus: "Active",
   preferredCommunicationMethod: "Email",
 };
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "—";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 export default function Agencies() {
   const db = useDatabase();
@@ -69,17 +84,100 @@ export default function Agencies() {
     setDetail(null);
   };
 
+  const stats = useMemo(() => {
+    const total = db.agencies.length;
+    const active = db.agencies.filter((a) => a.activeStatus === "Active").length;
+    const types = new Set(db.agencies.map((a) => a.agencyType)).size;
+    const states = new Set(
+      db.agencies.map((a) => a.stateRegion).filter((s) => s && s.trim() !== ""),
+    ).size;
+    return { total, active, types, states };
+  }, [db.agencies]);
+
+  const kpis = [
+    {
+      label: "Total Agencies",
+      value: stats.total,
+      icon: Building2,
+      gradient: "from-indigo-600 to-violet-600",
+      shadow: "hover:shadow-indigo-500/30",
+    },
+    {
+      label: "Active",
+      value: stats.active,
+      icon: CircleCheck,
+      gradient: "from-emerald-500 to-teal-600",
+      shadow: "hover:shadow-emerald-500/30",
+    },
+    {
+      label: "Agency Types",
+      value: stats.types,
+      icon: Layers,
+      gradient: "from-sky-500 to-blue-600",
+      shadow: "hover:shadow-blue-500/30",
+    },
+    {
+      label: "States / Regions",
+      value: stats.states,
+      icon: MapPin,
+      gradient: "from-amber-500 to-orange-600",
+      shadow: "hover:shadow-amber-500/30",
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Agency Directory"
-        description="Reference profiles for every government agency, including portals, contacts, and known patterns."
-        actions={
-          <Button onClick={openAdd}>
+      {/* Executive hero header */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+              <Building2 className="h-7 w-7" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Agency Directory</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+                Reference profiles for every government agency, including portals, contacts,
+                and known patterns.
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={openAdd}
+            className="shrink-0 bg-white text-indigo-900 shadow-lg hover:bg-white/90"
+          >
             <Plus className="mr-1.5 h-4 w-4" /> Add Agency
           </Button>
-        }
-      />
+        </div>
+      </div>
+
+      {/* KPI stat strip */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {kpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <Card
+              key={kpi.label}
+              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+            >
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="relative mb-3 flex items-start justify-between">
+                <div className="text-4xl font-extrabold leading-none tracking-tight">
+                  {kpi.value}
+                </div>
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                  <Icon className="h-5 w-5" />
+                </div>
+              </div>
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+                {kpi.label}
+              </span>
+            </Card>
+          );
+        })}
+      </div>
 
       <Toolbar
         search={search}
@@ -103,7 +201,16 @@ export default function Agencies() {
         ]}
       />
 
-      <Card>
+      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+          <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+            All Agencies
+          </h3>
+          <span className="text-sm text-muted-foreground">
+            {filtered.length} of {db.agencies.length}
+          </span>
+        </div>
         <CardContent className="p-0">
           {filtered.length === 0 ? (
             <div className="p-6">
@@ -138,7 +245,14 @@ export default function Agencies() {
                     className="cursor-pointer"
                     onClick={() => setDetail(a)}
                   >
-                    <TableCell className="font-medium">{a.name}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-xs font-bold text-white shadow-sm">
+                          {initials(a.name)}
+                        </div>
+                        <span className="font-medium text-slate-800">{a.name}</span>
+                      </div>
+                    </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {a.agencyType}
                     </TableCell>
