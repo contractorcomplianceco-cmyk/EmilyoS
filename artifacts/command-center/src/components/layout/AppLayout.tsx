@@ -107,7 +107,7 @@ function SidebarContent({ location }: { location: string }) {
           style={{ filter: "hue-rotate(55deg) saturate(1.25) drop-shadow(0 0 10px rgba(124,58,237,0.6))" }}
         />
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-white leading-tight">EmilyOS</h1>
+          <h1 className="text-lg font-bold tracking-tight leading-tight bg-gradient-to-r from-indigo-300 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">EmilyOS</h1>
           <p className="text-[10px] text-white/60 tracking-wider uppercase mt-0.5">Command Center</p>
         </div>
       </div>
