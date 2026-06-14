@@ -56,8 +56,8 @@ const navSections = [
   {
     label: "Overview",
     items: [
-      { name: "Dashboard", href: "/", icon: LayoutDashboard },
       { name: "Product Walkthrough", href: "/walkthrough", icon: PlayCircle },
+      { name: "Dashboard", href: "/", icon: LayoutDashboard },
     ],
   },
   {
