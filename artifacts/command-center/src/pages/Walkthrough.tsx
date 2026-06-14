@@ -9,7 +9,12 @@ import {
   RotateCcw,
   Volume2,
   VolumeX,
-  Clapperboard,
+  ChevronLeft,
+  ChevronRight,
+  Film,
+  MousePointerClick,
+  FileText,
+  Download,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { WalkthroughScene, CHAPTERS } from "@/components/walkthrough/WalkthroughScenes";
@@ -17,11 +22,14 @@ import { WalkthroughScene, CHAPTERS } from "@/components/walkthrough/Walkthrough
 const SEGMENT_COUNT = CHAPTERS.length;
 const segUrl = (i: number) => `${import.meta.env.BASE_URL}walkthrough/s${i + 1}.mp3`;
 const bedUrl = `${import.meta.env.BASE_URL}walkthrough/bed.mp3`;
+const guideUrl = `${import.meta.env.BASE_URL}walkthrough/EmilyOS-User-Guide.pdf`;
 const BED_VOLUME = 0.16;
 
 type Status = "idle" | "playing" | "paused" | "finished";
+type Mode = "video" | "guided";
 
 export default function Walkthrough() {
+  const [mode, setMode] = useState<Mode>("video");
   const [status, setStatus] = useState<Status>("idle");
   const [scene, setScene] = useState(0);
   const [cycle, setCycle] = useState(0);
@@ -32,6 +40,20 @@ export default function Walkthrough() {
   const bedRef = useRef<HTMLAudioElement | null>(null);
   const mutedRef = useRef(false);
   const { toast } = useToast();
+
+  const stopAll = () => {
+    if (narrationRef.current) {
+      narrationRef.current.onended = null;
+      narrationRef.current.ontimeupdate = null;
+      narrationRef.current.onerror = null;
+      narrationRef.current.pause();
+      narrationRef.current = null;
+    }
+    if (bedRef.current) {
+      bedRef.current.pause();
+      bedRef.current = null;
+    }
+  };
 
   const reportPlaybackError = () => {
     stopAll();
@@ -47,19 +69,6 @@ export default function Walkthrough() {
   useEffect(() => {
     mutedRef.current = muted;
   }, [muted]);
-
-  const stopAll = () => {
-    if (narrationRef.current) {
-      narrationRef.current.onended = null;
-      narrationRef.current.ontimeupdate = null;
-      narrationRef.current.pause();
-      narrationRef.current = null;
-    }
-    if (bedRef.current) {
-      bedRef.current.pause();
-      bedRef.current = null;
-    }
-  };
 
   useEffect(() => stopAll, []);
 
@@ -164,7 +173,32 @@ export default function Walkthrough() {
     });
   };
 
-  const started = status !== "idle";
+  // Guided (no-audio) navigation
+  const goGuided = (i: number) => {
+    const clamped = Math.max(0, Math.min(SEGMENT_COUNT - 1, i));
+    setScene(clamped);
+    setSceneProgress(0);
+    setCycle((c) => c + 1);
+  };
+
+  const switchMode = (next: Mode) => {
+    if (next === mode) return;
+    stopAll();
+    setStatus("idle");
+    setScene(0);
+    setSceneProgress(0);
+    setCycle((c) => c + 1);
+    setMode(next);
+  };
+
+  const handleChapterClick = (i: number) => {
+    if (mode === "video") jumpTo(i);
+    else goGuided(i);
+  };
+
+  const started = mode === "video" ? status !== "idle" : true;
+  const activeChapter = mode === "video" ? (status !== "idle" ? scene : -1) : scene;
+  const labelWord = mode === "video" ? "Chapter" : "Step";
 
   return (
     <div className="space-y-6">
@@ -172,30 +206,77 @@ export default function Walkthrough() {
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
         <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-teal-500/20 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
-        <div className="relative flex items-start gap-4">
-          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
-            <Clapperboard className="h-7 w-7" />
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+              <PlayCircle className="h-7 w-7" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome to EmilyOS</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+                Get oriented your way — watch the narrated tour, step through the
+                guided tour at your own pace, or download the full written user guide.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Product Walkthrough</h2>
-            <p className="mt-1.5 max-w-xl text-sm text-white/70">
-              A narrated, animated tour of EmilyOS — from the dashboard to agencies,
-              the regulatory tracker, change monitor, and insights.
-            </p>
-          </div>
+          <a
+            href={guideUrl}
+            download
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white/95 px-4 py-2.5 text-sm font-semibold text-[#0c1230] shadow-sm ring-1 ring-white/30 transition-colors hover:bg-white"
+          >
+            <Download className="h-4 w-4" />
+            User Guide (PDF)
+          </a>
         </div>
+      </div>
+
+      {/* Mode toggle */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-sm">
+          <button
+            type="button"
+            onClick={() => switchMode("video")}
+            aria-pressed={mode === "video"}
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+              mode === "video"
+                ? "bg-teal-600 text-white"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Film className="h-4 w-4" />
+            Narrated Video
+          </button>
+          <button
+            type="button"
+            onClick={() => switchMode("guided")}
+            aria-pressed={mode === "guided"}
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
+              mode === "guided"
+                ? "bg-teal-600 text-white"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <MousePointerClick className="h-4 w-4" />
+            Guided Tour
+          </button>
+        </div>
+        <span className="text-xs text-slate-500">
+          {mode === "video"
+            ? "Animated tour with voice narration and music."
+            : "Step through each section yourself — no audio."}
+        </span>
       </div>
 
       {/* Player */}
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="relative w-full aspect-video bg-[#0a0f2c]">
           <AnimatePresence mode="popLayout">
-            <WalkthroughScene key={`${scene}-${cycle}`} index={scene} />
+            <WalkthroughScene key={`${mode}-${scene}-${cycle}`} index={scene} />
           </AnimatePresence>
 
-          {/* Start / replay overlay */}
+          {/* Start / replay overlay (video mode only) */}
           <AnimatePresence>
-            {(status === "idle" || status === "finished") && (
+            {mode === "video" && (status === "idle" || status === "finished") && (
               <motion.button
                 type="button"
                 onClick={start}
@@ -222,12 +303,17 @@ export default function Walkthrough() {
           {/* Segmented progress bar */}
           <div className="absolute inset-x-0 bottom-0 z-20 flex gap-1 px-3 pb-2">
             {CHAPTERS.map((_, i) => {
-              const fill =
-                i < scene || (status === "finished" && i <= scene)
-                  ? 1
-                  : i === scene && started
-                  ? sceneProgress
-                  : 0;
+              let fill = 0;
+              if (mode === "video") {
+                fill =
+                  i < scene || (status === "finished" && i <= scene)
+                    ? 1
+                    : i === scene && started
+                    ? sceneProgress
+                    : 0;
+              } else {
+                fill = i <= scene ? 1 : 0;
+              }
               return (
                 <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-white/20">
                   <div
@@ -242,43 +328,89 @@ export default function Walkthrough() {
 
         {/* Controls */}
         <div className="flex items-center gap-3 border-t border-slate-100 bg-slate-50/60 px-4 py-3">
-          <Button
-            size="icon"
-            onClick={togglePlay}
-            className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
-            aria-label={status === "playing" ? "Pause" : "Play"}
-          >
-            {status === "playing" ? (
-              <Pause className="h-4 w-4" />
-            ) : status === "finished" ? (
-              <RotateCcw className="h-4 w-4" />
-            ) : (
-              <Play className="h-4 w-4" />
-            )}
-          </Button>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-slate-800">
-              {`Chapter ${scene + 1} of ${SEGMENT_COUNT} — ${CHAPTERS[scene].title}`}
-            </p>
-            <p className="text-xs text-slate-400">
-              {status === "idle"
-                ? "Press play to start the narrated tour"
-                : status === "finished"
-                ? "Walkthrough complete"
-                : status === "paused"
-                ? "Paused"
-                : "Now playing"}
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleMute}
-            className="h-9 w-9 rounded-full"
-            aria-label={muted ? "Unmute" : "Mute"}
-          >
-            {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-          </Button>
+          {mode === "video" ? (
+            <>
+              <Button
+                size="icon"
+                onClick={togglePlay}
+                className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                aria-label={status === "playing" ? "Pause" : "Play"}
+              >
+                {status === "playing" ? (
+                  <Pause className="h-4 w-4" />
+                ) : status === "finished" ? (
+                  <RotateCcw className="h-4 w-4" />
+                ) : (
+                  <Play className="h-4 w-4" />
+                )}
+              </Button>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-slate-800">
+                  {`Chapter ${scene + 1} of ${SEGMENT_COUNT} — ${CHAPTERS[scene].title}`}
+                </p>
+                <p className="text-xs text-slate-400">
+                  {status === "idle"
+                    ? "Press play to start the narrated tour"
+                    : status === "finished"
+                    ? "Walkthrough complete"
+                    : status === "paused"
+                    ? "Paused"
+                    : "Now playing"}
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleMute}
+                className="h-9 w-9 rounded-full"
+                aria-label={muted ? "Unmute" : "Mute"}
+              >
+                {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => goGuided(scene - 1)}
+                disabled={scene === 0}
+                className="h-9 w-9 rounded-full"
+                aria-label="Previous step"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <div className="min-w-0 flex-1 text-center">
+                <p className="truncate text-sm font-semibold text-slate-800">
+                  {`Step ${scene + 1} of ${SEGMENT_COUNT} — ${CHAPTERS[scene].title}`}
+                </p>
+                <p className="text-xs text-slate-400">
+                  {scene === SEGMENT_COUNT - 1
+                    ? "End of the guided tour"
+                    : "Use Next to continue at your own pace"}
+                </p>
+              </div>
+              {scene === SEGMENT_COUNT - 1 ? (
+                <Button
+                  size="icon"
+                  onClick={() => goGuided(0)}
+                  className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                  aria-label="Restart guided tour"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button
+                  size="icon"
+                  onClick={() => goGuided(scene + 1)}
+                  className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                  aria-label="Next step"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
+            </>
+          )}
         </div>
       </Card>
 
@@ -287,19 +419,19 @@ export default function Walkthrough() {
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-teal-600" />
-            Chapters
+            {mode === "video" ? "Chapters" : "Steps"}
           </h3>
           <span className="text-sm font-medium text-slate-500">{SEGMENT_COUNT} sections</span>
         </div>
         <div className="grid grid-cols-1 gap-px bg-slate-100 sm:grid-cols-2 lg:grid-cols-3">
           {CHAPTERS.map((ch, i) => {
             const Icon = ch.icon;
-            const active = started && i === scene;
+            const active = i === activeChapter;
             return (
               <button
                 key={ch.title}
                 type="button"
-                onClick={() => jumpTo(i)}
+                onClick={() => handleChapterClick(i)}
                 className={`flex items-center gap-3 bg-white p-4 text-left transition-colors hover:bg-teal-50/60 ${
                   active ? "bg-teal-50" : ""
                 }`}
@@ -313,7 +445,7 @@ export default function Walkthrough() {
                 </span>
                 <div className="min-w-0">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                    Chapter {i + 1}
+                    {labelWord} {i + 1}
                   </p>
                   <p className="truncate text-sm font-semibold text-slate-800">{ch.title}</p>
                 </div>
@@ -321,6 +453,30 @@ export default function Walkthrough() {
             );
           })}
         </div>
+      </Card>
+
+      {/* User guide card */}
+      <Card className="flex flex-col gap-4 border-white/20 bg-white/80 p-5 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
+            <FileText className="h-6 w-6" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-slate-800">Detailed User Guide</h3>
+            <p className="mt-0.5 max-w-lg text-sm text-slate-500">
+              A complete written reference covering every area of EmilyOS — from the
+              dashboard to reporting. Download it as a PDF to read or print.
+            </p>
+          </div>
+        </div>
+        <a
+          href={guideUrl}
+          download
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-700"
+        >
+          <Download className="h-4 w-4" />
+          Download PDF
+        </a>
       </Card>
     </div>
   );

@@ -56,7 +56,7 @@ const navSections = [
   {
     label: "Overview",
     items: [
-      { name: "Product Walkthrough", href: "/walkthrough", icon: PlayCircle },
+      { name: "Welcome to EmilyOS", href: "/walkthrough", icon: PlayCircle },
       { name: "Dashboard", href: "/", icon: LayoutDashboard },
     ],
   },
