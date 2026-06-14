@@ -178,3 +178,23 @@ export const reviewTargetFields: FieldDef[] = [
   { key: "targetDate", label: "Target Date", type: "date" },
   { key: "detail", label: "Detail", type: "textarea" },
 ];
+
+export const employeeProfileFields: FieldDef[] = [
+  { key: "name", label: "Full Name", type: "text", required: true },
+  { key: "employeeId", label: "Employee ID", type: "text", required: true },
+  { key: "title", label: "Title", type: "text", required: true, full: true },
+  { key: "department", label: "Department", type: "text" },
+  { key: "email", label: "Work Email", type: "text" },
+  { key: "phone", label: "Work Phone", type: "text" },
+  { key: "location", label: "Location", type: "text" },
+  { key: "manager", label: "Reports To", type: "text" },
+  { key: "startDate", label: "Start Date", type: "date" },
+  { key: "employmentType", label: "Employment Type", type: "text" },
+  { key: "emergencyContact", label: "Emergency Contact", type: "text", full: true },
+];
+
+export const documentFields: FieldDef[] = [
+  { key: "name", label: "Document Name", type: "text", required: true, full: true },
+  { key: "type", label: "Type / Label", type: "text", required: true, placeholder: "e.g. PDF · Signed" },
+  { key: "date", label: "Updated Date", type: "date", required: true },
+];

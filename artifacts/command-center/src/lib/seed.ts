@@ -848,6 +848,55 @@ export function buildSeed(): Database {
     },
   ];
 
+  const employeeProfile = [
+    {
+      id: "emp_main",
+      name: "Emily Jones",
+      title: "Director of Compliance & Regulatory Communications",
+      department: "Compliance & Regulatory Affairs",
+      employeeId: "CCA-0001",
+      email: "emily.jones@cca.com",
+      phone: "(555) 010-1001",
+      location: "Chicago, IL — HQ",
+      manager: "Rose Taylor — VP of Operations",
+      startDate: "2021-03-03",
+      employmentType: "Full-time · Hourly (Non-Exempt)",
+      emergencyContact: "Michael Jones — Spouse · (555) 010-2002",
+      createdAt: dt(-120),
+    },
+  ];
+
+  const documents = [
+    {
+      id: "doc_001",
+      name: "Employment Agreement",
+      type: "PDF · Signed",
+      date: "2021-03-03",
+      createdAt: dt(-120),
+    },
+    {
+      id: "doc_002",
+      name: "Role & Responsibilities",
+      type: "PDF",
+      date: "2024-01-12",
+      createdAt: dt(-119),
+    },
+    {
+      id: "doc_003",
+      name: "Org Chart — Compliance",
+      type: "PDF",
+      date: "2026-04-02",
+      createdAt: dt(-118),
+    },
+    {
+      id: "doc_004",
+      name: "Code of Conduct Acknowledgement",
+      type: "PDF · Signed",
+      date: "2026-01-08",
+      createdAt: dt(-117),
+    },
+  ];
+
   return {
     agencies,
     matters,
@@ -861,5 +910,7 @@ export function buildSeed(): Database {
     bonusOpportunities,
     compensation,
     reviewTargets,
+    employeeProfile,
+    documents,
   };
 }

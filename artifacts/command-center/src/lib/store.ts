@@ -29,6 +29,8 @@ function load(): Database {
       bonusOpportunities: parsed.bonusOpportunities ?? seed.bonusOpportunities,
       compensation: parsed.compensation ?? seed.compensation,
       reviewTargets: parsed.reviewTargets ?? seed.reviewTargets,
+      employeeProfile: parsed.employeeProfile ?? seed.employeeProfile,
+      documents: parsed.documents ?? seed.documents,
     };
   } catch {
     return buildSeed();

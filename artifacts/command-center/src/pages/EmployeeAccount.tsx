@@ -6,10 +6,20 @@ import { RecordFormDialog } from "@/components/shared/RecordFormDialog";
 import { ConfirmDelete } from "@/components/shared/ConfirmDelete";
 import { useToast } from "@/hooks/use-toast";
 import { useDatabase, saveRecord, deleteRecord } from "@/lib/store";
-import { compensationFields, reviewTargetFields } from "@/lib/fields";
-import type { Compensation, ReviewTarget } from "@/lib/types";
+import {
+  compensationFields,
+  reviewTargetFields,
+  employeeProfileFields,
+  documentFields,
+} from "@/lib/fields";
 import { fmtDate, daysUntil, isOverdue, isDueToday } from "@/lib/format";
 import type { BadgeTone } from "@/lib/format";
+import type {
+  Compensation,
+  ReviewTarget,
+  EmployeeProfile,
+  EmployeeDocument,
+} from "@/lib/types";
 import {
   IdCard,
   Mail,
@@ -30,27 +40,6 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-
-const RECORD = {
-  name: "Emily Jones",
-  title: "Director of Compliance & Regulatory Communications",
-  department: "Compliance & Regulatory Affairs",
-  employeeId: "CCA-0001",
-  email: "emily.jones@cca.com",
-  phone: "(555) 010-1001",
-  location: "Chicago, IL — HQ",
-  manager: "Rose Taylor — VP of Operations",
-  startDate: "Mar 3, 2021",
-  employmentType: "Full-time · Hourly (Non-Exempt)",
-  emergencyContact: "Michael Jones — Spouse · (555) 010-2002",
-};
-
-const DOCUMENTS = [
-  { name: "Employment Agreement", type: "PDF · Signed", date: "Mar 3, 2021" },
-  { name: "Role & Responsibilities", type: "PDF", date: "Jan 12, 2024" },
-  { name: "Org Chart — Compliance", type: "PDF", date: "Apr 2, 2026" },
-  { name: "Code of Conduct Acknowledgement", type: "PDF · Signed", date: "Jan 8, 2026" },
-];
 
 const GATED = [
   {
@@ -73,16 +62,28 @@ const emptyReviewTarget: Partial<ReviewTarget> = {
   detail: "",
 };
 
+const emptyDocument: Partial<EmployeeDocument> = {
+  name: "",
+  type: "",
+  date: "",
+};
+
 export default function EmployeeAccount() {
   const { toast } = useToast();
   const db = useDatabase();
 
   const compensation = db.compensation[0];
+  const profile = db.employeeProfile[0];
 
   const [compOpen, setCompOpen] = useState(false);
   const [targetOpen, setTargetOpen] = useState(false);
   const [editingTarget, setEditingTarget] = useState<Partial<ReviewTarget>>(emptyReviewTarget);
   const [targetToDelete, setTargetToDelete] = useState<ReviewTarget | null>(null);
+
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [docOpen, setDocOpen] = useState(false);
+  const [editingDoc, setEditingDoc] = useState<Partial<EmployeeDocument>>(emptyDocument);
+  const [docToDelete, setDocToDelete] = useState<EmployeeDocument | null>(null);
 
   const openAddTarget = () => {
     setEditingTarget(emptyReviewTarget);
@@ -118,18 +119,27 @@ export default function EmployeeAccount() {
     };
   };
 
+  const openAddDoc = () => {
+    setEditingDoc(emptyDocument);
+    setDocOpen(true);
+  };
+  const openEditDoc = (doc: EmployeeDocument) => {
+    setEditingDoc(doc);
+    setDocOpen(true);
+  };
+
   const details = [
-    { label: "Full Name", value: RECORD.name, icon: UserCircle },
-    { label: "Employee ID", value: RECORD.employeeId, icon: IdCard },
-    { label: "Title", value: RECORD.title, icon: Briefcase },
-    { label: "Department", value: RECORD.department, icon: Building2 },
-    { label: "Work Email", value: RECORD.email, icon: Mail },
-    { label: "Work Phone", value: RECORD.phone, icon: Phone },
-    { label: "Location", value: RECORD.location, icon: MapPin },
-    { label: "Reports To", value: RECORD.manager, icon: UserCircle },
-    { label: "Start Date", value: RECORD.startDate, icon: CalendarDays },
-    { label: "Employment Type", value: RECORD.employmentType, icon: Briefcase },
-    { label: "Emergency Contact", value: RECORD.emergencyContact, icon: PhoneCall },
+    { label: "Full Name", value: profile?.name, icon: UserCircle },
+    { label: "Employee ID", value: profile?.employeeId, icon: IdCard },
+    { label: "Title", value: profile?.title, icon: Briefcase },
+    { label: "Department", value: profile?.department, icon: Building2 },
+    { label: "Work Email", value: profile?.email, icon: Mail },
+    { label: "Work Phone", value: profile?.phone, icon: Phone },
+    { label: "Location", value: profile?.location, icon: MapPin },
+    { label: "Reports To", value: profile?.manager, icon: UserCircle },
+    { label: "Start Date", value: fmtDate(profile?.startDate), icon: CalendarDays },
+    { label: "Employment Type", value: profile?.employmentType, icon: Briefcase },
+    { label: "Emergency Contact", value: profile?.emergencyContact, icon: PhoneCall },
   ];
 
   return (
@@ -144,9 +154,9 @@ export default function EmployeeAccount() {
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Employee Profile</h2>
-            <p className="mt-1 text-sm text-white/80">{RECORD.title}</p>
+            <p className="mt-1 text-sm text-white/80">{profile?.title}</p>
             <p className="mt-0.5 text-xs text-white/55">
-              {RECORD.employeeId} · {RECORD.department}
+              {profile?.employeeId} · {profile?.department}
             </p>
           </div>
         </div>
@@ -156,8 +166,9 @@ export default function EmployeeAccount() {
       <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50/70 px-5 py-4">
         <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
         <p className="text-sm text-amber-800">
-          This is your official employment record. It is informational only — any change requests are
-          submitted to HR for review. You cannot self-edit your employment record.
+          This is your working copy of your employment record. Edits you make here are saved to your
+          profile and shared with HR for their records — payroll and tax records remain managed by
+          Payroll.
         </p>
       </div>
 
@@ -169,17 +180,8 @@ export default function EmployeeAccount() {
               <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
               Personal &amp; Employment Details
             </h3>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                toast({
-                  title: "Request submitted to HR",
-                  description: "Your update request is informational only and pending HR review.",
-                })
-              }
-            >
-              Request Change
+            <Button variant="outline" size="sm" onClick={() => setProfileOpen(true)}>
+              <Pencil className="mr-1.5 h-3.5 w-3.5" /> Edit
             </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-100">
@@ -366,35 +368,66 @@ export default function EmployeeAccount() {
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />
             My Documents
           </h3>
-          <span className="text-sm font-medium text-slate-500">{DOCUMENTS.length} files</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-slate-500">
+              {db.documents.length} {db.documents.length === 1 ? "file" : "files"}
+            </span>
+            <Button variant="outline" size="sm" onClick={openAddDoc}>
+              <Plus className="mr-1.5 h-3.5 w-3.5" /> Add Document
+            </Button>
+          </div>
         </div>
-        <div className="divide-y divide-slate-100">
-          {DOCUMENTS.map((doc) => (
-            <div key={doc.name} className="flex items-center justify-between gap-4 p-4">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-lg bg-emerald-50 p-2 text-emerald-600">
-                  <FileText className="h-4 w-4" />
+        {db.documents.length === 0 ? (
+          <p className="p-6 text-sm text-slate-400">
+            No documents yet. Use “Add Document” to track an employment document.
+          </p>
+        ) : (
+          <div className="divide-y divide-slate-100">
+            {db.documents.map((doc) => (
+              <div key={doc.id} className="flex items-center justify-between gap-4 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 rounded-lg bg-emerald-50 p-2 text-emerald-600">
+                    <FileText className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{doc.name}</p>
+                    <p className="text-xs text-slate-400">
+                      {doc.type} · Updated {fmtDate(doc.date)}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">{doc.name}</p>
-                  <p className="text-xs text-slate-400">
-                    {doc.type} · Updated {doc.date}
-                  </p>
+                <div className="flex shrink-0 items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      toast({ title: "Download started", description: `${doc.name} is downloading.` })
+                    }
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => openEditDoc(doc)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setDocToDelete(doc)}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  toast({ title: "Download started", description: `${doc.name} is downloading.` })
-                }
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Download
-              </Button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </Card>
 
       <RecordFormDialog
@@ -432,6 +465,44 @@ export default function EmployeeAccount() {
         onConfirm={() => {
           if (targetToDelete) deleteRecord("reviewTargets", targetToDelete.id);
           setTargetToDelete(null);
+        }}
+      />
+
+      <RecordFormDialog
+        open={profileOpen}
+        onOpenChange={setProfileOpen}
+        title="Edit Personal & Employment Details"
+        description="Keep your profile current. Changes are saved here and shared with HR for their records."
+        fields={employeeProfileFields}
+        initial={profile ?? {}}
+        onSubmit={(values) =>
+          saveRecord("employeeProfile", {
+            ...profile,
+            ...values,
+            id: profile?.id ?? "emp_main",
+          } as EmployeeProfile)
+        }
+      />
+
+      <RecordFormDialog
+        open={docOpen}
+        onOpenChange={setDocOpen}
+        title={editingDoc.id ? "Edit Document" : "Add Document"}
+        description="Track an employment document with its label and last-updated date."
+        fields={documentFields}
+        initial={editingDoc}
+        onSubmit={(values) =>
+          saveRecord("documents", { ...editingDoc, ...values } as EmployeeDocument)
+        }
+      />
+
+      <ConfirmDelete
+        open={!!docToDelete}
+        onOpenChange={(o) => !o && setDocToDelete(null)}
+        itemLabel={docToDelete?.name}
+        onConfirm={() => {
+          if (docToDelete) deleteRecord("documents", docToDelete.id);
+          setDocToDelete(null);
         }}
       />
     </div>

@@ -294,6 +294,30 @@ export interface ReviewTarget {
   createdAt: string;
 }
 
+export interface EmployeeProfile {
+  id: string;
+  name: string;
+  title: string;
+  department: string;
+  employeeId: string;
+  email: string;
+  phone: string;
+  location: string;
+  manager: string;
+  startDate: string;
+  employmentType: string;
+  emergencyContact: string;
+  createdAt: string;
+}
+
+export interface EmployeeDocument {
+  id: string;
+  name: string;
+  type: string;
+  date: string;
+  createdAt: string;
+}
+
 export interface Database {
   agencies: Agency[];
   matters: Matter[];
@@ -307,6 +331,8 @@ export interface Database {
   bonusOpportunities: BonusOpportunity[];
   compensation: Compensation[];
   reviewTargets: ReviewTarget[];
+  employeeProfile: EmployeeProfile[];
+  documents: EmployeeDocument[];
 }
 
 export type Collection = keyof Database;
