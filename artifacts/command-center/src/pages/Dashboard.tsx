@@ -98,24 +98,36 @@ export default function Dashboard() {
   ).length;
   const totalOverdue = overdueTasks + overdueDeficiencies;
 
+  const overdueReviewTargets = db.reviewTargets.filter(
+    (r) => r.targetDate && isOverdue(r.targetDate),
+  ).length;
+
   const riskAlerts = [...db.alerts]
     .filter((a) => a.severity === "Critical" || a.severity === "Warning")
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
-  const upcomingCalendar = db.matters
+  const upcomingMatters = db.matters
     .filter((m) => m.deadlineRenewalDate && (daysUntil(m.deadlineRenewalDate) ?? -1) >= 0)
-    .sort(
-      (a, b) =>
-        new Date(a.deadlineRenewalDate).getTime() - new Date(b.deadlineRenewalDate).getTime(),
-    )
-    .slice(0, 3)
     .map((m) => ({
       id: m.id,
       date: m.deadlineRenewalDate,
       title: m.title,
       sub: db.agencies.find((a) => a.id === m.agencyId)?.name || m.clientOrCompanyName || "",
     }));
+
+  const upcomingReviewTargets = db.reviewTargets
+    .filter((r) => r.targetDate && (daysUntil(r.targetDate) ?? -1) >= 0)
+    .map((r) => ({
+      id: r.id,
+      date: r.targetDate as string,
+      title: r.label,
+      sub: r.value ? `Rate review · ${r.value}` : "Rate review milestone",
+    }));
+
+  const upcomingCalendar = [...upcomingMatters, ...upcomingReviewTargets]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 3);
 
   return (
     <div className="flex flex-col xl:flex-row gap-6">
@@ -434,6 +446,19 @@ export default function Dashboard() {
                 </p>
               </div>
             )}
+            {overdueReviewTargets > 0 && (
+              <div className="p-3 bg-red-50/50 rounded-md border border-red-100">
+                <h4 className="text-xs font-bold text-red-800 mb-1 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500"></span> Overdue Review{" "}
+                  {overdueReviewTargets === 1 ? "Target" : "Targets"}
+                </h4>
+                <p className="text-xs text-red-700/80 leading-relaxed">
+                  {overdueReviewTargets} rate{" "}
+                  {overdueReviewTargets === 1 ? "review milestone has" : "review milestones have"}{" "}
+                  passed the target date.
+                </p>
+              </div>
+            )}
             {riskAlerts.map((alert) => (
               <div
                 key={alert.id}
@@ -450,7 +475,7 @@ export default function Dashboard() {
                 <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{alert.detail}</p>
               </div>
             ))}
-            {totalOverdue === 0 && riskAlerts.length === 0 && (
+            {totalOverdue === 0 && overdueReviewTargets === 0 && riskAlerts.length === 0 && (
               <div className="p-6 text-center text-sm text-slate-500">
                 No active risks or overdue items.
               </div>
