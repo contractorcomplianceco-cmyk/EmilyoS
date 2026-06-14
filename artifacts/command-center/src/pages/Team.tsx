@@ -46,12 +46,12 @@ const TEAM_MEMBERS = [
   },
   {
     id: "t_05",
-    name: "Rose Carter",
+    name: "Rose Taylor",
     role: "VP of Operations",
-    email: "rose.carter@cca.com",
+    email: "rose.taylor@cca.com",
     phone: "(555) 010-1005",
     location: "Chicago, IL",
-    initials: "RC",
+    initials: "RT",
     color: "from-rose-500 to-red-600"
   }
 ];

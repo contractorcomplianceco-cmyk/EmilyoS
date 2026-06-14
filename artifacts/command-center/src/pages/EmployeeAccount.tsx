@@ -17,6 +17,8 @@ import {
   Download,
   Lock,
   ShieldAlert,
+  Coins,
+  TrendingUp,
 } from "lucide-react";
 
 const RECORD = {
@@ -27,10 +29,27 @@ const RECORD = {
   email: "emily.jones@cca.com",
   phone: "(555) 010-1001",
   location: "Chicago, IL — HQ",
-  manager: "Rose Carter — VP of Operations",
+  manager: "Rose Taylor — VP of Operations",
   startDate: "Mar 3, 2021",
-  employmentType: "Full-time · Salaried (Exempt)",
+  employmentType: "Full-time · Hourly (Non-Exempt)",
   emergencyContact: "Michael Jones — Spouse · (555) 010-2002",
+};
+
+const COMPENSATION = {
+  baseRate: "$30.00 / hr",
+  schedule: "35–40 hrs / week",
+  reviews: [
+    {
+      label: "90-Day Review Target",
+      value: "$32–34 / hr",
+      detail: "Performance-based increase at first review milestone.",
+    },
+    {
+      label: "180-Day Review Target",
+      value: "$35+ / hr",
+      detail: "Performance-based increase at second review milestone.",
+    },
+  ],
 };
 
 const DOCUMENTS = [
@@ -41,12 +60,6 @@ const DOCUMENTS = [
 ];
 
 const GATED = [
-  {
-    label: "Compensation & Salary",
-    detail: "Base pay, merit history, and pay grade",
-    managedBy: "Managed by HR",
-    icon: Lock,
-  },
   {
     label: "Payroll & Direct Deposit",
     detail: "Bank details, withholdings, and pay stubs",
@@ -196,6 +209,74 @@ export default function EmployeeAccount() {
           </div>
         </Card>
       </div>
+
+      {/* Compensation summary */}
+      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+          <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+            Compensation Summary
+          </h3>
+          <TonePill label="Hourly · Non-Exempt" tone="blue" />
+        </div>
+        <div className="p-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-5 text-white shadow-lg">
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="relative mb-3 flex items-start justify-between">
+                <div className="text-3xl font-extrabold leading-none tracking-tight">
+                  {COMPENSATION.baseRate}
+                </div>
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                  <Coins className="h-5 w-5" />
+                </div>
+              </div>
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+                Base Hourly Rate
+              </span>
+            </div>
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 p-5 text-white shadow-lg">
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="relative mb-3 flex items-start justify-between">
+                <div className="text-3xl font-extrabold leading-none tracking-tight">
+                  {COMPENSATION.schedule}
+                </div>
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                  <CalendarDays className="h-5 w-5" />
+                </div>
+              </div>
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+                Weekly Schedule
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {COMPENSATION.reviews.map((r) => (
+              <div
+                key={r.label}
+                className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-4"
+              >
+                <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 text-indigo-600">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-slate-800">{r.label}</p>
+                    <span className="text-sm font-bold text-indigo-600">{r.value}</span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-slate-500">{r.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-4 text-xs text-slate-400">
+            Review targets are performance-based and subject to a separate written agreement.
+            Payroll, withholdings, and tax records remain managed by Payroll.
+          </p>
+        </div>
+      </Card>
 
       {/* Documents */}
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">

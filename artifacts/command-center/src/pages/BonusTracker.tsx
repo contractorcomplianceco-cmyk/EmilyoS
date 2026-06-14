@@ -1,100 +1,126 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
+import { TonePill } from "@/components/shared/Badges";
 import { useDatabase } from "@/lib/store";
-import { Coins, Target, TrendingUp, CalendarClock, CheckCircle2 } from "lucide-react";
+import {
+  Coins,
+  Library,
+  Megaphone,
+  Users,
+  PieChart,
+  Briefcase,
+  BookOpen,
+} from "lucide-react";
 
 const OWNER = "Emily Jones";
-
-const currency = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
 export default function BonusTracker() {
   const db = useDatabase();
 
-  const myMatterIds = new Set(
-    db.matters.filter((m) => m.internalOwner === OWNER).map((m) => m.id),
-  );
+  // Data-derived: the Board Knowledge Library Buildout Bonus is tied to the
+  // institutional-knowledge work Emily actually contributes — verified knowledge
+  // entries plus SOPs/policies she owns.
+  const libraryEntries = db.knowledge.filter((k) => k.verifiedBy === OWNER).length;
+  const sopsOwned = db.sops.filter((s) => s.owner === OWNER).length;
+  const libraryContributions = libraryEntries + sopsOwned;
+  // Per the proposal, $500–$1,500 per completed buildout project; we estimate at
+  // the mid-range ($1,000) per contribution for a live projection.
+  const libraryProjection = libraryContributions * 1000;
 
-  const mattersClosed = db.matters.filter(
-    (m) =>
-      m.internalOwner === OWNER && ["Approved / Completed", "Closed"].includes(m.currentStatus),
-  ).length;
-  const deficienciesResolved = db.deficiencies.filter(
-    (d) => d.assignedInternalOwner === OWNER && d.status === "Resolved",
-  ).length;
-  const tasksCompleted = db.tasks.filter(
-    (t) => t.assignedTo === OWNER && t.status === "Completed",
-  ).length;
-  const escalationsResolved = db.escalations.filter(
-    (e) => myMatterIds.has(e.matterId) && ["Resolved", "Closed"].includes(e.status),
-  ).length;
-
-  const components = [
-    {
-      name: "Matters Completed",
-      actual: mattersClosed,
-      target: 6,
-      award: 4000,
-      gradient: "from-indigo-500 to-violet-600",
-    },
-    {
-      name: "Deficiencies Resolved",
-      actual: deficienciesResolved,
-      target: 4,
-      award: 3000,
-      gradient: "from-violet-500 to-purple-600",
-    },
-    {
-      name: "Tasks Completed",
-      actual: tasksCompleted,
-      target: 8,
-      award: 2500,
-      gradient: "from-amber-500 to-orange-600",
-    },
-    {
-      name: "Escalations Resolved",
-      actual: escalationsResolved,
-      target: 3,
-      award: 2500,
-      gradient: "from-emerald-500 to-teal-600",
-    },
-  ].map((c) => {
-    const ratio = Math.min(1, c.target === 0 ? 0 : c.actual / c.target);
-    return { ...c, pct: Math.round(ratio * 100), earned: Math.round(ratio * c.award) };
-  });
-
-  const targetBonus = components.reduce((sum, c) => sum + c.award, 0);
-  const earnedBonus = components.reduce((sum, c) => sum + c.earned, 0);
-  const overallPct = targetBonus === 0 ? 0 : Math.round((earnedBonus / targetBonus) * 100);
+  const currency = (n: number) =>
+    n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
   const kpis = [
     {
-      label: "Projected Payout",
-      value: currency(earnedBonus),
-      icon: Coins,
+      label: "Library Contributions",
+      value: String(libraryContributions),
+      icon: BookOpen,
       gradient: "from-indigo-600 to-violet-600",
       shadow: "hover:shadow-indigo-500/30",
     },
     {
-      label: "Target Bonus",
-      value: currency(targetBonus),
-      icon: Target,
+      label: "Buildout Bonus (Est.)",
+      value: currency(libraryProjection),
+      icon: Coins,
       gradient: "from-violet-500 to-purple-600",
       shadow: "hover:shadow-purple-500/30",
     },
     {
-      label: "Progress to Target",
-      value: `${overallPct}%`,
-      icon: TrendingUp,
+      label: "Monthly Stipend Range",
+      value: "$250–$750",
+      icon: Megaphone,
       gradient: "from-amber-500 to-orange-600",
       shadow: "hover:shadow-amber-500/30",
     },
     {
-      label: "Next Payout",
-      value: "Dec 2026",
-      icon: CalendarClock,
+      label: "Profit / Equity Track",
+      value: "1%–3%",
+      icon: PieChart,
       gradient: "from-emerald-500 to-teal-600",
       shadow: "hover:shadow-emerald-500/30",
+    },
+  ];
+
+  const opportunities = [
+    {
+      name: "Board Knowledge Library Buildout Bonus",
+      amount: "$500 – $1,500 / project",
+      icon: Library,
+      iconClass: "bg-indigo-50 text-indigo-600",
+      accent: "from-indigo-500 to-violet-600",
+      criteria:
+        "Earned per completed buildout project — documenting agency knowledge, portal instructions, and reusable SOPs into the institutional library.",
+      status: "Data-derived",
+      tone: "blue" as const,
+      meta: `${libraryContributions} contributions logged · est. ${currency(libraryProjection)}`,
+    },
+    {
+      name: "Board Communications Lead Stipend",
+      amount: "$250 – $750 / month",
+      icon: Megaphone,
+      iconClass: "bg-violet-50 text-violet-600",
+      accent: "from-violet-500 to-purple-600",
+      criteria:
+        "Monthly stipend for leading board and agency communications — coordinating outreach, follow-ups, and routing across regulatory matters.",
+      status: "Monthly",
+      tone: "purple" as const,
+      meta: "Paid monthly while serving as communications lead.",
+    },
+    {
+      name: "Team Lead Override / Bonus",
+      amount: "Project-based or monthly",
+      icon: Users,
+      iconClass: "bg-amber-50 text-amber-600",
+      accent: "from-amber-500 to-orange-600",
+      criteria:
+        "Awarded for leading team members on projects or licensing operations — structured as a per-project override or a recurring monthly amount.",
+      status: "Variable",
+      tone: "amber" as const,
+      meta: "Triggered when leading a team on a project or operation.",
+    },
+    {
+      name: "Performance-Based Profit / Equity Consideration",
+      amount: "1% – 3% (future)",
+      icon: PieChart,
+      iconClass: "bg-emerald-50 text-emerald-600",
+      accent: "from-emerald-500 to-teal-600",
+      criteria:
+        "Future consideration for sustained performance — subject to a separate written agreement. Not currently active.",
+      status: "Future",
+      tone: "slate" as const,
+      meta: "Requires a separate written agreement.",
+    },
+    {
+      name: "Licensing Operations Manager Path",
+      amount: "Reviewed separately",
+      icon: Briefcase,
+      iconClass: "bg-sky-50 text-sky-600",
+      accent: "from-sky-500 to-indigo-600",
+      criteria:
+        "Advancement path into licensing operations management — compensation reviewed separately as the role expands.",
+      status: "Path",
+      tone: "slate" as const,
+      meta: "Compensation reviewed separately upon advancement.",
     },
   ];
 
@@ -111,7 +137,9 @@ export default function BonusTracker() {
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Bonus Tracker</h2>
             <p className="mt-1.5 max-w-xl text-sm text-white/70">
-              Your performance bonus, projected live from completed matters, resolved deficiencies, tasks, and escalations.
+              Your bonus structure — project and milestone bonuses, a monthly communications
+              stipend, and future profit/equity consideration. The Knowledge Library buildout
+              bonus is projected live from your contributions.
             </p>
           </div>
         </div>
@@ -128,7 +156,7 @@ export default function BonusTracker() {
             >
               <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
-                <div className="text-3xl font-extrabold leading-none tracking-tight">{kpi.value}</div>
+                <div className="text-2xl font-extrabold leading-none tracking-tight">{kpi.value}</div>
                 <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
                   <Icon className="h-5 w-5" />
                 </div>
@@ -141,64 +169,45 @@ export default function BonusTracker() {
         })}
       </div>
 
-      {/* Overall progress */}
+      {/* Bonus opportunities */}
       <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
-            Overall Bonus Progress
+            Bonus Opportunities
           </h3>
-          <span className="text-sm font-semibold text-slate-500">
-            {currency(earnedBonus)} of {currency(targetBonus)}
-          </span>
+          <span className="text-sm font-medium text-slate-500">{opportunities.length} types</span>
         </div>
-        <div className="p-5">
-          <div className="h-4 w-full overflow-hidden rounded-full bg-slate-100">
-            <div
-              className="h-4 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 transition-all"
-              style={{ width: `${overallPct}%` }}
-            />
-          </div>
-          <p className="mt-2 text-sm text-slate-500">
-            You are at <span className="font-semibold text-slate-800">{overallPct}%</span> of your
-            target annual bonus based on current performance.
-          </p>
-        </div>
-      </Card>
-
-      {/* Component breakdown */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
-        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-          <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
-            Bonus Components
-          </h3>
-          <span className="text-sm font-medium text-slate-500">{components.length} metrics</span>
-        </div>
-        <div className="p-5 space-y-5">
-          {components.map((c) => (
-            <div key={c.name}>
-              <div className="mb-1.5 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  {c.pct >= 100 && <CheckCircle2 className="h-4 w-4 text-emerald-600" />}
-                  <span className="text-sm font-semibold text-slate-700">{c.name}</span>
-                  <span className="text-xs text-slate-400">
-                    {c.actual}/{c.target}
-                  </span>
-                </div>
-                <span className="text-sm font-bold text-slate-800">
-                  {currency(c.earned)}{" "}
-                  <span className="text-xs font-normal text-slate-400">/ {currency(c.award)}</span>
-                </span>
-              </div>
-              <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
-                <div
-                  className={`h-2.5 rounded-full bg-gradient-to-r ${c.gradient}`}
-                  style={{ width: `${c.pct}%` }}
+        <div className="p-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {opportunities.map((o) => {
+            const Icon = o.icon;
+            return (
+              <div
+                key={o.name}
+                className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+              >
+                <span
+                  className={`absolute left-0 top-0 h-full w-1.5 bg-gradient-to-b ${o.accent}`}
                 />
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className={`mt-0.5 rounded-lg p-2 ${o.iconClass}`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-slate-800">{o.name}</p>
+                      <p className="mt-0.5 text-sm font-semibold text-indigo-600">{o.amount}</p>
+                    </div>
+                  </div>
+                  <TonePill label={o.status} tone={o.tone} />
+                </div>
+                <p className="mt-3 text-sm text-slate-600">{o.criteria}</p>
+                <p className="mt-3 border-t border-slate-100 pt-3 text-xs text-slate-400">
+                  {o.meta}
+                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Card>
     </div>

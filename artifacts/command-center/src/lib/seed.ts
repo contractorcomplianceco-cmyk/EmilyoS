@@ -466,7 +466,7 @@ export function buildSeed(): Database {
       reasonForEscalation: "Deadline risk" as const,
       summary: "Title V annual report at risk of missing strict EPA deadline due to format rejection.",
       recommendedNextStep: "Confirm correct template with environmental engineer and submit within 4 days.",
-      assignedReviewer: "Rose Carter (Leadership)",
+      assignedReviewer: "Rose Taylor (Leadership)",
       dateEscalated: past(5),
       dueDate: d(4),
       status: "In Review" as const,
