@@ -13,6 +13,11 @@ import {
   Activity, 
   Users, 
   Settings as SettingsIcon,
+  UserCircle,
+  TrendingUp,
+  Coins,
+  Trophy,
+  HeartHandshake,
   Menu,
   X,
   Search,
@@ -27,19 +32,47 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { format } from "date-fns";
 
-const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Agency Directory", href: "/agencies", icon: Building2 },
-  { name: "Communications Hub", href: "/communications", icon: MessageSquare },
-  { name: "Regulatory Tracker", href: "/matters", icon: FolderKanban },
-  { name: "Tasks & Approvals", href: "/tasks", icon: CheckSquare },
-  { name: "Reports & Analytics", href: "/reports", icon: BarChart3 },
-  { name: "Intelligence", href: "/intelligence", icon: Lightbulb },
-  { name: "Laws & Regulations", href: "/knowledge", icon: BookOpen },
-  { name: "Policy Library", href: "/sops", icon: FileText },
-  { name: "Change Monitor", href: "/change-monitor", icon: Activity },
-  { name: "Team Directory", href: "/team", icon: Users },
-  { name: "Settings", href: "/settings", icon: SettingsIcon },
+const navSections = [
+  {
+    label: "Overview",
+    items: [{ name: "Dashboard", href: "/", icon: LayoutDashboard }],
+  },
+  {
+    label: "Operations",
+    items: [
+      { name: "Agency Directory", href: "/agencies", icon: Building2 },
+      { name: "Communications Hub", href: "/communications", icon: MessageSquare },
+      { name: "Regulatory Tracker", href: "/matters", icon: FolderKanban },
+      { name: "Tasks & Approvals", href: "/tasks", icon: CheckSquare },
+      { name: "Change Monitor", href: "/change-monitor", icon: Activity },
+    ],
+  },
+  {
+    label: "Knowledge & Insights",
+    items: [
+      { name: "Reports & Analytics", href: "/reports", icon: BarChart3 },
+      { name: "Intelligence", href: "/intelligence", icon: Lightbulb },
+      { name: "Laws & Regulations", href: "/knowledge", icon: BookOpen },
+      { name: "Policy Library", href: "/sops", icon: FileText },
+    ],
+  },
+  {
+    label: "My Workspace",
+    items: [
+      { name: "My Employee Profile", href: "/profile", icon: UserCircle },
+      { name: "Leadership Track", href: "/leadership-track", icon: TrendingUp },
+      { name: "Bonus Tracker", href: "/bonus-tracker", icon: Coins },
+      { name: "My Wins", href: "/my-wins", icon: Trophy },
+      { name: "My Benefits", href: "/my-benefits", icon: HeartHandshake },
+    ],
+  },
+  {
+    label: "Organization",
+    items: [
+      { name: "Team Directory", href: "/team", icon: Users },
+      { name: "Settings", href: "/settings", icon: SettingsIcon },
+    ],
+  },
 ];
 
 function SidebarContent({ location }: { location: string }) {
@@ -55,27 +88,30 @@ function SidebarContent({ location }: { location: string }) {
         </div>
       </div>
       
-      <div className="px-4 pb-2">
-        <p className="text-xs text-white/40 font-medium px-2 mb-2 uppercase tracking-wider">Operations</p>
-      </div>
-
-      <nav className="flex-1 px-4 space-y-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
-        {navigation.map((item) => {
-          const isActive = location === item.href;
-          return (
-            <Link key={item.name} href={item.href}>
-              <div className={cn(
-                "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md transition-all cursor-pointer relative group",
-                isActive 
-                  ? "bg-primary/20 text-white shadow-[inset_2px_0_0_0_rgba(109,94,247,1)]" 
-                  : "text-white/70 hover:bg-white/5 hover:text-white"
-              )}>
-                <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary" : "text-white/50 group-hover:text-white/80")} />
-                {item.name}
-              </div>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 px-4 pt-1 space-y-5 overflow-y-auto overflow-x-hidden scrollbar-thin">
+        {navSections.map((section) => (
+          <div key={section.label} className="space-y-1">
+            <p className="text-[10px] text-white/40 font-semibold px-3 mb-1.5 uppercase tracking-[0.12em]">
+              {section.label}
+            </p>
+            {section.items.map((item) => {
+              const isActive = location === item.href;
+              return (
+                <Link key={item.name} href={item.href}>
+                  <div className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md transition-all cursor-pointer relative group",
+                    isActive 
+                      ? "bg-primary/20 text-white shadow-[inset_2px_0_0_0_rgba(109,94,247,1)]" 
+                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                  )}>
+                    <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary" : "text-white/50 group-hover:text-white/80")} />
+                    {item.name}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
       
       <div className="p-4 mt-auto">

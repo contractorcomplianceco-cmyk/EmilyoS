@@ -20,6 +20,11 @@ import Intelligence from "@/pages/Intelligence";
 import ChangeMonitor from "@/pages/ChangeMonitor";
 import Team from "@/pages/Team";
 import Settings from "@/pages/Settings";
+import MyProfile from "@/pages/MyProfile";
+import LeadershipTrack from "@/pages/LeadershipTrack";
+import BonusTracker from "@/pages/BonusTracker";
+import MyWins from "@/pages/MyWins";
+import MyBenefits from "@/pages/MyBenefits";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +49,13 @@ function Router() {
         <Route path="/change-monitor" component={ChangeMonitor} />
         <Route path="/team" component={Team} />
         <Route path="/settings" component={Settings} />
+
+        {/* Employee / My Workspace */}
+        <Route path="/profile" component={MyProfile} />
+        <Route path="/leadership-track" component={LeadershipTrack} />
+        <Route path="/bonus-tracker" component={BonusTracker} />
+        <Route path="/my-wins" component={MyWins} />
+        <Route path="/my-benefits" component={MyBenefits} />
 
         <Route component={NotFound} />
       </Switch>

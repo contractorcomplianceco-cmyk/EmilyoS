@@ -1,0 +1,32 @@
+Add three distinct personal pages to this command center, reachable from the profile dropdown menu (the user's avatar/name in the header and sidebar). These must be three separate routes and pages — do not let two menu items point to the same page.
+
+1. My Account (/account) — the user's app account settings only:
+
+Sign-in & security: login email, password (change/update buttons), two-factor status, active sessions list with sign-out
+Preferences: language, time zone, dashboard density (use Select), plus a toggle or two (use Switch)
+Notification preferences: a grid of labeled toggles (Switch)
+An account-level Sign Out action
+This page is fully self-manageable — login, password, 2FA, notifications, and theme are the user's own app settings, not HR/payroll/comp data.
+2. Employee Profile (/employee-account) — the user's employment record:
+
+Personal & employment details (name, title, department, employee ID, email, phone, location, manager, start date, employment type, emergency contact)
+A documents list (employment agreement, role doc, org chart)
+Permission gating: compensation, payroll, and tax records must be redacted/gated as "Request Access" or "Managed by HR / Payroll" — never shown inline. Frame any edit as "submitted to HR for review — informational only." Never imply the user can self-edit their employment record.
+3. My Benefits (/benefits):
+
+Time-off balances (PTO, sick, personal) as progress bars showing used vs. remaining
+Health/insurance plan cards (medical, dental, vision, life) with enrollment status badges
+Retirement & perks (401k match, learning stipend, wellness credit)
+Permission gating: plan changes, premiums, deductions, and the 401(k) balance must be attributed to HR/Payroll (e.g., "managed by Payroll," "plan changes submitted to HR during open enrollment"). The user views their benefits but never self-approves changes.
+Wiring:
+
+Register /account, /employee-account, and /benefits as routes.
+Update the profile dropdown menu to list: My Account → /account, Employee Profile → /employee-account, My Benefits → /benefits, plus existing Settings and Sign Out. Each item gets a distinct icon.
+Design constraints (match this command center's existing conventions):
+
+Reuse the established page shell, hero treatment, and card/panel components already used by other pages — match the canonical reference page for density and spacing. Do not invent a new visual language.
+Stay strictly within this app's existing color palette; do not introduce new accent hues. Use the app's sanctioned success/warning/destructive tones only.
+Use only UI primitives that already exist in the component library (Select, Switch, Badge, Card, etc.) — confirm they're present before importing.
+No nested interactive elements (no buttons inside links or vice versa).
+All data is realistic mock data — no backend calls.
+After building: run typecheck, verify all three pages render, and confirm the dropdown navigates to the correct distinct page for each item.
