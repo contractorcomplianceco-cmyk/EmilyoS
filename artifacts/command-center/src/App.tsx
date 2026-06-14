@@ -20,6 +20,7 @@ import Intelligence from "@/pages/Intelligence";
 import ChangeMonitor from "@/pages/ChangeMonitor";
 import Team from "@/pages/Team";
 import Settings from "@/pages/Settings";
+import Walkthrough from "@/pages/Walkthrough";
 import LeadershipTrack from "@/pages/LeadershipTrack";
 import BonusTracker from "@/pages/BonusTracker";
 import MyWins from "@/pages/MyWins";
@@ -34,6 +35,7 @@ function Router() {
     <AppLayout>
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/walkthrough" component={Walkthrough} />
         <Route path="/agencies" component={Agencies} />
         <Route path="/matters" component={Matters} />
         <Route path="/communications" component={Communications} />

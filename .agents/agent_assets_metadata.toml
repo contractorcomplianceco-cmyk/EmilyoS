@@ -1,0 +1,50 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "zdotcWg99Cv86RJxm5J_5"
+uri = "file://artifacts/command-center/public/walkthrough/s1.mp3"
+type = "audio"
+title = "s1"
+
+[[outputs]]
+id = "gCqNLEkB8hOr9rgoHbVtQ"
+uri = "file://artifacts/command-center/public/walkthrough/s3.mp3"
+type = "audio"
+title = "s3"
+
+[[outputs]]
+id = "LFCkpivLMCOIZYsHeH_Ng"
+uri = "file://artifacts/command-center/public/walkthrough/s2.mp3"
+type = "audio"
+title = "s2"
+
+[[outputs]]
+id = "1tpdLXCrKzF0QIJEtik9N"
+uri = "file://artifacts/command-center/public/walkthrough/s4.mp3"
+type = "audio"
+title = "s4"
+
+[[outputs]]
+id = "Ec_8cEqstnqKHDJAQw1LM"
+uri = "file://artifacts/command-center/public/walkthrough/s5.mp3"
+type = "audio"
+title = "s5"
+
+[[outputs]]
+id = "UolTk6EGbNu2RxG3IB_vr"
+uri = "file://artifacts/command-center/public/walkthrough/s6.mp3"
+type = "audio"
+title = "s6"
+
+[[outputs]]
+id = "73CGReilrCcn7BZyq4w7X"
+uri = "file://artifacts/command-center/public/walkthrough/s7.mp3"
+type = "audio"
+title = "s7"
+
+[[outputs]]
+id = "cJGk3u8Uns4YcegZAaGrD"
+uri = "file://artifacts/command-center/public/walkthrough/bed.mp3"
+type = "audio"
+title = "walkthrough ambient bed"

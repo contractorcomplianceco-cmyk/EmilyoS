@@ -25,7 +25,8 @@ import {
   Search,
   Bell,
   Clock,
-  ChevronDown
+  ChevronDown,
+  PlayCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -54,7 +55,10 @@ const profileMenu = [
 const navSections = [
   {
     label: "Overview",
-    items: [{ name: "Dashboard", href: "/", icon: LayoutDashboard }],
+    items: [
+      { name: "Dashboard", href: "/", icon: LayoutDashboard },
+      { name: "Product Walkthrough", href: "/walkthrough", icon: PlayCircle },
+    ],
   },
   {
     label: "Operations",
