@@ -290,6 +290,7 @@ export interface ReviewTarget {
   label: string;
   value: string;
   detail: string;
+  targetDate?: string;
   createdAt: string;
 }
 

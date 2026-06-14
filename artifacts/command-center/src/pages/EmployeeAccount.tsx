@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useDatabase, saveRecord, deleteRecord } from "@/lib/store";
 import { compensationFields, reviewTargetFields } from "@/lib/fields";
 import type { Compensation, ReviewTarget } from "@/lib/types";
+import { fmtDate, daysUntil, isOverdue, isDueToday } from "@/lib/format";
+import type { BadgeTone } from "@/lib/format";
 import {
   IdCard,
   Mail,
@@ -89,6 +91,31 @@ export default function EmployeeAccount() {
   const openEditTarget = (t: ReviewTarget) => {
     setEditingTarget(t);
     setTargetOpen(true);
+  };
+
+  const sortedTargets = [...db.reviewTargets].sort((a, b) => {
+    if (!a.targetDate && !b.targetDate) return 0;
+    if (!a.targetDate) return 1;
+    if (!b.targetDate) return -1;
+    return a.targetDate < b.targetDate ? -1 : a.targetDate > b.targetDate ? 1 : 0;
+  });
+
+  const targetCountdown = (
+    date?: string,
+  ): { tone: BadgeTone; label: string } | null => {
+    if (!date) return null;
+    if (isDueToday(date)) return { tone: "amber", label: "Due today" };
+    if (isOverdue(date)) {
+      const n = daysUntil(date);
+      const over = n === null ? 0 : Math.abs(n);
+      return { tone: "red", label: `Overdue by ${over} day${over === 1 ? "" : "s"}` };
+    }
+    const n = daysUntil(date);
+    if (n === null) return null;
+    return {
+      tone: n <= 14 ? "amber" : "green",
+      label: `${n} day${n === 1 ? "" : "s"} until review`,
+    };
   };
 
   const details = [
@@ -278,7 +305,9 @@ export default function EmployeeAccount() {
           </div>
 
           <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {db.reviewTargets.map((r) => (
+            {sortedTargets.map((r) => {
+              const countdown = targetCountdown(r.targetDate);
+              return (
               <div
                 key={r.id}
                 className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 p-4"
@@ -287,11 +316,18 @@ export default function EmployeeAccount() {
                   <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <p className="text-sm font-semibold text-slate-800">{r.label}</p>
                     <span className="text-sm font-bold text-indigo-600">{r.value}</span>
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-500">{r.detail}</p>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      {r.targetDate ? fmtDate(r.targetDate) : "No date set"}
+                    </span>
+                    {countdown && <TonePill label={countdown.label} tone={countdown.tone} />}
+                  </div>
+                  <p className="mt-1.5 text-xs text-slate-500">{r.detail}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-1">
                   <Button
@@ -312,7 +348,8 @@ export default function EmployeeAccount() {
                   </Button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           <p className="mt-4 text-xs text-slate-400">

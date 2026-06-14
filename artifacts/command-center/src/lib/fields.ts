@@ -175,5 +175,6 @@ export const compensationFields: FieldDef[] = [
 export const reviewTargetFields: FieldDef[] = [
   { key: "label", label: "Milestone", type: "text", required: true, full: true },
   { key: "value", label: "Target Rate", type: "text", required: true },
+  { key: "targetDate", label: "Target Date", type: "date" },
   { key: "detail", label: "Detail", type: "textarea" },
 ];
