@@ -140,7 +140,7 @@ function SidebarContent({ location }: { location: string }) {
 
       <div className="mt-auto p-4">
         <div className="relative overflow-hidden rounded-2xl border border-white shadow-sm">
-          <img src={asset("decor/coastal-sidebar.png")} alt="" className="h-40 w-full object-cover" />
+          <img src={asset("decor/coastal-sidebar.png")} alt="" loading="lazy" decoding="async" className="h-40 w-full object-cover" />
           <img
             src={asset("decor/cherries-3d.png")}
             alt=""
@@ -173,6 +173,38 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Main Content */}
       <div className="relative flex min-w-0 flex-1 flex-col overflow-hidden bg-gradient-to-br from-white via-primary/5 to-accent/5">
+        {/* Coastal charm backdrop (app-wide) */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden select-none lg:block">
+          <img
+            src={asset("decor/shells-charm.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute right-6 top-28 w-28 -rotate-6 opacity-20 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/perfume-charm.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute bottom-8 right-12 w-16 rotate-3 opacity-25 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/flower-charm.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute bottom-10 left-8 w-24 -rotate-6 opacity-20 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/starfish-charm.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute left-12 top-1/2 w-20 rotate-6 opacity-[0.18] drop-shadow-sm"
+          />
+        </div>
+
         {/* Top Header */}
         <header className="sticky top-0 z-10 flex h-20 shrink-0 items-center justify-between gap-4 border-b border-primary/10 bg-white/80 px-4 shadow-sm backdrop-blur-xl md:px-8">
           <div className="flex min-w-0 items-center gap-3">

@@ -439,10 +439,12 @@ export default function Dashboard() {
           </Card>
 
           {/* Decorative charm cluster */}
-          <div className="pointer-events-none hidden select-none justify-center pt-1 xl:flex">
+          <div className="pointer-events-none hidden select-none justify-center pt-1 lg:flex">
             <img
               src={asset("decor/charm-cluster.png")}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="w-full max-w-[260px] opacity-95 drop-shadow-sm"
             />
           </div>
@@ -454,6 +456,8 @@ export default function Dashboard() {
         <img
           src={asset("decor/beach-banner.png")}
           alt=""
+          loading="lazy"
+          decoding="async"
           className="h-28 w-full object-cover sm:h-32"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent" />

@@ -30,6 +30,30 @@ uri = "file://artifacts/command-center/public/decor/beach-banner.png"
 type = "image"
 title = "wide beach banner"
 
+[[generated]]
+id = "aUvel3DauaP0XXMegUzj6"
+uri = "file://artifacts/command-center/public/decor/perfume-charm.png"
+type = "image"
+title = "perfume charm"
+
+[[generated]]
+id = "we9UgmIXI6f8-OazThai7"
+uri = "file://artifacts/command-center/public/decor/shells-charm.png"
+type = "image"
+title = "shells charm"
+
+[[generated]]
+id = "ouXGwAmFGeKvwBE9i0YWk"
+uri = "file://artifacts/command-center/public/decor/flower-charm.png"
+type = "image"
+title = "flower charm"
+
+[[generated]]
+id = "0BiNvGVLtUGMOyZQV7m4_"
+uri = "file://artifacts/command-center/public/decor/starfish-charm.png"
+type = "image"
+title = "starfish charm"
+
 [[outputs]]
 id = "zdotcWg99Cv86RJxm5J_5"
 uri = "file://artifacts/command-center/public/walkthrough/s1.mp3"
