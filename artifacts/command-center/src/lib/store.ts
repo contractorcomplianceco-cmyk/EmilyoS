@@ -40,20 +40,6 @@ function load(): Database {
 let db: Database = load();
 const listeners = new Set<() => void>();
 
-/** Approximate per-origin localStorage budget (~5 MB in UTF-16 code units). */
-export const STORAGE_QUOTA_BYTES = 5 * 1024 * 1024;
-/** Conservative ceiling kept below the hard quota so metadata/other writes still fit. */
-export const STORAGE_SAFE_BYTES = Math.floor(STORAGE_QUOTA_BYTES * 0.9);
-
-/** Approximate number of bytes a database snapshot occupies in localStorage. */
-export function serializedSize(database: Database): number {
-  try {
-    return JSON.stringify(database).length;
-  } catch {
-    return 0;
-  }
-}
-
 /** Thrown when a write cannot be persisted (e.g. browser storage quota exceeded). */
 export class StorageError extends Error {
   constructor(message: string) {

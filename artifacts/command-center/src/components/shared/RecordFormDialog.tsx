@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatBytes } from "@/lib/format";
+import { estimateStorage } from "@/lib/attachments";
 
 export type FieldType =
   | "text"
@@ -103,7 +104,8 @@ export function RecordFormDialog<T>({
   /**
    * For `file` fields: validate a newly selected file's data URL length against
    * the storage budget. Return a warning message to block the attachment, or
-   * `null` to allow it.
+   * `null` to allow it. When omitted, a default check against the browser's
+   * reported storage estimate is applied automatically to every `file` field.
    */
   storageCheck?: (dataUrlLength: number) => string | null;
 }) {
@@ -163,12 +165,22 @@ export function RecordFormDialog<T>({
     }
     try {
       const dataUrl = await readFileAsDataUrl(file);
+      let warning: string | null = null;
       if (storageCheck) {
-        const warning = storageCheck(dataUrl.length);
-        if (warning) {
-          setFileErrors((prev) => ({ ...prev, [f.key]: warning }));
-          return;
+        warning = storageCheck(dataUrl.length);
+      } else {
+        const estimate = await estimateStorage();
+        if (estimate) {
+          const remaining = estimate.quota - estimate.usage;
+          if (dataUrl.length > remaining) {
+            const overBy = dataUrl.length - remaining;
+            warning = `This file is too large to save with your available storage — about ${formatBytes(overBy)} over the limit. Free up space or choose a smaller file.`;
+          }
         }
+      }
+      if (warning) {
+        setFileErrors((prev) => ({ ...prev, [f.key]: warning }));
+        return;
       }
       setValues((prev) => ({
         ...prev,

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { resetData, useDatabase } from "@/lib/store";
+import { estimateStorage, type StorageEstimate } from "@/lib/attachments";
+import { formatBytes } from "@/lib/format";
 import { useToast } from "@/hooks/use-toast";
-import { RefreshCcw, Bell, Shield, User, Palette, Settings as SettingsIcon, Database } from "lucide-react";
+import { RefreshCcw, Bell, Shield, User, Palette, Settings as SettingsIcon, Database, HardDrive } from "lucide-react";
 
 export default function Settings() {
   const { toast } = useToast();
@@ -29,6 +31,29 @@ export default function Settings() {
     db.escalations.length +
     db.sops.length +
     db.knowledge.length;
+
+  const [storage, setStorage] = useState<StorageEstimate | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    estimateStorage().then((s) => {
+      if (active) setStorage(s);
+    });
+    return () => {
+      active = false;
+    };
+  }, [db.documents]);
+
+  const usedBytes = storage?.usage ?? 0;
+  const quotaBytes = storage?.quota ?? 0;
+  const usedPct =
+    quotaBytes > 0 ? Math.min(100, Math.round((usedBytes / quotaBytes) * 100)) : 0;
+  const nearFull = quotaBytes > 0 && usedBytes >= quotaBytes * 0.9;
+  const storageTone = nearFull
+    ? "from-red-500 to-rose-600"
+    : usedPct >= 70
+      ? "from-amber-500 to-orange-600"
+      : "from-emerald-500 to-teal-600";
 
   return (
     <div className="space-y-6">
@@ -142,6 +167,52 @@ export default function Settings() {
                 <RefreshCcw className="w-4 h-4" />
                 Reset Demo Data
               </Button>
+            </div>
+          </Card>
+
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+              <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
+                Browser Storage
+              </h3>
+              <HardDrive className="h-5 w-5 text-slate-300" />
+            </div>
+            <div className="p-6">
+              {storage ? (
+                <>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-slate-500">Used</span>
+                    <span
+                      className={
+                        nearFull
+                          ? "font-semibold text-red-600"
+                          : usedPct >= 70
+                            ? "font-semibold text-amber-600"
+                            : "font-medium text-slate-600"
+                      }
+                    >
+                      {formatBytes(usedBytes)} of {formatBytes(quotaBytes)} ({usedPct}%)
+                    </span>
+                  </div>
+                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div
+                      className={`h-full rounded-full bg-gradient-to-r ${storageTone} transition-all`}
+                      style={{ width: `${Math.max(2, usedPct)}%` }}
+                    />
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                    {nearFull
+                      ? "Storage is almost full. New file attachments may be too large to save — remove files you no longer need before adding more."
+                      : "All records and file attachments are saved in this browser. Large attachments count against this budget across every section."}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm leading-relaxed text-slate-600">
+                  This browser doesn't report a storage estimate. Records and file
+                  attachments are still saved locally in this browser.
+                </p>
+              )}
             </div>
           </Card>
 
