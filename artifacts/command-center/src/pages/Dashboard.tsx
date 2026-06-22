@@ -93,13 +93,13 @@ export default function Dashboard() {
     db.deficiencies.filter((d) => d.status === "Resolved").length;
 
   const kpis = [
-    { label: "Open Matters", value: openMatters, icon: FolderKanban, tint: "bg-sky-50", color: "text-sky-500", to: "/matters" },
-    { label: "Due Today", value: dueToday, icon: CalendarCheck, tint: "bg-sky-50", color: "text-sky-500", to: "/calendar" },
-    { label: "Overdue", value: overdueTotal, icon: Clock, tint: "bg-rose-50", color: "text-rose-400", to: "/matters" },
-    { label: "Waiting on Agency", value: waitingOnAgency, icon: Hourglass, tint: "bg-sky-50", color: "text-sky-500", to: "/matters" },
-    { label: "Deficiencies", value: deficienciesCount, icon: AlertTriangle, tint: "bg-pink-50", color: "text-pink-400", to: "/deficiencies" },
-    { label: "Rose Review", value: roseReviewCount, icon: Flower2, tint: "bg-pink-50", color: "text-pink-400", to: "/escalations" },
-    { label: "Done This Week", value: completedThisWeek, icon: CheckCircle2, tint: "bg-sky-50", color: "text-sky-500", to: "/my-wins" },
+    { label: "Open Matters", value: openMatters, icon: FolderKanban, tint: "bg-sky-50", color: "text-sky-500", bar: "from-sky-400 to-blue-400", to: "/matters" },
+    { label: "Due Today", value: dueToday, icon: CalendarCheck, tint: "bg-cyan-50", color: "text-cyan-500", bar: "from-cyan-400 to-sky-400", to: "/calendar" },
+    { label: "Overdue", value: overdueTotal, icon: Clock, tint: "bg-rose-50", color: "text-rose-500", bar: "from-rose-400 to-pink-400", to: "/matters" },
+    { label: "Waiting on Agency", value: waitingOnAgency, icon: Hourglass, tint: "bg-teal-50", color: "text-teal-500", bar: "from-teal-400 to-cyan-400", to: "/matters" },
+    { label: "Deficiencies", value: deficienciesCount, icon: AlertTriangle, tint: "bg-pink-50", color: "text-pink-500", bar: "from-pink-400 to-rose-400", to: "/deficiencies" },
+    { label: "Rose Review", value: roseReviewCount, icon: Flower2, tint: "bg-emerald-50", color: "text-emerald-500", bar: "from-emerald-400 to-teal-400", to: "/escalations" },
+    { label: "Done This Week", value: completedThisWeek, icon: CheckCircle2, tint: "bg-sky-50", color: "text-sky-500", bar: "from-sky-400 to-emerald-400", to: "/my-wins" },
   ];
 
   const agencyMatters = db.matters
@@ -148,10 +148,25 @@ export default function Dashboard() {
   );
 
   const calCols = [
-    { label: "Today", items: allUpcoming.filter((x) => isDueToday(x.date)) },
-    { label: "Tomorrow", items: allUpcoming.filter((x) => daysUntil(x.date) === 1) },
+    {
+      label: "Today",
+      badge: "bg-rose-100 text-rose-600",
+      dot: "bg-rose-400",
+      tile: "bg-rose-50/60",
+      items: allUpcoming.filter((x) => isDueToday(x.date)),
+    },
+    {
+      label: "Tomorrow",
+      badge: "bg-sky-100 text-sky-600",
+      dot: "bg-sky-400",
+      tile: "bg-sky-50/60",
+      items: allUpcoming.filter((x) => daysUntil(x.date) === 1),
+    },
     {
       label: "This Week",
+      badge: "bg-teal-100 text-teal-600",
+      dot: "bg-teal-400",
+      tile: "bg-teal-50/60",
       items: allUpcoming.filter((x) => {
         const d = daysUntil(x.date);
         return d != null && d >= 2 && d <= 7;
@@ -167,7 +182,8 @@ export default function Dashboard() {
           const Icon = kpi.icon;
           return (
             <Link key={kpi.label} href={kpi.to}>
-              <Card className="group h-full cursor-pointer rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <Card className="group relative h-full cursor-pointer overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+                <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${kpi.bar}`} />
                 <div className="flex items-start justify-between gap-2">
                   <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${kpi.tint} transition-transform group-hover:scale-105`}>
                     <Icon className={`h-[18px] w-[18px] ${kpi.color}`} />
@@ -176,7 +192,7 @@ export default function Dashboard() {
                     {kpi.label}
                   </span>
                 </div>
-                <div className="mt-3 text-3xl font-bold leading-none tracking-tight text-slate-800">
+                <div className={`mt-3 text-3xl font-bold leading-none tracking-tight ${kpi.color}`}>
                   {kpi.value}
                 </div>
                 <div className="mt-2 flex items-center gap-0.5 text-[11px] font-semibold text-primary">
@@ -194,7 +210,7 @@ export default function Dashboard() {
         <div className="space-y-6 xl:col-span-2">
           {/* Agency Matter Board */}
           <Card className="overflow-hidden rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-white p-5">
+            <div className="flex items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-sky-50 to-transparent p-5">
               <SectionTitle icon={Sparkles}>Agency Matter Board</SectionTitle>
               <Link
                 href="/matters"
@@ -292,7 +308,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Follow-Up Calendar */}
             <Card className="flex flex-col rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
-              <div className="flex items-center justify-between border-b border-slate-100 p-4">
+              <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-cyan-50/70 to-transparent p-4">
                 <SectionTitle img={asset("decor/cherries-3d.png")}>Follow-Up Calendar</SectionTitle>
                 <Link href="/calendar" className="text-xs font-medium text-primary hover:underline">
                   View all
@@ -302,14 +318,17 @@ export default function Dashboard() {
                 {calCols.map((col) => (
                   <div key={col.label} className="min-w-0 p-3">
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-700">{col.label}</span>
-                      <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary/10 px-1 text-[10px] font-bold text-primary">
+                      <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                        <span className={`h-2 w-2 rounded-full ${col.dot}`} />
+                        {col.label}
+                      </span>
+                      <span className={`flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[10px] font-bold ${col.badge}`}>
                         {col.items.length}
                       </span>
                     </div>
                     <div className="space-y-2">
                       {col.items.slice(0, 4).map((item) => (
-                        <div key={item.id} className="rounded-lg bg-slate-50/70 p-2">
+                        <div key={item.id} className={`rounded-lg p-2 ${col.tile}`}>
                           <p className="truncate text-[11px] font-semibold text-slate-700">{item.title}</p>
                           <p className="mt-0.5 truncate text-[10px] text-slate-400">{item.sub}</p>
                         </div>
@@ -325,7 +344,7 @@ export default function Dashboard() {
 
             {/* Chats + Notes */}
             <Card className="flex flex-col rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
-              <div className="flex items-center justify-between border-b border-slate-100 p-4">
+              <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-pink-50/70 to-transparent p-4">
                 <SectionTitle icon={MessageSquare}>Chats + Notes</SectionTitle>
                 <Link
                   href="/communications"
@@ -367,7 +386,7 @@ export default function Dashboard() {
         <div className="space-y-6 xl:col-span-1">
           {/* Today's Pretty Priorities */}
           <Card className="overflow-hidden rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-primary/5 to-transparent p-4">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-emerald-50 via-sky-50 to-transparent p-4">
               <SectionTitle icon={Gem}>Today's Pretty Priorities</SectionTitle>
             </div>
             <div className="p-2">
@@ -399,7 +418,7 @@ export default function Dashboard() {
 
           {/* Needs Rose */}
           <Card className="overflow-hidden rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-slate-100 p-4">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-rose-50/70 to-transparent p-4">
               <SectionTitle icon={Flower2}>Needs Rose</SectionTitle>
               <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-pink-100 px-1.5 text-xs font-bold text-pink-600">
                 {needsRoseQueue.length}
