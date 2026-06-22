@@ -1,17 +1,19 @@
 ---
-name: Executive design pattern (command-center)
-description: The "executive upgrade" visual system used across all command-center pages — gradient heroes, gradient KPI cards, glassmorphism tables, accent bars.
+name: Coastal design pattern (command-center)
+description: The "Soft Coastal Compliance Studio" visual system used across all command-center pages — light gradient heroes, white KPI cards, accent bars, glassmorphism tables.
 ---
 
-The command-center app uses a consistent "executive" visual system. When restyling or adding a page, match this so the app stays cohesive.
+The command-center app (brand: EmilyOS Regulatory Studio) uses a consistent "Soft Coastal Compliance Studio" visual system. When restyling or adding a page, match this so the app stays cohesive.
 
-**Why:** The user asked for a bold, colorful, non-flat, dynamic look applied app-wide. Dashboard.tsx and Agencies.tsx are the canonical references; every other page was upgraded to match.
+**Why:** The user approved a soft-coastal mockup — baby-blue primary, blush-pink accents, white/pearl/soft-gray surfaces; girly-but-professional. Replaced the prior dark navy/indigo/violet "executive" theme entirely. Dashboard.tsx and Agencies.tsx are the canonical references.
 
 **How to apply:**
-- **Gradient hero header** (replaces the plain `PageHeader`): a rounded-2xl banner `bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800` with white text, a frosted icon chip (`bg-white/10`), title + description, and a white/high-contrast action button on the right. A blurred glow circle adds depth.
-- **Gradient KPI stat cards** (derived live from the store, never hardcoded): `relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br {gradient} hover:-translate-y-1 transition`; big number top-left, frosted icon chip top-right, label full-width below; blurred glow `absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl`. Rotating gradients: indigo→violet, sky→blue, amber→orange, emerald→teal.
-- **Section accent bar** on headers: `h-5 w-1.5 rounded-full bg-gradient-to-b from-{x} to-{y}` before the heading text.
-- **Glassmorphism content card**: white/frosted surface, rounded-2xl, soft shadow, accent-bar header with a filtered-count badge.
-- The global top header (AppLayout.tsx) is itself a navy→indigo→violet gradient band that flows into the mission strip.
+- **Light gradient hero header** (replaces plain `PageHeader`): rounded-2xl banner `bg-gradient-to-br from-white via-primary/5 to-accent/5 ... border border-white shadow-sm`; heading `text-slate-800`, subtitle `text-slate-500`; white icon chip `bg-white ring-1 ring-slate-100 shadow-sm text-primary`; primary action button `bg-primary text-white hover:bg-primary/90`. Blurred glow circles `bg-primary/10` / `bg-accent/10`.
+- **White KPI stat cards** (derived live from the store, never hardcoded): `border border-slate-100 p-5 text-slate-700 shadow-sm bg-white hover:-translate-y-1 hover:shadow-md`; big number `text-slate-800` top-left, icon chip `bg-primary/10 text-primary` top-right, uppercase label below.
+- **Section accent bar** on headers: `h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent` before heading text.
+- **Glassmorphism content card**: white/frosted surface, rounded-2xl, soft shadow, accent-bar header with filtered-count badge.
+- **Semantic status colors:** keep soft amber chips (`bg-amber-50 text-amber-700`) for warning/caution/medium; red/rose for critical/overdue; emerald/teal for done. Chart "High" risk uses rose `#fb7185` (not orange).
 
-**Hard constraints (see replit.md + cartographer-jsx-generics.md):** frontend-only/localStorage (no API hooks/React Query — use `useDatabase()`, `saveRecord`, `deleteRecord`), config-driven forms via `fields.ts` + `RecordFormDialog`, shared components are NAMED exports, NEVER write explicit JSX generic args, NO emojis, all new sections must compute from the live store (truthful, not faked). Verify with `pnpm --filter @workspace/command-center run typecheck`.
+**Hard color guardrails:** baby-blue primary + blush-pink accent + white/pearl/soft-gray only. NO dark-navy/indigo/violet/purple/fuchsia, NO orange/gold/beige/tan, NO purple SaaS gradients. Cute accents only via lucide icons (Sparkles/Flower2/Cherry/Gem/Shell/Heart) — never literal emoji.
+
+**Hard constraints (see replit.md + cartographer-jsx-generics.md):** frontend-only/localStorage (no API hooks/React Query — use `useDatabase()`, `saveRecord`, `deleteRecord`), config-driven forms via `fields.ts` + `RecordFormDialog`, shared components are NAMED exports, NEVER write explicit JSX generic args, NO emojis, all new sections must compute from the live store. Verify with `pnpm --filter @workspace/command-center run typecheck`.

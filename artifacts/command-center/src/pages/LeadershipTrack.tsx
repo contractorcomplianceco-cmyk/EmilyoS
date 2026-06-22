@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 
 const COMPETENCIES = [
-  { name: "Strategic Communication", progress: 90, gradient: "from-indigo-500 to-violet-600" },
-  { name: "Team Leadership & Mentoring", progress: 72, gradient: "from-violet-500 to-purple-600" },
-  { name: "Cross-Functional Influence", progress: 65, gradient: "from-amber-500 to-orange-600" },
+  { name: "Strategic Communication", progress: 90, gradient: "from-primary to-accent" },
+  { name: "Team Leadership & Mentoring", progress: 72, gradient: "from-accent to-pink-300" },
+  { name: "Cross-Functional Influence", progress: 65, gradient: "from-primary to-accent" },
   { name: "Regulatory Strategy", progress: 84, gradient: "from-emerald-500 to-teal-600" },
   { name: "Executive Presence", progress: 58, gradient: "from-rose-500 to-red-600" },
 ];
@@ -56,22 +56,22 @@ export default function LeadershipTrack() {
       label: "Track Progress",
       value: `${overall}%`,
       icon: TrendingUp,
-      gradient: "from-indigo-600 to-violet-600",
-      shadow: "hover:shadow-indigo-500/30",
+      gradient: "from-primary to-sky-400",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Competencies",
       value: COMPETENCIES.length,
       icon: Target,
-      gradient: "from-violet-500 to-purple-600",
-      shadow: "hover:shadow-purple-500/30",
+      gradient: "from-accent to-pink-300",
+      shadow: "hover:shadow-accent/20",
     },
     {
       label: "Milestones Reached",
       value: `${milestonesDone}/${MILESTONES.length}`,
       icon: Milestone,
-      gradient: "from-amber-500 to-orange-600",
-      shadow: "hover:shadow-amber-500/30",
+      gradient: "from-primary to-accent",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Target Role",
@@ -85,16 +85,16 @@ export default function LeadershipTrack() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex items-start gap-4">
-          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
             <TrendingUp className="h-7 w-7" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Leadership Track</h2>
-            <p className="mt-1.5 max-w-xl text-sm text-white/70">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Leadership Track</h2>
+            <p className="mt-1.5 max-w-xl text-sm text-slate-500">
               Your career development path, competency growth, and milestones toward the next leadership role.
             </p>
           </div>
@@ -108,16 +108,16 @@ export default function LeadershipTrack() {
           return (
             <Card
               key={kpi.label}
-              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+              className={`relative overflow-hidden rounded-2xl border border-slate-100 p-5 text-slate-700 shadow-sm bg-white transition-all hover:-translate-y-1 hover:shadow-md`}
             >
-              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
                 <div className="text-3xl font-extrabold leading-none tracking-tight">{kpi.value}</div>
-                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-slate-100 backdrop-blur-sm">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 {kpi.label}
               </span>
             </Card>
@@ -127,10 +127,10 @@ export default function LeadershipTrack() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Competency growth */}
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Competency Growth
             </h3>
           </div>
@@ -153,10 +153,10 @@ export default function LeadershipTrack() {
         </Card>
 
         {/* Milestones */}
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Career Milestones
             </h3>
           </div>
@@ -194,7 +194,7 @@ export default function LeadershipTrack() {
       </div>
 
       {/* Development plan */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />
@@ -207,9 +207,9 @@ export default function LeadershipTrack() {
             return (
               <div
                 key={d.title}
-                className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-4 hover:border-indigo-200 transition-colors"
+                className="rounded-xl border border-primary/20 bg-primary/5 p-4 hover:border-primary/30 transition-colors"
               >
-                <div className="mb-3 inline-flex rounded-lg bg-indigo-100 p-2 text-indigo-700">
+                <div className="mb-3 inline-flex rounded-lg bg-primary/15 p-2 text-primary">
                   <Icon className="h-5 w-5" />
                 </div>
                 <p className="text-sm font-bold text-slate-800">{d.title}</p>

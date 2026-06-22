@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 
 const TIME_OFF = [
-  { label: "Vacation (PTO)", used: 9, total: 25, gradient: "from-indigo-500 to-violet-600" },
-  { label: "Sick Leave", used: 3, total: 10, gradient: "from-violet-500 to-purple-600" },
-  { label: "Personal Days", used: 1, total: 5, gradient: "from-amber-500 to-orange-600" },
+  { label: "Vacation (PTO)", used: 9, total: 25, gradient: "from-primary to-accent" },
+  { label: "Sick Leave", used: 3, total: 10, gradient: "from-accent to-pink-300" },
+  { label: "Personal Days", used: 1, total: 5, gradient: "from-primary to-accent" },
 ];
 
 const PLANS = [
@@ -64,14 +64,14 @@ const PERKS = [
     value: "6% employer match",
     detail: "Fully vested after two years of service.",
     icon: PiggyBank,
-    gradient: "from-indigo-500 to-violet-600",
+    gradient: "from-primary to-accent",
   },
   {
     title: "Learning Stipend",
     value: "$3,000 / year",
     detail: "Certifications, conferences, and courses.",
     icon: GraduationCap,
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-accent to-pink-300",
   },
   {
     title: "Wellness Credit",
@@ -94,16 +94,16 @@ export default function Benefits() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex items-start gap-4">
-          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
             <HeartHandshake className="h-7 w-7" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">My Benefits</h2>
-            <p className="mt-1.5 max-w-xl text-sm text-white/70">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">My Benefits</h2>
+            <p className="mt-1.5 max-w-xl text-sm text-slate-500">
               View your time off, insurance plans, and perks. Plan changes are managed by HR and Payroll.
             </p>
           </div>
@@ -111,10 +111,10 @@ export default function Benefits() {
       </div>
 
       {/* Time off balances */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
             Time-Off Balances
           </h3>
           <CalendarDays className="h-4 w-4 text-slate-400" />
@@ -145,10 +145,10 @@ export default function Benefits() {
       </Card>
 
       {/* Insurance plans */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-accent to-pink-300" />
             Health &amp; Insurance Plans
           </h3>
           <span className="text-sm font-medium text-slate-500">{PLANS.length} plans</span>
@@ -160,7 +160,7 @@ export default function Benefits() {
               <div key={p.name} className="bg-white p-5">
                 <div className="mb-3 flex items-start justify-between">
                   <div className="flex items-start gap-3">
-                    <div className="rounded-lg bg-violet-50 p-2 text-violet-600">
+                    <div className="rounded-lg bg-accent/10 p-2 text-pink-500">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
@@ -187,7 +187,7 @@ export default function Benefits() {
       </Card>
 
       {/* Retirement & perks */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
             <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />
@@ -208,7 +208,7 @@ export default function Benefits() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <p className="text-sm font-bold text-slate-800">{perk.title}</p>
-                <p className="mt-0.5 text-sm font-semibold text-indigo-600">{perk.value}</p>
+                <p className="mt-0.5 text-sm font-semibold text-primary">{perk.value}</p>
                 <p className="mt-1.5 text-sm text-slate-600 leading-relaxed">{perk.detail}</p>
               </div>
             );

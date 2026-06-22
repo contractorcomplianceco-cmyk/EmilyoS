@@ -125,24 +125,24 @@ export default function Matters() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <FolderKanban className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Regulatory Matters Tracker</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Regulatory Matters Tracker</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Every active and historical regulatory matter, with status, ownership, and deadlines.
               </p>
             </div>
           </div>
           <Button
             onClick={openAdd}
-            className="shrink-0 bg-white text-indigo-900 shadow-lg hover:bg-white/90"
+            className="shrink-0 bg-primary text-white shadow-sm hover:bg-primary/90"
           >
             <Plus className="mr-1.5 h-4 w-4" /> Add Matter
           </Button>
@@ -156,47 +156,39 @@ export default function Matters() {
             label: "Total Matters",
             value: stats.total,
             icon: FolderKanban,
-            gradient: "from-indigo-600 to-violet-600",
-            shadow: "hover:shadow-indigo-500/30",
           },
           {
             label: "Open & Active",
             value: stats.open,
             icon: CheckCircle,
-            gradient: "from-emerald-500 to-teal-600",
-            shadow: "hover:shadow-emerald-500/30",
           },
           {
             label: "Overdue Deadlines",
             value: stats.overdue,
             icon: Clock,
-            gradient: "from-amber-500 to-orange-600",
-            shadow: "hover:shadow-amber-500/30",
           },
           {
             label: "High/Critical Risk",
             value: stats.atRisk,
             icon: AlertTriangle,
-            gradient: "from-red-500 to-rose-600",
-            shadow: "hover:shadow-red-500/30",
           },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
             <Card
               key={kpi.label}
-              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+              className="relative overflow-hidden rounded-2xl border border-white/40 p-5 text-slate-700 shadow-sm bg-white hover:-translate-y-1 hover:shadow-md transition-all group"
             >
-              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
-                <div className="text-4xl font-extrabold leading-none tracking-tight">
+                <div className="text-4xl font-extrabold leading-none tracking-tight text-slate-800">
                   {kpi.value}
                 </div>
-                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                <div className="rounded-xl bg-primary/10 p-2.5 text-primary group-hover:scale-110 transition-transform">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 {kpi.label}
               </span>
             </Card>
@@ -238,10 +230,10 @@ export default function Matters() {
             ]}
           />
 
-          <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
                 All Matters
               </h3>
               <span className="text-sm text-muted-foreground">
@@ -330,10 +322,10 @@ export default function Matters() {
         </div>
 
         <div className="space-y-6">
-          <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-accent to-pink-300" />
                 Status Distribution
               </h3>
             </div>
@@ -346,7 +338,7 @@ export default function Matters() {
                   </div>
                   <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-violet-500 to-purple-500" 
+                      className="h-full bg-gradient-to-r from-primary to-accent" 
                       style={{ width: `${Math.max(5, (count / stats.total) * 100)}%` }}
                     />
                   </div>

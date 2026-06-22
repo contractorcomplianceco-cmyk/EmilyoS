@@ -40,8 +40,8 @@ function bucketOf(date: string): "overdue" | "today" | "week" | "later" {
 
 function sourceColor(source: Source): string {
   switch (source) {
-    case "Matter": return "from-purple-500 to-indigo-600";
-    case "Deficiency": return "from-amber-500 to-orange-600";
+    case "Matter": return "from-accent to-primary";
+    case "Deficiency": return "from-primary to-accent";
     case "Escalation": return "from-red-500 to-rose-600";
     case "Communication": return "from-emerald-500 to-teal-600";
     case "Review": return "from-sky-500 to-blue-600";
@@ -159,22 +159,22 @@ export default function Calendar() {
       label: "Due Today",
       value: groups.today.length,
       icon: Clock,
-      gradient: "from-amber-500 to-orange-600",
-      shadow: "hover:shadow-amber-500/30",
+      gradient: "from-primary to-accent",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Next 7 Days",
       value: groups.week.length,
       icon: Target,
-      gradient: "from-violet-500 to-purple-600",
-      shadow: "hover:shadow-purple-500/30",
+      gradient: "from-accent to-pink-300",
+      shadow: "hover:shadow-accent/20",
     },
     {
       label: "Total Scheduled",
       value: items.length,
       icon: CalendarIcon,
-      gradient: "from-indigo-600 to-violet-600",
-      shadow: "hover:shadow-indigo-500/30",
+      gradient: "from-primary to-sky-400",
+      shadow: "hover:shadow-primary/20",
     },
   ];
 
@@ -185,25 +185,25 @@ export default function Calendar() {
     accentClass: string;
   }[] = [
     { key: "overdue", label: "Overdue", icon: AlertCircle, accentClass: "from-red-500 to-rose-600" },
-    { key: "today", label: "Due Today", icon: Clock, accentClass: "from-amber-500 to-orange-600" },
-    { key: "week", label: "Next 7 Days", icon: CalendarDays, accentClass: "from-purple-500 to-indigo-600" },
+    { key: "today", label: "Due Today", icon: Clock, accentClass: "from-primary to-accent" },
+    { key: "week", label: "Next 7 Days", icon: CalendarDays, accentClass: "from-accent to-primary" },
     { key: "later", label: "Later", icon: CheckCircle2, accentClass: "from-slate-400 to-slate-500" },
   ];
 
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <CalendarDays className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Follow-Up Calendar</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Follow-Up Calendar</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Consolidated view of every upcoming follow-up across matters, deficiencies, escalations, communications, and review milestones.
               </p>
             </div>
@@ -218,18 +218,18 @@ export default function Calendar() {
           return (
             <Card
               key={kpi.label}
-              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+              className={`relative overflow-hidden rounded-2xl border border-slate-100 p-5 text-slate-700 shadow-sm bg-white transition-all hover:-translate-y-1 hover:shadow-md`}
             >
-              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
-                <div className="text-4xl font-extrabold leading-none tracking-tight">
+                <div className="text-4xl font-extrabold leading-none tracking-tight text-slate-800">
                   {kpi.value}
                 </div>
-                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-slate-100 backdrop-blur-sm">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 {kpi.label}
               </span>
             </Card>
@@ -259,7 +259,7 @@ export default function Calendar() {
       />
 
       {filtered.length === 0 ? (
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <CardContent className="p-6">
             <EmptyState
               icon={CalendarDays}
@@ -274,7 +274,7 @@ export default function Calendar() {
             const list = groups[key];
             if (list.length === 0) return null;
             return (
-              <Card key={key} className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+              <Card key={key} className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
                 <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
                   <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
                     <span className={`h-5 w-1.5 rounded-full bg-gradient-to-b ${accentClass}`} />
@@ -322,7 +322,7 @@ export default function Calendar() {
                                     ? "text-red-600"
                                     : today
                                       ? "text-amber-600"
-                                      : "text-purple-600"
+                                      : "text-pink-500"
                                 }`}
                               >
                                 {over

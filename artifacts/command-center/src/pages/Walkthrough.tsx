@@ -217,17 +217,17 @@ export default function Walkthrough() {
   return (
     <div className="space-y-6">
       {/* Hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-teal-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <PlayCircle className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome to EmilyOS</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Welcome to EmilyOS</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Get oriented your way — watch the narrated tour, step through the
                 guided tour at your own pace, or download the full written user guide.
               </p>
@@ -236,7 +236,7 @@ export default function Walkthrough() {
           <a
             href={guideUrl}
             download
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white/95 px-4 py-2.5 text-sm font-semibold text-[#0c1230] shadow-sm ring-1 ring-white/30 transition-colors hover:bg-white"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm border border-slate-200 transition-colors hover:bg-slate-50"
           >
             <Download className="h-4 w-4" />
             User Guide (PDF)
@@ -253,7 +253,7 @@ export default function Walkthrough() {
             aria-pressed={mode === "video"}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
               mode === "video"
-                ? "bg-teal-600 text-white"
+                ? "bg-primary text-white"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -266,7 +266,7 @@ export default function Walkthrough() {
             aria-pressed={mode === "guided"}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
               mode === "guided"
-                ? "bg-teal-600 text-white"
+                ? "bg-primary text-white"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -282,8 +282,8 @@ export default function Walkthrough() {
       </div>
 
       {/* Player */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
-        <div className="relative w-full aspect-video bg-[#0a0f2c]">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
+        <div className="relative w-full aspect-video bg-slate-50/50">
           <AnimatePresence mode="popLayout">
             <WalkthroughScene key={`${mode}-${scene}-${cycle}`} index={scene} />
           </AnimatePresence>
@@ -298,16 +298,16 @@ export default function Walkthrough() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35 }}
-                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-[#0a0f2c]/60 backdrop-blur-[2px]"
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-white/60 backdrop-blur-[2px]"
               >
-                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-teal-600/90 text-white shadow-[0_0_40px_rgba(20,184,166,0.75)] transition-transform hover:scale-105">
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/90 text-white shadow-lg shadow-primary/30 transition-transform hover:scale-105">
                   {status === "finished" ? (
                     <RotateCcw className="h-9 w-9" />
                   ) : (
                     <PlayCircle className="h-12 w-12" />
                   )}
                 </span>
-                <span className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">
+                <span className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
                   {status === "finished" ? "Replay walkthrough" : "Play walkthrough"}
                 </span>
               </motion.button>
@@ -329,9 +329,9 @@ export default function Walkthrough() {
                 fill = i <= scene ? 1 : 0;
               }
               return (
-                <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-white/20">
+                <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-slate-200/50">
                   <div
-                    className="h-full rounded-full bg-teal-400 transition-[width] duration-150 ease-linear"
+                    className="h-full rounded-full bg-primary transition-[width] duration-150 ease-linear"
                     style={{ width: `${fill * 100}%` }}
                   />
                 </div>
@@ -347,7 +347,7 @@ export default function Walkthrough() {
               <Button
                 size="icon"
                 onClick={togglePlay}
-                className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                className="h-9 w-9 rounded-full bg-primary text-white hover:bg-primary/90"
                 aria-label={status === "playing" ? "Pause" : "Play"}
               >
                 {status === "playing" ? (
@@ -422,7 +422,7 @@ export default function Walkthrough() {
                 <Button
                   size="icon"
                   onClick={() => goGuided(0)}
-                  className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                  className="h-9 w-9 rounded-full bg-primary text-white hover:bg-primary/90"
                   aria-label="Restart guided tour"
                 >
                   <RotateCcw className="h-4 w-4" />
@@ -431,7 +431,7 @@ export default function Walkthrough() {
                 <Button
                   size="icon"
                   onClick={() => goGuided(scene + 1)}
-                  className="h-9 w-9 rounded-full bg-teal-600 text-white hover:bg-teal-700"
+                  className="h-9 w-9 rounded-full bg-primary text-white hover:bg-primary/90"
                   aria-label="Next step"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -443,10 +443,10 @@ export default function Walkthrough() {
       </Card>
 
       {/* Chapter list */}
-      <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+      <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
           <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-teal-600" />
+            <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
             {mode === "video" ? "Chapters" : "Steps"}
           </h3>
           <span className="text-sm font-medium text-slate-500">{SEGMENT_COUNT} sections</span>
@@ -460,13 +460,13 @@ export default function Walkthrough() {
                 key={ch.title}
                 type="button"
                 onClick={() => handleChapterClick(i)}
-                className={`flex items-center gap-3 bg-white p-4 text-left transition-colors hover:bg-teal-50/60 ${
-                  active ? "bg-teal-50" : ""
+                className={`flex items-center gap-3 bg-white p-4 text-left transition-colors hover:bg-primary/5 ${
+                  active ? "bg-primary/5" : ""
                 }`}
               >
                 <span
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                    active ? "bg-teal-600 text-white" : "bg-teal-50 text-teal-600"
+                    active ? "bg-primary text-white" : "bg-primary/10 text-primary"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -484,9 +484,9 @@ export default function Walkthrough() {
       </Card>
 
       {/* User guide card */}
-      <Card className="flex flex-col gap-4 border-white/20 bg-white/80 p-5 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+      <Card className="flex flex-col gap-4 border-slate-100 bg-white/80 p-5 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <FileText className="h-6 w-6" />
           </div>
           <div>
@@ -500,7 +500,7 @@ export default function Walkthrough() {
         <a
           href={guideUrl}
           download
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-700"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
         >
           <Download className="h-4 w-4" />
           Download PDF

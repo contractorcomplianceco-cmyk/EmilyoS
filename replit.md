@@ -33,7 +33,7 @@ An internal operations app for a Director of Compliance & Regulatory Communicati
 - **No backend / no API for app data.** Everything persists in the browser via `useDatabase()` / `saveRecord(collection, record)` / `deleteRecord(collection, id)` / `resetData()` (localStorage, `useSyncExternalStore`). Do not wire React Query hooks for these entities.
 - **Config-driven forms.** Add/edit forms are generated from `fields.ts` definitions rendered by `RecordFormDialog` (`open`/`onOpenChange`/`title`/`fields`/`initial`/`onSubmit`). Adding a field = edit `fields.ts`, not the dialog.
 - **Dashboard panels are data-derived**, not hardcoded — KPI counts, compliance ring, Upcoming Calendar, and Alerts & Risk Panel all compute from the live store so they stay truthful after edits.
-- **Brand:** CCA EmilyOS — navy/indigo glassmorphism with electric-purple accents (palette in `index.css`). Strictly no emojis in the UI.
+- **Brand:** EmilyOS Regulatory Studio — "Soft Coastal Compliance Studio": baby-blue primary, blush-pink accents, white/pearl/soft-gray glassy surfaces (palette in `index.css`). Cute accents via lucide icons only (Sparkles/Flower2/Cherry/Gem/Shell/Heart). Strictly no emojis in the UI; no dark-navy/purple/indigo/orange/gold/beige.
 
 ## Product
 

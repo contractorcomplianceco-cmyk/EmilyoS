@@ -12,7 +12,7 @@ const TEAM_MEMBERS = [
     phone: "(555) 010-1001",
     location: "Chicago, IL",
     initials: "EJ",
-    color: "from-indigo-500 to-violet-600"
+    color: "from-primary to-accent"
   },
   {
     id: "t_02",
@@ -22,7 +22,7 @@ const TEAM_MEMBERS = [
     phone: "(555) 010-1002",
     location: "Los Angeles, CA",
     initials: "ML",
-    color: "from-violet-500 to-purple-600"
+    color: "from-accent to-pink-300"
   },
   {
     id: "t_03",
@@ -42,7 +42,7 @@ const TEAM_MEMBERS = [
     phone: "(555) 010-1004",
     location: "Phoenix, AZ",
     initials: "DO",
-    color: "from-amber-500 to-orange-600"
+    color: "from-primary to-accent"
   },
   {
     id: "t_05",
@@ -66,15 +66,15 @@ export default function Team() {
       label: "Total Members",
       value: totalMembers,
       icon: Users,
-      gradient: "from-indigo-600 to-violet-600",
-      shadow: "hover:shadow-indigo-500/30",
+      gradient: "from-primary to-sky-400",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Unique Roles",
       value: uniqueRoles,
       icon: Target,
-      gradient: "from-violet-500 to-purple-600",
-      shadow: "hover:shadow-purple-500/30",
+      gradient: "from-accent to-pink-300",
+      shadow: "hover:shadow-accent/20",
     },
     {
       label: "Office Locations",
@@ -88,17 +88,17 @@ export default function Team() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <Users className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Team Directory</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Team Directory</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Contact information for the internal compliance and operations team.
               </p>
             </div>
@@ -113,18 +113,18 @@ export default function Team() {
           return (
             <Card
               key={kpi.label}
-              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+              className={`relative overflow-hidden rounded-2xl border border-slate-100 p-5 text-slate-700 shadow-sm bg-white transition-all hover:-translate-y-1 hover:shadow-md`}
             >
-              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
-                <div className="text-4xl font-extrabold leading-none tracking-tight">
+                <div className="text-4xl font-extrabold leading-none tracking-tight text-slate-800">
                   {kpi.value}
                 </div>
-                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-slate-100 backdrop-blur-sm">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 {kpi.label}
               </span>
             </Card>
@@ -134,7 +134,7 @@ export default function Team() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {TEAM_MEMBERS.map((member) => (
-          <Card key={member.id} className="relative overflow-hidden p-6 bg-white/80 backdrop-blur-md shadow-sm border-white/20 hover:shadow-xl transition-all group">
+          <Card key={member.id} className="relative overflow-hidden p-6 bg-white/80 backdrop-blur-md shadow-sm border-slate-100 hover:shadow-xl transition-all group">
              <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${member.color}`} />
             <div className="flex flex-col items-center text-center">
               <Avatar className={`h-24 w-24 mb-5 border-[3px] border-white shadow-lg ring-2 ring-primary/10 transition-colors`}>

@@ -80,8 +80,8 @@ export default function MyWins() {
   ].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   const toneMap: Record<string, { chip: string; iconBg: string }> = {
-    indigo: { chip: "bg-indigo-50 text-indigo-700 border-indigo-100", iconBg: "bg-indigo-100 text-indigo-600" },
-    sky: { chip: "bg-violet-50 text-violet-700 border-violet-100", iconBg: "bg-violet-100 text-violet-600" },
+    indigo: { chip: "bg-primary/10 text-primary border-primary/20", iconBg: "bg-primary/15 text-primary" },
+    sky: { chip: "bg-accent/10 text-pink-600 border-accent/20", iconBg: "bg-accent/20 text-pink-600" },
     amber: { chip: "bg-amber-50 text-amber-700 border-amber-100", iconBg: "bg-amber-100 text-amber-600" },
     emerald: { chip: "bg-emerald-50 text-emerald-700 border-emerald-100", iconBg: "bg-emerald-100 text-emerald-600" },
   };
@@ -91,22 +91,22 @@ export default function MyWins() {
       label: "Total Wins",
       value: wins.length,
       icon: Trophy,
-      gradient: "from-indigo-600 to-violet-600",
-      shadow: "hover:shadow-indigo-500/30",
+      gradient: "from-primary to-sky-400",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Matters Completed",
       value: mattersClosed.length,
       icon: FolderKanban,
-      gradient: "from-violet-500 to-purple-600",
-      shadow: "hover:shadow-purple-500/30",
+      gradient: "from-accent to-pink-300",
+      shadow: "hover:shadow-accent/20",
     },
     {
       label: "Deficiencies Resolved",
       value: deficienciesResolved.length,
       icon: ClipboardCheck,
-      gradient: "from-amber-500 to-orange-600",
-      shadow: "hover:shadow-amber-500/30",
+      gradient: "from-primary to-accent",
+      shadow: "hover:shadow-primary/20",
     },
     {
       label: "Tasks Completed",
@@ -118,9 +118,9 @@ export default function MyWins() {
   ];
 
   const byCategory = [
-    { name: "Matters Completed", count: mattersClosed.length, gradient: "from-indigo-500 to-violet-600" },
-    { name: "Deficiencies Resolved", count: deficienciesResolved.length, gradient: "from-violet-500 to-purple-600" },
-    { name: "Tasks Completed", count: tasksCompleted.length, gradient: "from-amber-500 to-orange-600" },
+    { name: "Matters Completed", count: mattersClosed.length, gradient: "from-primary to-accent" },
+    { name: "Deficiencies Resolved", count: deficienciesResolved.length, gradient: "from-accent to-pink-300" },
+    { name: "Tasks Completed", count: tasksCompleted.length, gradient: "from-primary to-accent" },
     { name: "Escalations Resolved", count: escalationsResolved.length, gradient: "from-emerald-500 to-teal-600" },
   ];
   const maxCat = Math.max(...byCategory.map((c) => c.count), 1);
@@ -128,16 +128,16 @@ export default function MyWins() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex items-start gap-4">
-          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+          <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
             <Trophy className="h-7 w-7" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">My Wins</h2>
-            <p className="mt-1.5 max-w-xl text-sm text-white/70">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">My Wins</h2>
+            <p className="mt-1.5 max-w-xl text-sm text-slate-500">
               A live record of everything you have driven to completion — matters, deficiencies, tasks, and escalations.
             </p>
           </div>
@@ -151,16 +151,16 @@ export default function MyWins() {
           return (
             <Card
               key={kpi.label}
-              className={`relative overflow-hidden rounded-2xl border-0 p-5 text-white shadow-lg bg-gradient-to-br ${kpi.gradient} ${kpi.shadow} transition-all hover:-translate-y-1 hover:shadow-2xl`}
+              className={`relative overflow-hidden rounded-2xl border border-slate-100 p-5 text-slate-700 shadow-sm bg-white transition-all hover:-translate-y-1 hover:shadow-md`}
             >
-              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -top-8 -right-8 h-28 w-28 rounded-full bg-primary/5 blur-2xl" />
               <div className="relative mb-3 flex items-start justify-between">
-                <div className="text-4xl font-extrabold leading-none tracking-tight">{kpi.value}</div>
-                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-white/30 backdrop-blur-sm">
+                <div className="text-4xl font-extrabold leading-none tracking-tight text-slate-800">{kpi.value}</div>
+                <div className="rounded-xl bg-white/20 p-2.5 ring-1 ring-slate-100 backdrop-blur-sm">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <span className="relative block text-xs font-semibold uppercase tracking-wider text-white/85">
+              <span className="relative block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 {kpi.label}
               </span>
             </Card>
@@ -170,10 +170,10 @@ export default function MyWins() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Wins feed */}
-        <Card className="lg:col-span-2 overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="lg:col-span-2 overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Achievements Feed
             </h3>
             <span className="text-sm font-medium text-slate-500">{wins.length} wins</span>
@@ -212,10 +212,10 @@ export default function MyWins() {
         </Card>
 
         {/* By category */}
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md self-start">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md self-start">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Wins by Category
             </h3>
           </div>
@@ -234,8 +234,8 @@ export default function MyWins() {
                 </div>
               </div>
             ))}
-            <div className="mt-2 flex items-center gap-3 rounded-xl border border-violet-100 bg-violet-50/50 p-4">
-              <Award className="h-6 w-6 shrink-0 text-violet-600" />
+            <div className="mt-2 flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/10 p-4">
+              <Award className="h-6 w-6 shrink-0 text-pink-500" />
               <p className="text-sm text-slate-600">
                 <span className="font-semibold text-slate-800">{wins.length} total wins</span> logged
                 across all of your tracked work.

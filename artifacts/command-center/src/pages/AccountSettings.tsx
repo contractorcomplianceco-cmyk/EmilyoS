@@ -55,17 +55,17 @@ export default function AccountSettings() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <ShieldCheck className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">My Account</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">My Account</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Manage your sign-in, security, preferences, and notifications for this app.
               </p>
             </div>
@@ -73,7 +73,7 @@ export default function AccountSettings() {
           <Button
             variant="outline"
             onClick={() => notify("Signed out")}
-            className="self-start border-white/30 bg-white/10 text-white hover:bg-white/20"
+            className="self-start border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Sign Out
@@ -83,17 +83,17 @@ export default function AccountSettings() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sign-in & security */}
-        <Card className="lg:col-span-2 overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="lg:col-span-2 overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Sign-in &amp; Security
             </h3>
           </div>
           <div className="divide-y divide-slate-100">
             <div className="flex items-center justify-between gap-4 p-5">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 text-indigo-600">
+                <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                   <Mail className="h-4 w-4" />
                 </div>
                 <div>
@@ -107,7 +107,7 @@ export default function AccountSettings() {
             </div>
             <div className="flex items-center justify-between gap-4 p-5">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 text-indigo-600">
+                <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                   <KeyRound className="h-4 w-4" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ export default function AccountSettings() {
             </div>
             <div className="flex items-center justify-between gap-4 p-5">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-lg bg-indigo-50 p-2 text-indigo-600">
+                <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                   <Smartphone className="h-4 w-4" />
                 </div>
                 <div>
@@ -146,10 +146,10 @@ export default function AccountSettings() {
         </Card>
 
         {/* Preferences */}
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md self-start">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md self-start">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-base font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-accent to-pink-300" />
               Preferences
             </h3>
           </div>
@@ -215,10 +215,10 @@ export default function AccountSettings() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Active sessions */}
-        <Card className="lg:col-span-2 overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+        <Card className="lg:col-span-2 overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
+              <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
               Active Sessions
             </h3>
             <span className="text-sm font-medium text-slate-500">{sessions.length} devices</span>
@@ -258,7 +258,7 @@ export default function AccountSettings() {
         </Card>
 
         {/* Notification preferences */}
-        <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md self-start">
+        <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md self-start">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
             <h3 className="flex items-center gap-2.5 text-base font-bold text-slate-800">
               <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />

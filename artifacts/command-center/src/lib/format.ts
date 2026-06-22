@@ -67,16 +67,18 @@ export type BadgeTone =
   | "green"
   | "red"
   | "purple"
-  | "slate";
+  | "slate"
+  | "pink";
 
 const TONE_CLASS: Record<BadgeTone, string> = {
-  neutral: "bg-muted text-muted-foreground border border-border",
-  slate: "bg-slate-100 text-slate-700 border border-slate-200",
-  blue: "bg-indigo-50 text-indigo-700 border border-indigo-200",
-  amber: "bg-amber-50 text-amber-700 border border-amber-200",
-  green: "bg-emerald-50 text-emerald-700 border border-emerald-200",
-  red: "bg-red-50 text-red-700 border border-red-200",
-  purple: "bg-violet-50 text-violet-700 border border-violet-200",
+  neutral: "bg-slate-50 text-slate-500 border border-slate-200",
+  slate: "bg-slate-100 text-slate-600 border border-slate-200",
+  blue: "bg-blue-50 text-blue-600 border border-blue-200",
+  amber: "bg-amber-50 text-amber-600 border border-amber-200",
+  green: "bg-emerald-50 text-emerald-600 border border-emerald-200",
+  red: "bg-rose-50 text-rose-600 border border-rose-200",
+  purple: "bg-sky-50 text-sky-600 border border-sky-200",
+  pink: "bg-pink-50 text-pink-600 border border-pink-200",
 };
 
 export function toneClass(tone: BadgeTone): string {
@@ -92,7 +94,7 @@ export function riskTone(risk: string): BadgeTone {
     case "High":
       return "amber";
     case "Critical":
-      return "red";
+      return "pink";
     default:
       return "neutral";
   }
@@ -105,7 +107,7 @@ export function matterStatusTone(status: string): BadgeTone {
     case "Closed":
       return "slate";
     case "Escalated":
-      return "red";
+      return "pink";
     case "Deficiency Received":
       return "amber";
     case "On Hold":
@@ -129,7 +131,7 @@ export function deficiencyStatusTone(status: string): BadgeTone {
     case "Resolved":
       return "green";
     case "Escalated":
-      return "red";
+      return "pink";
     case "New":
       return "amber";
     case "Submitted to Agency":
@@ -148,7 +150,7 @@ export function escalationStatusTone(status: string): BadgeTone {
     case "Closed":
       return "green";
     case "Open":
-      return "red";
+      return "pink";
     case "Awaiting Decision":
       return "amber";
     case "In Review":

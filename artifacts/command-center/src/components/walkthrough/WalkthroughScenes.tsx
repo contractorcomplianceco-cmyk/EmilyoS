@@ -39,7 +39,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 function SceneShell({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0a0f2c] via-indigo-950 to-teal-900"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-white via-primary/5 to-accent/5"
       initial={{ opacity: 0, scale: 1.02 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.99 }}
@@ -47,16 +47,16 @@ function SceneShell({ children }: { children: React.ReactNode }) {
     >
       {/* drifting glow accents */}
       <motion.div
-        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-teal-600/30 blur-3xl"
+        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-primary/20 blur-3xl"
         animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute -bottom-28 right-0 h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl"
+        className="pointer-events-none absolute -bottom-28 right-0 h-80 w-80 rounded-full bg-accent/20 blur-3xl"
         animate={{ x: [0, -50, 0], y: [0, -25, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:42px_42px]" />
+      <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(0,0,0,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.6)_1px,transparent_1px)] [background-size:42px_42px]" />
       <div className="relative z-10 h-full w-full">{children}</div>
     </motion.div>
   );
@@ -102,7 +102,7 @@ function Eyebrow({ icon: Icon, label }: { icon: any; label: string }) {
   return (
     <motion.div
       {...fadeUp(0.1)}
-      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-200 backdrop-blur-sm"
+      className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary backdrop-blur-sm shadow-sm"
     >
       <Icon className="h-3.5 w-3.5" />
       {label}
@@ -122,41 +122,40 @@ function Welcome() {
           transition={{ duration: 0.9, ease: EASE }}
         >
           <motion.div
-            className="absolute inset-0 -m-6 rounded-full border border-teal-400/30"
+            className="absolute inset-0 -m-6 rounded-full border border-primary/30"
             animate={{ rotate: 360 }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute inset-0 -m-12 rounded-full border border-indigo-400/20"
+            className="absolute inset-0 -m-12 rounded-full border border-accent/30"
             animate={{ rotate: -360 }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           />
           <img
             src={ccaCrest}
             alt="CCA crest"
-            className="h-24 w-24 object-contain"
-            style={{ filter: crestFilter }}
+            className="h-24 w-24 object-contain opacity-80"
           />
         </motion.div>
         <motion.h1
           {...fadeUp(0.5)}
-          className="text-5xl md:text-6xl font-black tracking-tight text-white"
+          className="text-5xl md:text-6xl font-black tracking-tight text-slate-800"
         >
           CCA{" "}
-          <span className="bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
+          <span className="text-primary">
             EmilyOS
           </span>
         </motion.h1>
         <motion.p
           {...fadeUp(0.8)}
-          className="mt-4 max-w-lg text-base md:text-lg text-white/70"
+          className="mt-4 max-w-lg text-base md:text-lg text-slate-500"
         >
           Your command center for regulatory communications and compliance
           operations.
         </motion.p>
         <motion.div
           {...fadeUp(1.1)}
-          className="mt-6 h-[3px] w-40 rounded-full bg-gradient-to-r from-transparent via-teal-400 to-transparent"
+          className="mt-6 h-[3px] w-40 rounded-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"
         />
       </div>
     </SceneShell>
@@ -179,7 +178,7 @@ function Dashboard() {
         <Eyebrow icon={LayoutDashboard} label="Dashboard" />
         <motion.h2
           {...fadeUp(0.25)}
-          className="mt-3 text-2xl md:text-3xl font-bold text-white"
+          className="mt-3 text-2xl md:text-3xl font-bold text-slate-800"
         >
           Your day, at a glance
         </motion.h2>
@@ -192,15 +191,15 @@ function Dashboard() {
                 <motion.div
                   key={k.label}
                   {...fadeUp(0.45 + i * 0.12)}
-                  className="rounded-xl border border-white/10 bg-white/[0.06] p-4 backdrop-blur-sm"
+                  className="rounded-xl border border-white bg-white/60 p-4 shadow-sm backdrop-blur-sm"
                 >
-                  <div className="mb-3 inline-flex rounded-lg bg-teal-500/20 p-2 text-teal-200">
+                  <div className="mb-3 inline-flex rounded-lg bg-primary/10 p-2 text-primary">
                     <Icon className="h-4 w-4" />
                   </div>
-                  <div className="text-3xl font-black text-white">
+                  <div className="text-3xl font-black text-slate-800">
                     <CountUp to={k.to} delay={0.6 + i * 0.12} />
                   </div>
-                  <div className="mt-1 text-[11px] font-medium uppercase tracking-wide text-white/50">
+                  <div className="mt-1 text-[11px] font-medium uppercase tracking-wide text-slate-500">
                     {k.label}
                   </div>
                 </motion.div>
@@ -212,11 +211,11 @@ function Dashboard() {
                   <motion.div
                     key={t}
                     {...fadeUp(0.9 + i * 0.14)}
-                    className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2"
+                    className="flex items-center gap-3 rounded-lg border border-white bg-white/60 px-3 py-2 shadow-sm"
                   >
-                    <span className="h-2 w-2 rounded-full bg-teal-400" />
-                    <span className="text-sm text-white/80">{t}</span>
-                    <span className="ml-auto text-[11px] text-white/40">High</span>
+                    <span className="h-2 w-2 rounded-full bg-primary" />
+                    <span className="text-sm text-slate-600">{t}</span>
+                    <span className="ml-auto text-[11px] text-slate-400">High</span>
                   </motion.div>
                 )
               )}
@@ -226,7 +225,7 @@ function Dashboard() {
           {/* compliance ring */}
           <motion.div
             {...fadeUp(0.7)}
-            className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm"
+            className="flex flex-col items-center justify-center rounded-xl border border-white bg-white/60 p-5 shadow-sm backdrop-blur-sm"
           >
             <div className="relative h-32 w-32">
               <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
@@ -235,7 +234,7 @@ function Dashboard() {
                   cy="60"
                   r={R}
                   fill="none"
-                  stroke="rgba(255,255,255,0.12)"
+                  stroke="rgba(0,0,0,0.05)"
                   strokeWidth="10"
                 />
                 <motion.circle
@@ -253,21 +252,21 @@ function Dashboard() {
                 />
                 <defs>
                   <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#5eead4" />
-                    <stop offset="100%" stopColor="#06b6d4" />
+                    <stop offset="0%" stopColor="hsl(var(--primary))" />
+                    <stop offset="100%" stopColor="hsl(var(--accent))" />
                   </linearGradient>
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-black text-white">
+                <span className="text-2xl font-black text-slate-800">
                   <CountUp to={ringPct} delay={0.9} duration={1.6} />%
                 </span>
-                <span className="text-[10px] uppercase tracking-wide text-white/50">
+                <span className="text-[10px] uppercase tracking-wide text-slate-500">
                   Compliant
                 </span>
               </div>
             </div>
-            <p className="mt-3 text-center text-xs text-white/55">
+            <p className="mt-3 text-center text-xs text-slate-400">
               Compliance health, computed live
             </p>
           </motion.div>
@@ -295,13 +294,13 @@ function AgenciesComms() {
         <Eyebrow icon={Building2} label="Agencies & Communications" />
         <motion.h2
           {...fadeUp(0.25)}
-          className="mt-3 text-2xl md:text-3xl font-bold text-white"
+          className="mt-3 text-2xl md:text-3xl font-bold text-slate-800"
         >
           Every regulator, every exchange
         </motion.h2>
         <div className="mt-6 grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-white/40">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Agency Directory
             </p>
             {agencies.map((a, i) => (
@@ -310,17 +309,17 @@ function AgenciesComms() {
                 initial={{ opacity: 0, x: -28 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.55, ease: EASE, delay: 0.4 + i * 0.16 }}
-                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-3"
+                className="flex items-center gap-3 rounded-lg border border-white bg-white/60 shadow-sm px-3 py-3"
               >
-                <div className="rounded-md bg-teal-500/20 p-2 text-teal-200">
+                <div className="rounded-md bg-primary/10 p-2 text-primary">
                   <Building2 className="h-4 w-4" />
                 </div>
-                <span className="text-sm leading-snug text-white/85">{a}</span>
+                <span className="text-sm leading-snug text-slate-600">{a}</span>
               </motion.div>
             ))}
           </div>
           <div className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-white/40">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Communications Hub
             </p>
             {comms.map((c, i) => {
@@ -332,16 +331,16 @@ function AgenciesComms() {
                   initial={{ opacity: 0, x: out ? 28 : -28, scale: 0.96 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   transition={{ duration: 0.5, ease: EASE, delay: 0.6 + i * 0.22 }}
-                  className={`flex max-w-[88%] items-start gap-2.5 rounded-xl border px-3 py-2.5 ${
+                  className={`flex max-w-[88%] items-start gap-2.5 rounded-xl border px-3 py-2.5 shadow-sm ${
                     out
-                      ? "ml-auto border-teal-400/30 bg-teal-500/20"
-                      : "border-white/10 bg-white/[0.05]"
+                      ? "ml-auto border-primary/20 bg-primary/5"
+                      : "border-white bg-white/60"
                   }`}
                 >
-                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-teal-200" />
+                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <div>
-                    <p className="text-[11px] font-semibold text-white/55">{c.who}</p>
-                    <p className="text-sm text-white/85">{c.text}</p>
+                    <p className="text-[11px] font-semibold text-slate-500">{c.who}</p>
+                    <p className="text-sm text-slate-700">{c.text}</p>
                   </div>
                 </motion.div>
               );
@@ -362,16 +361,16 @@ function RegulatoryTracker() {
         <Eyebrow icon={FolderKanban} label="Regulatory Tracker" />
         <motion.h2
           {...fadeUp(0.25)}
-          className="mt-3 text-2xl md:text-3xl font-bold text-white"
+          className="mt-3 text-2xl md:text-3xl font-bold text-slate-800"
         >
           Follow every matter, end to end
         </motion.h2>
 
         <div className="mt-10 flex flex-1 flex-col justify-center">
           <div className="relative">
-            <div className="absolute left-0 right-0 top-5 h-[3px] bg-white/10" />
+            <div className="absolute left-0 right-0 top-5 h-[3px] bg-slate-200" />
             <motion.div
-              className="absolute left-0 top-5 h-[3px] rounded-full bg-gradient-to-r from-teal-400 to-cyan-500"
+              className="absolute left-0 top-5 h-[3px] rounded-full bg-gradient-to-r from-primary to-accent"
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
               transition={{ duration: 2.2, ease: EASE, delay: 0.5 }}
@@ -385,10 +384,10 @@ function RegulatoryTracker() {
                   transition={{ duration: 0.5, ease: EASE, delay: 0.6 + i * 0.45 }}
                   className="flex flex-col items-center"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-teal-400 bg-[#0a0f2c] text-sm font-bold text-white">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary bg-white text-sm font-bold text-primary shadow-sm">
                     {i + 1}
                   </span>
-                  <span className="mt-2 text-xs font-medium text-white/75">{s}</span>
+                  <span className="mt-2 text-xs font-medium text-slate-500">{s}</span>
                 </motion.div>
               ))}
             </div>
@@ -405,11 +404,11 @@ function RegulatoryTracker() {
                 <motion.div
                   key={c.t}
                   {...fadeUp(1.4 + i * 0.18)}
-                  className="rounded-xl border border-white/10 bg-white/[0.05] p-4"
+                  className="rounded-xl border border-white bg-white/60 p-4 shadow-sm"
                 >
-                  <Icon className="mb-2 h-5 w-5 text-teal-300" />
-                  <p className="text-sm font-semibold text-white">{c.t}</p>
-                  <p className="text-xs text-white/50">{c.d}</p>
+                  <Icon className="mb-2 h-5 w-5 text-primary" />
+                  <p className="text-sm font-semibold text-slate-700">{c.t}</p>
+                  <p className="text-xs text-slate-500">{c.d}</p>
                 </motion.div>
               );
             })}
@@ -433,57 +432,57 @@ function TasksMonitor() {
         <Eyebrow icon={CheckSquare} label="Tasks & Change Monitor" />
         <motion.h2
           {...fadeUp(0.25)}
-          className="mt-3 text-2xl md:text-3xl font-bold text-white"
+          className="mt-3 text-2xl md:text-3xl font-bold text-slate-800"
         >
           Route follow-ups, catch every change
         </motion.h2>
         <div className="mt-6 grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-white/40">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Tasks & Approvals
             </p>
             {tasks.map((t, i) => (
               <motion.div
                 key={t}
                 {...fadeUp(0.45 + i * 0.18)}
-                className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-3"
+                className="flex items-center gap-3 rounded-lg border border-white bg-white/60 px-3 py-3 shadow-sm"
               >
                 <motion.span
-                  className="flex h-5 w-5 items-center justify-center rounded-md bg-teal-500/30 text-teal-200"
+                  className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/20 text-primary"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.9 + i * 0.3 }}
                 >
                   <CheckCircle2 className="h-4 w-4" />
                 </motion.span>
-                <span className="text-sm text-white/85">{t}</span>
+                <span className="text-sm text-slate-600">{t}</span>
               </motion.div>
             ))}
           </div>
           <div className="flex flex-col justify-center">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-white/40">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
               Change Monitor
             </p>
             <motion.div
               {...fadeUp(0.7)}
-              className="relative rounded-2xl border border-teal-400/30 bg-teal-500/15 p-5"
+              className="relative rounded-2xl border border-accent/20 bg-accent/5 p-5 shadow-sm"
             >
               <span className="absolute right-4 top-4 flex h-3 w-3">
                 <motion.span
-                  className="absolute inline-flex h-full w-full rounded-full bg-teal-400"
+                  className="absolute inline-flex h-full w-full rounded-full bg-accent"
                   animate={{ scale: [1, 2.2], opacity: [0.7, 0] }}
                   transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                 />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-teal-300" />
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-accent" />
               </span>
-              <div className="mb-3 inline-flex rounded-lg bg-white/10 p-2 text-violet-100">
+              <div className="mb-3 inline-flex rounded-lg bg-accent/20 p-2 text-accent">
                 <Bell className="h-5 w-5" />
               </div>
-              <p className="text-base font-bold text-white">New regulation detected</p>
-              <p className="mt-1 text-sm text-white/70">
+              <p className="text-base font-bold text-slate-800">New regulation detected</p>
+              <p className="mt-1 text-sm text-slate-600">
                 EPA emissions inventory format updated — review required.
               </p>
-              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-violet-100">
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-[11px] font-semibold text-accent border border-accent/20">
                 <Activity className="h-3.5 w-3.5" />
                 Flagged moments ago
               </div>
@@ -504,24 +503,24 @@ function KnowledgeInsight() {
         <Eyebrow icon={Lightbulb} label="Knowledge & Intelligence" />
         <motion.h2
           {...fadeUp(0.25)}
-          className="mt-3 text-2xl md:text-3xl font-bold text-white"
+          className="mt-3 text-2xl md:text-3xl font-bold text-slate-800"
         >
           Turn activity into insight
         </motion.h2>
         <div className="mt-6 grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
           <motion.div
             {...fadeUp(0.45)}
-            className="flex flex-col rounded-xl border border-white/10 bg-white/[0.06] p-5"
+            className="flex flex-col rounded-xl border border-white bg-white/60 p-5 shadow-sm"
           >
-            <div className="mb-1 flex items-center gap-2 text-white/70">
-              <BarChart3 className="h-4 w-4 text-teal-300" />
+            <div className="mb-1 flex items-center gap-2 text-slate-500">
+              <BarChart3 className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold">Reports & Analytics</span>
             </div>
             <div className="flex flex-1 items-end justify-between gap-3 pt-4">
               {bars.map((h, i) => (
                 <motion.div
                   key={i}
-                  className="w-full rounded-t-md bg-gradient-to-t from-teal-600 to-cyan-400"
+                  className="w-full rounded-t-md bg-gradient-to-t from-primary to-accent"
                   initial={{ height: 0 }}
                   animate={{ height: `${h}%` }}
                   transition={{ duration: 0.9, ease: EASE, delay: 0.6 + i * 0.12 }}
@@ -538,15 +537,15 @@ function KnowledgeInsight() {
               <motion.div
                 key={c.t}
                 {...fadeUp(0.8 + i * 0.2)}
-                className="rounded-xl border border-white/10 bg-white/[0.05] p-4"
+                className="rounded-xl border border-white bg-white/60 p-4 shadow-sm"
               >
                 <div className="flex items-start gap-3">
-                  <div className="rounded-lg bg-teal-500/20 p-2 text-teal-200">
+                  <div className="rounded-lg bg-primary/10 p-2 text-primary">
                     <Lightbulb className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">{c.t}</p>
-                    <p className="text-xs text-white/50">{c.d}</p>
+                    <p className="text-sm font-semibold text-slate-800">{c.t}</p>
+                    <p className="text-xs text-slate-500">{c.d}</p>
                   </div>
                 </div>
               </motion.div>
@@ -565,9 +564,9 @@ function Outro() {
       <div className="flex h-full w-full flex-col items-center justify-center px-8 text-center">
         <motion.div
           {...fadeUp(0.2)}
-          className="mb-6 flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-sm"
+          className="mb-6 flex items-center gap-3 rounded-full border border-white bg-white/60 shadow-sm px-4 py-2 text-sm text-slate-500 backdrop-blur-sm"
         >
-          <ShieldCheck className="h-4 w-4 text-teal-300" />
+          <ShieldCheck className="h-4 w-4 text-primary" />
           Communication, follow-up &amp; documentation — not legal advice
         </motion.div>
         <motion.div
@@ -579,23 +578,22 @@ function Outro() {
           <img
             src={ccaCrest}
             alt="CCA crest"
-            className="h-16 w-16 object-contain"
-            style={{ filter: crestFilter }}
+            className="h-16 w-16 object-contain opacity-80"
           />
         </motion.div>
         <motion.h2
           {...fadeUp(0.6)}
-          className="text-4xl md:text-5xl font-black tracking-tight text-white"
+          className="text-4xl md:text-5xl font-black tracking-tight text-slate-800"
         >
           Powered by clarity.
         </motion.h2>
         <motion.h2
           {...fadeUp(0.85)}
-          className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
         >
           Driven by compliance.
         </motion.h2>
-        <motion.p {...fadeUp(1.15)} className="mt-5 text-sm uppercase tracking-[0.3em] text-white/50">
+        <motion.p {...fadeUp(1.15)} className="mt-5 text-sm uppercase tracking-[0.3em] text-slate-400">
           CCA EmilyOS
         </motion.p>
       </div>

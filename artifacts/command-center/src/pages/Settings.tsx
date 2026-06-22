@@ -33,17 +33,17 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       {/* Executive hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c1230] via-indigo-900 to-violet-800 p-6 sm:p-8 text-white shadow-xl">
-        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-indigo-400/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white via-primary/5 to-accent/5 p-6 sm:p-8 border border-white shadow-sm text-slate-700">
+        <div className="absolute -top-10 -right-10 h-44 w-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 h-44 w-44 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm text-primary">
               <SettingsIcon className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Settings & Preferences</h2>
-              <p className="mt-1.5 max-w-xl text-sm text-white/70">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">Settings & Preferences</h2>
+              <p className="mt-1.5 max-w-xl text-sm text-slate-500">
                 Manage your account settings, notification preferences, and system data.
               </p>
             </div>
@@ -53,10 +53,10 @@ export default function Settings() {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-violet-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
                 Profile Details
               </h3>
             </div>
@@ -78,10 +78,10 @@ export default function Settings() {
             </div>
           </Card>
 
-          <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-accent to-pink-300" />
                 Notifications
               </h3>
             </div>
@@ -120,10 +120,10 @@ export default function Settings() {
         </div>
 
         <div className="space-y-6">
-          <Card className="overflow-hidden border-white/20 bg-white/80 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-white/80 shadow-sm backdrop-blur-md">
             <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
-                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-amber-500 to-orange-600" />
+                <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
                 System Data
               </h3>
             </div>
@@ -145,7 +145,7 @@ export default function Settings() {
             </div>
           </Card>
 
-          <Card className="overflow-hidden border-white/20 bg-primary/5 shadow-sm backdrop-blur-md">
+          <Card className="overflow-hidden border-slate-100 bg-primary/5 shadow-sm backdrop-blur-md">
              <div className="flex items-center justify-between border-b border-primary/10 bg-primary/5 px-5 py-4">
               <h3 className="flex items-center gap-2.5 text-lg font-bold text-slate-800">
                 <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-emerald-500 to-teal-600" />
