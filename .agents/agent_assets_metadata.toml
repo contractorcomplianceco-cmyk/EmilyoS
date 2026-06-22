@@ -1,5 +1,22 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "5IB_WOwjkMjJ9zutODxqJ"
+uri = "file://artifacts/command-center/public/decor/coastal-sidebar.png"
+type = "image"
+title = "coastal sidebar scene"
+
+[[generated]]
+id = "8uVNx5mXT4Z4E9aUbPsh2"
+uri = "file://artifacts/command-center/public/decor/charm-cluster.png"
+type = "image"
+title = "perfume shell flower cluster"
+
+[[generated]]
+id = "oIG_Fy4T0JOQ89WBpiWmz"
+uri = "file://artifacts/command-center/public/decor/emily.png"
+type = "image"
+title = "emily portrait headshot"
 
 [[outputs]]
 id = "zdotcWg99Cv86RJxm5J_5"

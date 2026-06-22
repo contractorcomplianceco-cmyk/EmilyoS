@@ -1,0 +1,60 @@
+Use the attached image as the exact visual reference for EmilyOS Regulatory Studio.
+
+Do not treat the image as loose inspiration. Treat it as the approved design target.
+
+Your task is to recreate the attached mockup as closely as possible in the app UI.
+
+Before making changes:
+1. Inspect the attached image carefully.
+2. Identify the exact layout structure.
+3. Identify the color palette.
+4. Identify the card style, spacing, typography, sidebar, header, dashboard sections, badges, and decorative accents.
+5. Then rebuild the app UI to match that reference.
+
+Critical instruction:
+The final app screen should visually match the attached image as closely as possible.
+
+Match:
+- Overall layout
+- Left sidebar structure
+- Top header placement
+- KPI card row
+- Main table placement
+- Right-side priority panel
+- Soft baby blue / blush pink / pearl / white palette
+- Rounded card style
+- Glossy soft dashboard feel
+- Feminine polished EmilyOS personality
+- Subtle cherry, sparkle, charm, flower, pearl, and coastal details
+- Status badge style
+- Spacing and visual hierarchy
+
+Do not reinterpret the design.
+Do not create a new design direction.
+Do not simplify it into a generic admin panel.
+Do not switch to dark navy.
+Do not use gold, tan, beige, orange, brown, or purple-gradient SaaS styling.
+Do not make it childish or cartoonish.
+Do not turn it into a marketing page.
+
+Use the attached image as the source of truth.
+
+If exact image details are hard to reproduce, prioritize matching these in order:
+1. Layout
+2. Color palette
+3. Card styling
+4. Sidebar/header structure
+5. Dashboard hierarchy
+6. Badge styling
+7. Decorative accents
+8. Typography feel
+9. Microinteractions
+
+After implementation:
+Compare the finished app to the attached image.
+List what matches.
+List anything that could not be matched exactly.
+Then revise again until the first screen is visually aligned with the image.
+
+Final acceptance rule:
+If someone looks at the attached image and then opens the app, they should immediately recognize that the app was built from that exact mockup.
