@@ -29,6 +29,7 @@ import {
   AlertCircle,
   Flower2,
   Sparkles,
+  Inbox,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,27 +63,44 @@ const navSections = [
       { name: "Agency Matters", href: "/matters", icon: FolderKanban },
       { name: "Follow-Ups", href: "/calendar", icon: CalendarDays },
       { name: "Deficiencies", href: "/deficiencies", icon: AlertCircle },
-      { name: "Agency Directory", href: "/agencies", icon: Building2 },
-      { name: "Communications", href: "/communications", icon: MessageSquare },
-      { name: "Applications", href: "/matters", icon: FileText },
-      { name: "Chats / Notes", href: "/communications", icon: MessageSquare },
       { name: "Rose Review", href: "/escalations", icon: Flower2 },
+      { name: "Communications", href: "/communications", icon: MessageSquare },
+      { name: "Agency Directory", href: "/agencies", icon: Building2 },
+      { name: "Tasks", href: "/tasks", icon: CheckSquare },
+    ],
+  },
+  {
+    label: "Knowledge & Insights",
+    items: [
       { name: "Knowledge Library", href: "/knowledge", icon: BookOpen },
       { name: "SOPs / Training", href: "/sops", icon: FileText },
+      { name: "Reports", href: "/reports", icon: BarChart3 },
+      { name: "Intelligence", href: "/intelligence", icon: Lightbulb },
+      { name: "Change Monitor", href: "/change-monitor", icon: Activity },
+    ],
+  },
+  {
+    label: "Growth & Recognition",
+    items: [
+      { name: "My Wins", href: "/my-wins", icon: Trophy },
+      { name: "Leadership Track", href: "/leadership-track", icon: TrendingUp },
+      { name: "Bonus Tracker", href: "/bonus-tracker", icon: Coins },
+    ],
+  },
+  {
+    label: "My Workspace",
+    items: [
+      { name: "My Requests", href: "/requests", icon: Inbox },
+      { name: "My Account", href: "/account", icon: UserCircle },
+      { name: "My Employee Profile", href: "/employee-account", icon: IdCard },
+      { name: "My Benefits", href: "/benefits", icon: HeartHandshake },
     ],
   },
   {
     label: "More",
     items: [
       { name: "Welcome", href: "/walkthrough", icon: PlayCircle },
-      { name: "Tasks", href: "/tasks", icon: CheckSquare },
-      { name: "Change Monitor", href: "/change-monitor", icon: Activity },
-      { name: "Reports", href: "/reports", icon: BarChart3 },
-      { name: "Intelligence", href: "/intelligence", icon: Lightbulb },
       { name: "Team", href: "/team", icon: Users },
-      { name: "Leadership Track", href: "/leadership-track", icon: TrendingUp },
-      { name: "Bonus Tracker", href: "/bonus-tracker", icon: Coins },
-      { name: "My Wins", href: "/my-wins", icon: Trophy },
       { name: "Settings", href: "/settings", icon: SettingsIcon },
     ],
   },

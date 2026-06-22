@@ -211,3 +211,14 @@ export const documentFields: FieldDef[] = [
     maxSizeMB: 25,
   },
 ];
+
+export const requestFields: FieldDef[] = [
+  { key: "title", label: "Request Title", type: "text", required: true, full: true },
+  { key: "requestType", label: "Request Type", type: "select", options: REQUEST_TYPES, required: true },
+  { key: "status", label: "Status", type: "select", options: REQUEST_STATUSES, required: true },
+  { key: "priority", label: "Priority", type: "select", options: REQUEST_PRIORITIES, required: true },
+  { key: "approver", label: "Approver / Routed To", type: "text", placeholder: "e.g. HR, Manager, IT" },
+  { key: "dateNeeded", label: "Date Needed", type: "date" },
+  { key: "submittedDate", label: "Submitted Date", type: "date" },
+  { key: "details", label: "Details", type: "textarea", full: true },
+];

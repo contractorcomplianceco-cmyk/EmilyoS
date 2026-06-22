@@ -897,6 +897,45 @@ export function buildSeed(): Database {
     },
   ];
 
+  const requests = [
+    {
+      id: "req_001",
+      title: "National Compliance Summit — travel & registration",
+      requestType: "Training / Certification" as const,
+      status: "Submitted" as const,
+      priority: "Medium" as const,
+      dateNeeded: d(21),
+      submittedDate: past(2),
+      approver: "HR",
+      details: "Registration, flight, and two nights lodging for the annual summit.",
+      createdAt: dt(-2),
+    },
+    {
+      id: "req_002",
+      title: "PTO — long weekend",
+      requestType: "Time Off / PTO" as const,
+      status: "Approved" as const,
+      priority: "Low" as const,
+      dateNeeded: d(10),
+      submittedDate: past(6),
+      approver: "Manager",
+      details: "Friday through Monday off; no critical agency deadlines that week.",
+      createdAt: dt(-6),
+    },
+    {
+      id: "req_003",
+      title: "Second monitor for home office",
+      requestType: "Equipment / Supplies" as const,
+      status: "In Review" as const,
+      priority: "Low" as const,
+      dateNeeded: d(14),
+      submittedDate: past(1),
+      approver: "IT",
+      details: "Second monitor to review long agency documents side by side.",
+      createdAt: dt(-1),
+    },
+  ];
+
   return {
     agencies,
     matters,
@@ -912,5 +951,6 @@ export function buildSeed(): Database {
     reviewTargets,
     employeeProfile,
     documents,
+    requests,
   };
 }

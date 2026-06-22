@@ -27,6 +27,7 @@ import MyWins from "@/pages/MyWins";
 import AccountSettings from "@/pages/AccountSettings";
 import EmployeeAccount from "@/pages/EmployeeAccount";
 import Benefits from "@/pages/Benefits";
+import MyRequests from "@/pages/MyRequests";
 
 const queryClient = new QueryClient();
 
@@ -53,12 +54,13 @@ function Router() {
         <Route path="/team" component={Team} />
         <Route path="/settings" component={Settings} />
 
-        {/* My Workspace */}
+        {/* Growth & Recognition */}
         <Route path="/leadership-track" component={LeadershipTrack} />
         <Route path="/bonus-tracker" component={BonusTracker} />
         <Route path="/my-wins" component={MyWins} />
 
-        {/* Profile dropdown — personal account pages */}
+        {/* My Workspace — personal account pages */}
+        <Route path="/requests" component={MyRequests} />
         <Route path="/account" component={AccountSettings} />
         <Route path="/employee-account" component={EmployeeAccount} />
         <Route path="/benefits" component={Benefits} />
