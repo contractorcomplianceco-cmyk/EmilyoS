@@ -31,6 +31,7 @@ function load(): Database {
       reviewTargets: parsed.reviewTargets ?? seed.reviewTargets,
       employeeProfile: parsed.employeeProfile ?? seed.employeeProfile,
       documents: parsed.documents ?? seed.documents,
+      requests: parsed.requests ?? seed.requests,
     };
   } catch {
     return buildSeed();

@@ -102,6 +102,28 @@ export const ACTIVE_STATUSES = ["Active", "Inactive"] as const;
 
 export const BONUS_TONES = ["blue", "purple", "amber", "green", "slate"] as const;
 
+export const REQUEST_TYPES = [
+  "Time Off / PTO",
+  "Expense Reimbursement",
+  "Equipment / Supplies",
+  "Training / Certification",
+  "Document / Letter Request",
+  "IT / System Access",
+  "Schedule Change",
+  "Other",
+] as const;
+
+export const REQUEST_STATUSES = [
+  "Draft",
+  "Submitted",
+  "In Review",
+  "Approved",
+  "Denied",
+  "Cancelled",
+] as const;
+
+export const REQUEST_PRIORITIES = ["Low", "Medium", "High"] as const;
+
 export type AgencyType = (typeof AGENCY_TYPES)[number];
 export type CommunicationMethod = (typeof COMMUNICATION_METHODS)[number];
 export type MatterType = (typeof MATTER_TYPES)[number];
@@ -114,6 +136,9 @@ export type SopCategory = (typeof SOP_CATEGORIES)[number];
 export type SopStatus = (typeof SOP_STATUSES)[number];
 export type ActiveStatus = (typeof ACTIVE_STATUSES)[number];
 export type BonusTone = (typeof BONUS_TONES)[number];
+export type RequestType = (typeof REQUEST_TYPES)[number];
+export type RequestStatus = (typeof REQUEST_STATUSES)[number];
+export type RequestPriority = (typeof REQUEST_PRIORITIES)[number];
 
 export interface Agency {
   id: string;
@@ -332,6 +357,19 @@ export interface EmployeeDocument {
   createdAt: string;
 }
 
+export interface RequestItem {
+  id: string;
+  title: string;
+  requestType: RequestType;
+  status: RequestStatus;
+  priority: RequestPriority;
+  dateNeeded: string;
+  submittedDate: string;
+  approver: string;
+  details: string;
+  createdAt: string;
+}
+
 export interface Database {
   agencies: Agency[];
   matters: Matter[];
@@ -347,6 +385,7 @@ export interface Database {
   reviewTargets: ReviewTarget[];
   employeeProfile: EmployeeProfile[];
   documents: EmployeeDocument[];
+  requests: RequestItem[];
 }
 
 export type Collection = keyof Database;
