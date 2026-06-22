@@ -44,6 +44,7 @@ import {
   PhoneCall,
   FileText,
   Download,
+  ExternalLink,
   Eye,
   FileQuestion,
   Lock,
@@ -204,6 +205,35 @@ export default function EmployeeAccount() {
     link.click();
     document.body.removeChild(link);
     toast({ title: "Download started", description: `${doc.fileName || doc.name} is downloading.` });
+  };
+
+  const openInNewTab = (doc: EmployeeDocument) => {
+    if (!doc.fileData) {
+      toast({
+        title: "No file attached",
+        description: `Add a file to “${doc.name}” to open it. Use Edit to attach one.`,
+      });
+      return;
+    }
+    try {
+      const [header, base64 = ""] = doc.fileData.split(",");
+      const mime = header.match(/data:([^;]+)/)?.[1] || doc.mimeType || "application/octet-stream";
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      const blob = new Blob([bytes], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, "_blank", "noopener,noreferrer");
+      if (!win) {
+        toast({
+          title: "Popup blocked",
+          description: "Allow popups for this site to open documents in a new tab, or use Download.",
+        });
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch {
+      downloadDoc(doc);
+    }
   };
 
   const previewKind = (doc: EmployeeDocument | null): "image" | "pdf" | "unsupported" => {
@@ -684,13 +714,30 @@ export default function EmployeeAccount() {
       <Dialog open={!!docToPreview} onOpenChange={(o) => !o && setDocToPreview(null)}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle className="truncate pr-8">
-              {docToPreview?.name}
-            </DialogTitle>
-            <DialogDescription className="truncate">
-              {docToPreview?.type}
-              {docToPreview?.fileName ? ` · ${docToPreview.fileName}` : ""}
-            </DialogDescription>
+            <div className="flex items-start justify-between gap-3 pr-8">
+              <div className="min-w-0">
+                <DialogTitle className="truncate">
+                  {docToPreview?.name}
+                </DialogTitle>
+                <DialogDescription className="truncate">
+                  {docToPreview?.type}
+                  {docToPreview?.fileName ? ` · ${docToPreview.fileName}` : ""}
+                </DialogDescription>
+              </div>
+              {docToPreview &&
+                previewKind(docToPreview) !== "unsupported" &&
+                docToPreview.fileData && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={() => openInNewTab(docToPreview)}
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Open in new tab
+                  </Button>
+                )}
+            </div>
           </DialogHeader>
           {docToPreview && (
             <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
