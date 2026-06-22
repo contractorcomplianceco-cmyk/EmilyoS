@@ -5,14 +5,22 @@ import { TonePill } from "@/components/shared/Badges";
 import { RecordFormDialog } from "@/components/shared/RecordFormDialog";
 import { ConfirmDelete } from "@/components/shared/ConfirmDelete";
 import { useToast } from "@/hooks/use-toast";
-import { useDatabase, saveRecord, deleteRecord, StorageError } from "@/lib/store";
+import {
+  useDatabase,
+  saveRecord,
+  deleteRecord,
+  StorageError,
+  serializedSize,
+  STORAGE_QUOTA_BYTES,
+  STORAGE_SAFE_BYTES,
+} from "@/lib/store";
 import {
   compensationFields,
   reviewTargetFields,
   employeeProfileFields,
   documentFields,
 } from "@/lib/fields";
-import { fmtDate, daysUntil, isOverdue, isDueToday } from "@/lib/format";
+import { fmtDate, daysUntil, isOverdue, isDueToday, formatBytes } from "@/lib/format";
 import type { BadgeTone } from "@/lib/format";
 import type {
   Compensation,
@@ -126,6 +134,26 @@ export default function EmployeeAccount() {
   const openEditDoc = (doc: EmployeeDocument) => {
     setEditingDoc(doc);
     setDocOpen(true);
+  };
+
+  const usedBytes = serializedSize(db);
+  const usedPct = Math.min(100, Math.round((usedBytes / STORAGE_QUOTA_BYTES) * 100));
+  const meterTone =
+    usedBytes >= STORAGE_SAFE_BYTES
+      ? "from-red-500 to-rose-600"
+      : usedPct >= 70
+        ? "from-amber-500 to-orange-600"
+        : "from-emerald-500 to-teal-600";
+
+  const checkDocStorage = (dataUrlLength: number): string | null => {
+    const existing = editingDoc.id
+      ? db.documents.find((d) => d.id === editingDoc.id)
+      : undefined;
+    const existingLen = existing?.fileData?.length ?? 0;
+    const projected = usedBytes - existingLen + dataUrlLength;
+    if (projected <= STORAGE_SAFE_BYTES) return null;
+    const overBy = projected - STORAGE_SAFE_BYTES;
+    return `This file is too large to save with your current data — about ${formatBytes(overBy)} over the available browser storage. Remove other attachments or choose a smaller file.`;
   };
 
   const downloadDoc = (doc: EmployeeDocument) => {
@@ -394,6 +422,34 @@ export default function EmployeeAccount() {
             </Button>
           </div>
         </div>
+        <div className="border-b border-slate-100 px-5 py-3">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-slate-500">Browser storage used</span>
+            <span
+              className={
+                usedBytes >= STORAGE_SAFE_BYTES
+                  ? "font-semibold text-red-600"
+                  : usedPct >= 70
+                    ? "font-semibold text-amber-600"
+                    : "font-medium text-slate-500"
+              }
+            >
+              {formatBytes(usedBytes)} of {formatBytes(STORAGE_QUOTA_BYTES)} ({usedPct}%)
+            </span>
+          </div>
+          <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+            <div
+              className={`h-full rounded-full bg-gradient-to-r ${meterTone} transition-all`}
+              style={{ width: `${Math.max(2, usedPct)}%` }}
+            />
+          </div>
+          {usedBytes >= STORAGE_SAFE_BYTES ? (
+            <p className="mt-1.5 text-xs text-amber-600">
+              Storage is almost full. New attachments may be too large to save — remove
+              files you no longer need before adding more.
+            </p>
+          ) : null}
+        </div>
         {db.documents.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">
             No documents yet. Use “Add Document” to track an employment document.
@@ -507,6 +563,7 @@ export default function EmployeeAccount() {
         description="Track an employment document with its label and last-updated date."
         fields={documentFields}
         initial={editingDoc}
+        storageCheck={checkDocStorage}
         onSubmit={(values) => {
           try {
             saveRecord("documents", { ...editingDoc, ...values } as EmployeeDocument);

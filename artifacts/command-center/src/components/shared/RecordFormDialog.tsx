@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatBytes } from "@/lib/format";
 
 export type FieldType =
   | "text"
@@ -52,14 +53,6 @@ export interface FieldDef {
   mimeTypeKey?: string;
   /** For `file` fields: maximum allowed size in MB (defaults to 4). */
   maxSizeMB?: number;
-}
-
-function formatBytes(bytes: number): string {
-  if (!bytes) return "0 B";
-  const units = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  const value = bytes / Math.pow(1024, i);
-  return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
 }
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -97,6 +90,7 @@ export function RecordFormDialog<T>({
   fields,
   initial,
   onSubmit,
+  storageCheck,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -106,6 +100,12 @@ export function RecordFormDialog<T>({
   initial: Partial<T>;
   /** Return `false` to keep the dialog open (e.g. when the save failed). */
   onSubmit: (values: Partial<T>) => unknown;
+  /**
+   * For `file` fields: validate a newly selected file's data URL length against
+   * the storage budget. Return a warning message to block the attachment, or
+   * `null` to allow it.
+   */
+  storageCheck?: (dataUrlLength: number) => string | null;
 }) {
   const buildDefaults = useMemo(() => {
     return () => {
@@ -163,6 +163,13 @@ export function RecordFormDialog<T>({
     }
     try {
       const dataUrl = await readFileAsDataUrl(file);
+      if (storageCheck) {
+        const warning = storageCheck(dataUrl.length);
+        if (warning) {
+          setFileErrors((prev) => ({ ...prev, [f.key]: warning }));
+          return;
+        }
+      }
       setValues((prev) => ({
         ...prev,
         [f.key]: dataUrl,
