@@ -40,6 +40,8 @@ import {
   PhoneCall,
   FileText,
   Download,
+  Eye,
+  FileQuestion,
   Lock,
   ShieldAlert,
   Coins,
@@ -48,6 +50,13 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const GATED = [
   {
@@ -92,6 +101,7 @@ export default function EmployeeAccount() {
   const [docOpen, setDocOpen] = useState(false);
   const [editingDoc, setEditingDoc] = useState<Partial<EmployeeDocument>>(emptyDocument);
   const [docToDelete, setDocToDelete] = useState<EmployeeDocument | null>(null);
+  const [docToPreview, setDocToPreview] = useState<EmployeeDocument | null>(null);
 
   const openAddTarget = () => {
     setEditingTarget(emptyReviewTarget);
@@ -171,6 +181,14 @@ export default function EmployeeAccount() {
     link.click();
     document.body.removeChild(link);
     toast({ title: "Download started", description: `${doc.fileName || doc.name} is downloading.` });
+  };
+
+  const previewKind = (doc: EmployeeDocument | null): "image" | "pdf" | "unsupported" => {
+    if (!doc) return "unsupported";
+    const mime = doc.mimeType?.toLowerCase() ?? "";
+    if (mime.startsWith("image/")) return "image";
+    if (mime === "application/pdf") return "pdf";
+    return "unsupported";
   };
 
   const details = [
@@ -474,6 +492,15 @@ export default function EmployeeAccount() {
                   <Button
                     variant="outline"
                     size="sm"
+                    disabled={!doc.fileData}
+                    onClick={() => setDocToPreview(doc)}
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    View
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => downloadDoc(doc)}
                   >
                     <Download className="mr-2 h-4 w-4" />
@@ -591,6 +618,64 @@ export default function EmployeeAccount() {
           setDocToDelete(null);
         }}
       />
+
+      <Dialog open={!!docToPreview} onOpenChange={(o) => !o && setDocToPreview(null)}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="truncate pr-8">
+              {docToPreview?.name}
+            </DialogTitle>
+            <DialogDescription className="truncate">
+              {docToPreview?.type}
+              {docToPreview?.fileName ? ` · ${docToPreview.fileName}` : ""}
+            </DialogDescription>
+          </DialogHeader>
+          {docToPreview && (
+            <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+              {previewKind(docToPreview) === "image" && docToPreview.fileData && (
+                <div className="flex max-h-[70vh] items-center justify-center overflow-auto p-4">
+                  <img
+                    src={docToPreview.fileData}
+                    alt={docToPreview.fileName || docToPreview.name}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
+              )}
+              {previewKind(docToPreview) === "pdf" && docToPreview.fileData && (
+                <iframe
+                  src={docToPreview.fileData}
+                  title={docToPreview.fileName || docToPreview.name}
+                  className="h-[70vh] w-full bg-white"
+                />
+              )}
+              {previewKind(docToPreview) === "unsupported" && (
+                <div className="flex flex-col items-center justify-center gap-4 px-6 py-16 text-center">
+                  <div className="rounded-full bg-slate-200 p-4 text-slate-500">
+                    <FileQuestion className="h-8 w-8" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-700">
+                      Preview not available for this file type
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {docToPreview.fileName || "This file"} can&apos;t be shown inline. Download it
+                      to open in another application.
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => downloadDoc(docToPreview)}
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
