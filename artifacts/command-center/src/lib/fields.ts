@@ -205,6 +205,6 @@ export const documentFields: FieldDef[] = [
     fileNameKey: "fileName",
     fileSizeKey: "fileSize",
     mimeTypeKey: "mimeType",
-    maxSizeMB: 1,
+    maxSizeMB: 25,
   },
 ];

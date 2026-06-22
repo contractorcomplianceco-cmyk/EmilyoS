@@ -1,17 +1,17 @@
 ---
-name: localStorage blob persistence
-description: How command-center stores binary attachments (file uploads) in its localStorage-only data layer, and the quota constraint that governs it.
+name: command-center attachment storage
+description: Where command-center stores binary file attachments (IndexedDB) vs. the rest of its data (localStorage), and the constraints around each.
 ---
 
-# Storing file attachments in the localStorage store
+# command-center attachment storage
 
-command-center has no backend — the whole `Database` is persisted as one JSON blob in `localStorage` (`src/lib/store.ts`). File attachments (e.g. EmployeeDocument) are stored inline as base64 data URLs in that same blob.
+command-center has no backend. The whole `Database` (records/metadata) persists as one JSON blob in `localStorage` (`src/lib/store.ts`, key `rccc.data.v1`). **Binary file attachments do NOT live in that blob** — they live in IndexedDB (`src/lib/attachments.ts`, db `rccc.attachments`, store `files`), keyed by `EmployeeDocument.fileRef`.
 
-**Constraint:** browser localStorage is ~5 MB per origin, and base64 inflates a file by ~33%. The entire app's data shares that one budget, so per-file caps must stay small. Keep attachment limits around 1 MB (set via `maxSizeMB` on a `file` field in `fields.ts`); do not raise to multiple MB.
-
-**Why:** a 4 MB file becomes ~5.3 MB base64 and alone exceeds the quota. A code review rejected a 4 MB cap for this reason.
+**Why:** localStorage is ~5 MB per origin and the whole app shares it; base64 inflates files ~33%, so multi-MB attachments alone blew the quota. Moving blobs to IndexedDB lets the per-file cap be large (currently 25 MB via `maxSizeMB` in `fields.ts`).
 
 **How to apply:**
-- `saveRecord` is transactional: it snapshots `db`, attempts `persist()`, and on failure rolls back and throws `StorageError`. Callers that write large blobs must catch `StorageError` and surface it (the document form does this and returns `false` from `onSubmit` to keep the dialog open).
-- `RecordFormDialog`'s `onSubmit` may return `false` to keep the dialog open (e.g. when a save failed); any other return closes it.
-- If attachments ever need to be large (multi-MB) or numerous, move blobs out of localStorage to IndexedDB or object storage — do not just raise the cap.
+- The `RecordFormDialog` `file` field still produces a data URL into form state; the *page-level* `onSubmit` (EmployeeAccount) is what writes that data URL to IndexedDB via `putAttachment`, stores only `fileRef` on the record, and sets `fileData: undefined` so the binary never reaches localStorage. New file fields elsewhere must do the same — don't persist `fileData` inline.
+- Legacy docs with inline `fileData` still download (download checks `fileRef` first, falls back to `fileData`) and auto-migrate to IndexedDB on next edit-save.
+- Deleting a document/attachment must also `deleteAttachment(fileRef)` or the IndexedDB blob orphans.
+- The storage meter uses `navigator.storage.estimate()` (origin-wide usage/quota, covers IndexedDB+localStorage), not the old fixed 5 MB localStorage budget. It hides itself when `estimate()` is unavailable.
+- `saveRecord` is still transactional and throws `StorageError` on localStorage quota; `putAttachment` also throws `StorageError` on IndexedDB write failure. Callers catch and surface it, returning `false` from `onSubmit` to keep the dialog open.

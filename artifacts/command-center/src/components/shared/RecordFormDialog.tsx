@@ -326,7 +326,7 @@ export function RecordFormDialog<T>({
 
                 {f.type === "file" ? (
                   <div className="space-y-2">
-                    {values[f.key] && f.fileNameKey && values[f.fileNameKey] ? (
+                    {f.fileNameKey && values[f.fileNameKey] ? (
                       <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-muted/40 px-3 py-2">
                         <div className="min-w-0">
                           <p className="truncate text-sm font-medium text-foreground">
@@ -365,7 +365,7 @@ export function RecordFormDialog<T>({
                       <p className="text-xs text-destructive">{fileErrors[f.key]}</p>
                     ) : (
                       <p className="text-xs text-muted-foreground">
-                        {values[f.key]
+                        {f.fileNameKey && values[f.fileNameKey]
                           ? "Choose a new file to replace the current attachment."
                           : "Optional — attach the actual file (max " +
                             (f.maxSizeMB ?? 4) +

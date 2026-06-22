@@ -317,7 +317,13 @@ export interface EmployeeDocument {
   date: string;
   /** Original file name of the attached file, e.g. "agreement.pdf". */
   fileName?: string;
-  /** Attached file contents stored as a data URL (base64). */
+  /** IndexedDB key for the attachment's binary contents (preferred store). */
+  fileRef?: string;
+  /**
+   * Legacy: attachment contents stored inline as a data URL (base64).
+   * Newer uploads live in IndexedDB (see `fileRef`); kept for backward
+   * compatibility so previously attached files still load and download.
+   */
   fileData?: string;
   /** MIME type of the attached file. */
   mimeType?: string;

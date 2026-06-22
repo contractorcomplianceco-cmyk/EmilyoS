@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TonePill } from "@/components/shared/Badges";
@@ -10,17 +10,21 @@ import {
   saveRecord,
   deleteRecord,
   StorageError,
-  serializedSize,
-  STORAGE_QUOTA_BYTES,
-  STORAGE_SAFE_BYTES,
 } from "@/lib/store";
+import {
+  putAttachment,
+  getAttachment,
+  deleteAttachment,
+  estimateStorage,
+  type StorageEstimate,
+} from "@/lib/attachments";
 import {
   compensationFields,
   reviewTargetFields,
   employeeProfileFields,
   documentFields,
 } from "@/lib/fields";
-import { fmtDate, daysUntil, isOverdue, isDueToday, formatBytes } from "@/lib/format";
+import { fmtDate, daysUntil, isOverdue, isDueToday, formatBytes, uid } from "@/lib/format";
 import type { BadgeTone } from "@/lib/format";
 import type {
   Compensation,
@@ -146,28 +150,47 @@ export default function EmployeeAccount() {
     setDocOpen(true);
   };
 
-  const usedBytes = serializedSize(db);
-  const usedPct = Math.min(100, Math.round((usedBytes / STORAGE_QUOTA_BYTES) * 100));
-  const meterTone =
-    usedBytes >= STORAGE_SAFE_BYTES
-      ? "from-red-500 to-rose-600"
-      : usedPct >= 70
-        ? "from-amber-500 to-orange-600"
-        : "from-emerald-500 to-teal-600";
+  const [storage, setStorage] = useState<StorageEstimate | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    estimateStorage().then((s) => {
+      if (active) setStorage(s);
+    });
+    return () => {
+      active = false;
+    };
+  }, [db.documents]);
+
+  const usedBytes = storage?.usage ?? 0;
+  const quotaBytes = storage?.quota ?? 0;
+  const usedPct =
+    quotaBytes > 0 ? Math.min(100, Math.round((usedBytes / quotaBytes) * 100)) : 0;
+  const nearFull = quotaBytes > 0 && usedBytes >= quotaBytes * 0.9;
+  const meterTone = nearFull
+    ? "from-red-500 to-rose-600"
+    : usedPct >= 70
+      ? "from-amber-500 to-orange-600"
+      : "from-emerald-500 to-teal-600";
 
   const checkDocStorage = (dataUrlLength: number): string | null => {
-    const existing = editingDoc.id
-      ? db.documents.find((d) => d.id === editingDoc.id)
-      : undefined;
-    const existingLen = existing?.fileData?.length ?? 0;
-    const projected = usedBytes - existingLen + dataUrlLength;
-    if (projected <= STORAGE_SAFE_BYTES) return null;
-    const overBy = projected - STORAGE_SAFE_BYTES;
-    return `This file is too large to save with your current data — about ${formatBytes(overBy)} over the available browser storage. Remove other attachments or choose a smaller file.`;
+    if (!storage) return null;
+    const remaining = storage.quota - storage.usage;
+    if (dataUrlLength <= remaining) return null;
+    const overBy = dataUrlLength - remaining;
+    return `This file is too large to save with your available storage — about ${formatBytes(overBy)} over the limit. Free up space or choose a smaller file.`;
   };
 
-  const downloadDoc = (doc: EmployeeDocument) => {
-    if (!doc.fileData) {
+  const downloadDoc = async (doc: EmployeeDocument) => {
+    let dataUrl = doc.fileData;
+    if (doc.fileRef) {
+      try {
+        dataUrl = await getAttachment(doc.fileRef);
+      } catch {
+        dataUrl = undefined;
+      }
+    }
+    if (!dataUrl) {
       toast({
         title: "No file attached",
         description: `Add a file to “${doc.name}” to download it. Use Edit to attach one.`,
@@ -175,7 +198,7 @@ export default function EmployeeAccount() {
       return;
     }
     const link = document.createElement("a");
-    link.href = doc.fileData;
+    link.href = dataUrl;
     link.download = doc.fileName || doc.name || "document";
     document.body.appendChild(link);
     link.click();
@@ -440,34 +463,40 @@ export default function EmployeeAccount() {
             </Button>
           </div>
         </div>
-        <div className="border-b border-slate-100 px-5 py-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-medium text-slate-500">Browser storage used</span>
-            <span
-              className={
-                usedBytes >= STORAGE_SAFE_BYTES
-                  ? "font-semibold text-red-600"
-                  : usedPct >= 70
-                    ? "font-semibold text-amber-600"
-                    : "font-medium text-slate-500"
-              }
-            >
-              {formatBytes(usedBytes)} of {formatBytes(STORAGE_QUOTA_BYTES)} ({usedPct}%)
-            </span>
-          </div>
-          <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-            <div
-              className={`h-full rounded-full bg-gradient-to-r ${meterTone} transition-all`}
-              style={{ width: `${Math.max(2, usedPct)}%` }}
-            />
-          </div>
-          {usedBytes >= STORAGE_SAFE_BYTES ? (
-            <p className="mt-1.5 text-xs text-amber-600">
-              Storage is almost full. New attachments may be too large to save — remove
-              files you no longer need before adding more.
+        {storage ? (
+          <div className="border-b border-slate-100 px-5 py-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-slate-500">Device storage used</span>
+              <span
+                className={
+                  nearFull
+                    ? "font-semibold text-red-600"
+                    : usedPct >= 70
+                      ? "font-semibold text-amber-600"
+                      : "font-medium text-slate-500"
+                }
+              >
+                {formatBytes(usedBytes)} of {formatBytes(quotaBytes)} ({usedPct}%)
+              </span>
+            </div>
+            <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+              <div
+                className={`h-full rounded-full bg-gradient-to-r ${meterTone} transition-all`}
+                style={{ width: `${Math.max(2, usedPct)}%` }}
+              />
+            </div>
+            <p className="mt-1.5 text-xs text-slate-400">
+              Attachments are saved on your device (IndexedDB), separate from the app's
+              other data — so larger files no longer crowd out your records.
             </p>
-          ) : null}
-        </div>
+            {nearFull ? (
+              <p className="mt-1 text-xs text-amber-600">
+                Storage is almost full. New attachments may be too large to save — remove
+                files you no longer need before adding more.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
         {db.documents.length === 0 ? (
           <p className="p-6 text-sm text-slate-400">
             No documents yet. Use “Add Document” to track an employment document.
@@ -484,7 +513,9 @@ export default function EmployeeAccount() {
                     <p className="text-sm font-semibold text-slate-800">{doc.name}</p>
                     <p className="text-xs text-slate-400">
                       {doc.type} · Updated {fmtDate(doc.date)}
-                      {doc.fileData ? ` · ${doc.fileName || "File attached"}` : " · No file attached"}
+                      {doc.fileRef || doc.fileData
+                        ? ` · ${doc.fileName || "File attached"}`
+                        : " · No file attached"}
                     </p>
                   </div>
                 </div>
@@ -591,9 +622,33 @@ export default function EmployeeAccount() {
         fields={documentFields}
         initial={editingDoc}
         storageCheck={checkDocStorage}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           try {
-            saveRecord("documents", { ...editingDoc, ...values } as EmployeeDocument);
+            const v = values as Partial<EmployeeDocument>;
+            // A freshly selected (or legacy inline) file arrives as a data URL.
+            const newDataUrl = v.fileData;
+            const prevRef = editingDoc.fileRef;
+            let fileRef = prevRef;
+            if (newDataUrl) {
+              const ref = uid("att");
+              await putAttachment(ref, newDataUrl);
+              if (prevRef) await deleteAttachment(prevRef);
+              fileRef = ref;
+            } else if (!v.fileName) {
+              // Attachment was removed in the form.
+              if (prevRef) await deleteAttachment(prevRef);
+              fileRef = undefined;
+            }
+            // Never persist the binary inline in localStorage — only the ref.
+            const record: EmployeeDocument = {
+              ...editingDoc,
+              ...v,
+              fileRef,
+              fileData: undefined,
+            } as EmployeeDocument;
+            saveRecord("documents", record);
+            const refreshed = await estimateStorage();
+            setStorage(refreshed);
             return true;
           } catch (err) {
             toast({
@@ -614,7 +669,14 @@ export default function EmployeeAccount() {
         onOpenChange={(o) => !o && setDocToDelete(null)}
         itemLabel={docToDelete?.name}
         onConfirm={() => {
-          if (docToDelete) deleteRecord("documents", docToDelete.id);
+          if (docToDelete) {
+            if (docToDelete.fileRef) {
+              void deleteAttachment(docToDelete.fileRef).then(() =>
+                estimateStorage().then(setStorage),
+              );
+            }
+            deleteRecord("documents", docToDelete.id);
+          }
           setDocToDelete(null);
         }}
       />
