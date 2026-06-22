@@ -1,0 +1,262 @@
+Redesign the existing Emily / Regulatory Communications Command Center mockup into a personalized, polished, trendy interface for Emily Jones.
+
+Do not remove the operational purpose of the app. This is still a serious internal compliance command center for Emily’s role as Director of Regulatory Compliance Communications. The app must still help her track agency communications, regulatory matters, board follow-ups, DOT / Revenue / EPA / licensing agency communications, deficiencies, deadlines, escalations, tasks, applications, chats, and items needing Rose review.
+
+But visually, make it feel much more personal to Emily.
+
+Emily’s style:
+- 18 years old
+- Very girly
+- Likes newer trendy things
+- Likes the beach
+- Likes perfume, makeup, beauty, designer bags, Coach bags
+- Likes pretty baby blue and baby pink
+- Likes pretty flowers, charms, cherries, sparkles, glossy details, cute accents, and feminine polished design
+
+Design theme:
+Create a “Soft Coastal Compliance Studio” look.
+
+The interface should feel:
+- Pretty
+- Fresh
+- Trendy
+- Girly
+- Light
+- Organized
+- Polished
+- Youthful but still professional
+- Like a personalized work cockpit Emily would actually enjoy opening every day
+
+Important balance:
+Do not make it childish.
+Do not make it look like a toy.
+Do not make it look like a beauty website.
+Do not make it a landing page.
+This is still a working operational dashboard, but with Emily’s personal aesthetic layered into it.
+
+Visual direction:
+- Use a soft baby blue, blush pink, white, pearl, soft gray, and subtle silver palette.
+- Use baby blue as the main operational color.
+- Use baby pink for accents, highlights, tags, and soft section headers.
+- Add subtle floral accents, small charm-like icons, cherry accents, sparkle details, and soft glossy UI moments.
+- Use soft gradients only in small controlled areas, not huge generic SaaS gradients.
+- Use rounded but clean panels.
+- Use glassy/pearl card surfaces with good contrast and readable text.
+- Use cute but professional icons.
+- Use delicate dividers, small sparkle markers, soft shadows, and polished badge styling.
+- Add a small personal header moment for Emily, such as “Emily’s Regulatory Studio” or “EmilyOS Regulatory Desk.”
+- Include a tasteful avatar/profile area for Emily.
+- Add small decorative motifs like a tiny charm chain, cherry badge, flower icon, perfume-bottle-style status card, or beachy pearl accent, but keep them subtle.
+
+App name options:
+Use one of these:
+- EmilyOS Regulatory Studio
+- Emily’s Regulatory Communications Studio
+- EmilyOS Command Center
+- Emily’s Agency Communications Desk
+
+Preferred final name:
+EmilyOS Regulatory Studio
+
+Main layout:
+- Left sidebar navigation
+- Personalized top header
+- Main dashboard workspace
+- Right-side “Today / Rose Review / Follow-Ups” panel
+- Clean mobile responsive layout
+
+Navigation sections:
+1. Today
+2. Agency Matters
+3. Follow-Ups
+4. Deficiencies
+5. Agency Directory
+6. Communications
+7. Applications
+8. Chats / Notes
+9. Rose Review
+10. Knowledge Library
+11. SOPs / Training
+
+Dashboard first screen:
+Create a beautiful personalized dashboard with these areas:
+
+1. Emily’s Today Panel
+Show:
+- Follow-ups due today
+- Overdue agency items
+- Applications needing status check
+- New deficiencies
+- Items waiting on agency
+- Items waiting on internal team
+- Items ready for Rose review
+
+2. Pretty KPI Cards
+Create soft glossy cards for:
+- Open Matters
+- Due Today
+- Overdue
+- Waiting on Agency
+- Deficiencies
+- Rose Review
+- Completed This Week
+
+Use baby blue and baby pink badges. Add tiny charm/sparkle/cherry/flower accents tastefully.
+
+3. Agency Matter Board
+Show a table or kanban board with:
+- Matter name
+- Client/company
+- Agency
+- Type
+- Status
+- Risk level
+- Last contact
+- Next follow-up
+- Owner
+- Next action
+
+Statuses:
+- Not Started
+- In Progress
+- Waiting on Agency
+- Waiting on Client
+- Waiting on Internal Team
+- Deficiency Received
+- Ready for Review
+- Escalated
+- Done
+
+Emily uses these work categories, so include them clearly:
+- Not started
+- In progress
+- Blocked
+- Ready for review
+- Done
+
+4. Rose Review Queue
+Create a dedicated panel for work Emily needs Rose to review or approve.
+
+Fields:
+- Item
+- Type
+- Why Rose needs to review
+- Due date
+- Status
+- Notes
+
+5. Follow-Up Calendar
+Create a soft calendar/list view showing:
+- Board follow-ups
+- Revenue department follow-ups
+- DOT follow-ups
+- EPA/environmental follow-ups
+- Portal checks
+- Email follow-ups
+- Deadline reminders
+
+6. Chats / Notes Tracker
+Emily needs to track chats, so create a section for:
+- Internal chat notes
+- Client-related notes
+- Agency call notes
+- Rose instruction notes
+- Follow-up notes
+- Linked matter
+- Action needed
+
+7. Applications Tracker
+Create a view for applications Emily is tracking:
+- Application name
+- Client/company
+- State
+- Agency
+- Submission date
+- Current status
+- Last checked
+- Next check
+- Deficiency yes/no
+- Notes
+
+8. Agency Directory
+Keep this professional but visually softer:
+- Agency name
+- Type
+- State
+- Portal link
+- Phone
+- Email
+- Contact person
+- Follow-up rules
+- Notes
+- Common issues
+
+9. Knowledge Library
+Make this feel like Emily’s organized reference binder:
+- Agency notes
+- State notes
+- Portal instructions
+- Common deficiencies
+- SOP links
+- Templates
+- Status language
+
+10. SOP / Training
+Create a simple section with cute but clean cards:
+- Board Communication SOP
+- Agency Follow-Up SOP
+- Documentation Standards
+- Deficiency Routing
+- Escalation Rules
+- How to Prepare Items for Rose Review
+- How to Update Applications
+- How to Log Chats and Notes
+
+Interaction requirements:
+- Add/edit forms should be functional for matters, agencies, communications, applications, chats, deficiencies, and review items.
+- Filters should work.
+- Search should work.
+- Status badges should be visually clear.
+- Use localStorage for prototype persistence so data survives refresh.
+- Include realistic sample data.
+- Include empty states.
+- Include hover states and polished microinteractions.
+- Make the app feel clickable and alive.
+
+Content tone:
+Use short, friendly operational labels.
+Avoid long instructional paragraphs.
+Avoid technical developer language.
+Use simple labels Emily would understand quickly.
+
+Examples:
+- “Needs Rose”
+- “Check Today”
+- “Waiting on Agency”
+- “Ready for Review”
+- “Blocked”
+- “Done”
+- “Next Follow-Up”
+- “Agency Notes”
+- “Application Status”
+- “Chat Notes”
+
+Design guardrails:
+- Keep text readable.
+- Keep the dashboard clean and not cluttered.
+- Do not overuse sparkles or cherries.
+- Decorations should be accents, not the main content.
+- Do not use dark navy as the dominant color for this version.
+- Do not use gold/yellow-heavy styling.
+- Do not use beige/tan.
+- Do not use generic purple SaaS gradients.
+- Do not make the app look like a public marketing website.
+- Do not use huge hero sections.
+- The first screen must be the actual working dashboard.
+
+Compliance boundary reminder:
+Include a subtle note somewhere in the app:
+“Emily tracks agency communication, follow-ups, documentation, and review routing. Final legal, tax, compliance, pricing, refund, and contract decisions require approved leadership or reviewer sign-off.”
+
+Goal:
+Produce a beautiful first mockup redesign of EmilyOS Regulatory Studio that feels personal to Emily while still functioning as a professional regulatory communications command center.
