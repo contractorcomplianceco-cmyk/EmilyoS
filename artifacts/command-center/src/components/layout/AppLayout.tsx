@@ -176,32 +176,60 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Coastal charm backdrop (app-wide) */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden select-none lg:block">
           <img
+            src={asset("decor/sticker-bow.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute left-6 top-24 w-20 -rotate-6 opacity-30 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/sticker-candle.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute right-28 top-28 w-12 rotate-3 opacity-25 drop-shadow-sm"
+          />
+          <img
             src={asset("decor/shells-charm.png")}
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute right-6 top-28 w-28 -rotate-6 opacity-20 drop-shadow-sm"
+            className="absolute right-6 top-1/2 w-20 -rotate-6 opacity-[0.18] drop-shadow-sm"
           />
           <img
-            src={asset("decor/perfume-charm.png")}
+            src={asset("decor/sticker-camera.png")}
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute bottom-8 right-12 w-16 rotate-3 opacity-25 drop-shadow-sm"
+            className="absolute left-10 top-1/2 w-20 rotate-6 opacity-25 drop-shadow-sm"
           />
           <img
-            src={asset("decor/flower-charm.png")}
+            src={asset("decor/sticker-rosewine.png")}
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute bottom-10 left-8 w-24 -rotate-6 opacity-20 drop-shadow-sm"
+            className="absolute right-1/4 top-1/3 w-12 rotate-6 opacity-25 drop-shadow-sm"
           />
           <img
-            src={asset("decor/starfish-charm.png")}
+            src={asset("decor/sticker-blossom.png")}
             alt=""
             loading="lazy"
             decoding="async"
-            className="absolute left-12 top-1/2 w-20 rotate-6 opacity-[0.18] drop-shadow-sm"
+            className="absolute left-1/3 bottom-24 w-16 -rotate-6 opacity-30 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/sticker-cherries.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute left-1/2 bottom-12 w-12 rotate-3 opacity-30 drop-shadow-sm"
+          />
+          <img
+            src={asset("decor/sticker-flowers.png")}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute bottom-10 left-8 w-24 rotate-3 opacity-25 drop-shadow-sm"
           />
         </div>
 
