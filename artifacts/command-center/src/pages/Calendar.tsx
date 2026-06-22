@@ -19,7 +19,7 @@ import {
   OPEN_ESCALATION_STATUSES,
 } from "@/lib/types";
 
-type Source = "Matter" | "Deficiency" | "Escalation" | "Communication";
+type Source = "Matter" | "Deficiency" | "Escalation" | "Communication" | "Review";
 
 interface FollowUpItem {
   id: string;
@@ -44,6 +44,7 @@ function sourceColor(source: Source): string {
     case "Deficiency": return "from-amber-500 to-orange-600";
     case "Escalation": return "from-red-500 to-rose-600";
     case "Communication": return "from-emerald-500 to-teal-600";
+    case "Review": return "from-sky-500 to-blue-600";
   }
 }
 
@@ -108,6 +109,20 @@ export default function Calendar() {
           context: `${agencyName(db, c.agencyId)} · ${c.summary.slice(0, 50)}`,
           badge: <TonePill label={c.contactMethod} tone="slate" />,
           href: "/communications",
+        }),
+      );
+
+    db.reviewTargets
+      .filter((r) => r.targetDate)
+      .forEach((r) =>
+        out.push({
+          id: `r_${r.id}`,
+          date: r.targetDate as string,
+          source: "Review",
+          title: r.label,
+          context: r.value ? `Rate review · ${r.value}` : "Rate review milestone",
+          badge: <TonePill label="Review" tone="blue" />,
+          href: "/employee-account",
         }),
       );
 
@@ -189,7 +204,7 @@ export default function Calendar() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Follow-Up Calendar</h2>
               <p className="mt-1.5 max-w-xl text-sm text-white/70">
-                Consolidated view of every upcoming follow-up across matters, deficiencies, escalations, and communications.
+                Consolidated view of every upcoming follow-up across matters, deficiencies, escalations, communications, and review milestones.
               </p>
             </div>
           </div>
@@ -237,6 +252,7 @@ export default function Calendar() {
               { value: "Deficiency", label: "Deficiency" },
               { value: "Escalation", label: "Escalation" },
               { value: "Communication", label: "Communication" },
+              { value: "Review", label: "Review" },
             ],
           },
         ]}
