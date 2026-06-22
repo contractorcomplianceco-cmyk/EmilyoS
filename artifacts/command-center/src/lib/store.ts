@@ -40,11 +40,25 @@ function load(): Database {
 let db: Database = load();
 const listeners = new Set<() => void>();
 
+/** Thrown when a write cannot be persisted (e.g. browser storage quota exceeded). */
+export class StorageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "StorageError";
+  }
+}
+
+/** Writes the current db to localStorage. Throws on quota/serialization failure. */
 function persist() {
+  window.localStorage.setItem(LS_KEY, JSON.stringify(db));
+}
+
+/** Persist without throwing; used for operations that only shrink/replace data. */
+function tryPersist() {
   try {
-    window.localStorage.setItem(LS_KEY, JSON.stringify(db));
+    persist();
   } catch {
-    /* ignore quota errors in prototype */
+    /* best-effort: deletes/resets reduce size and should not fail */
   }
 }
 
@@ -73,6 +87,7 @@ export function saveRecord<C extends Collection>(
   collection: C,
   record: Database[C][number],
 ): Database[C][number] {
+  const prev = db;
   const rec = record as WithId;
   const list = db[collection] as WithId[];
   const exists = rec.id && list.some((r) => r.id === rec.id);
@@ -91,7 +106,15 @@ export function saveRecord<C extends Collection>(
     };
     db = { ...db, [collection]: [saved, ...list] };
   }
-  persist();
+  try {
+    persist();
+  } catch {
+    // Roll back so in-memory state never diverges from what's persisted.
+    db = prev;
+    throw new StorageError(
+      "There isn't enough browser storage to save this. Try attaching a smaller file or removing other attachments.",
+    );
+  }
   emit();
   return saved as Database[C][number];
 }
@@ -99,12 +122,12 @@ export function saveRecord<C extends Collection>(
 export function deleteRecord<C extends Collection>(collection: C, id: string) {
   const list = db[collection] as WithId[];
   db = { ...db, [collection]: list.filter((r) => r.id !== id) };
-  persist();
+  tryPersist();
   emit();
 }
 
 export function resetData() {
   db = buildSeed();
-  persist();
+  tryPersist();
   emit();
 }

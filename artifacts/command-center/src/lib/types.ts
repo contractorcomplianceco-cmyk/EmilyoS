@@ -315,6 +315,14 @@ export interface EmployeeDocument {
   name: string;
   type: string;
   date: string;
+  /** Original file name of the attached file, e.g. "agreement.pdf". */
+  fileName?: string;
+  /** Attached file contents stored as a data URL (base64). */
+  fileData?: string;
+  /** MIME type of the attached file. */
+  mimeType?: string;
+  /** Size of the attached file in bytes. */
+  fileSize?: number;
   createdAt: string;
 }
 

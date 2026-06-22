@@ -26,7 +26,8 @@ export type FieldType =
   | "select"
   | "date"
   | "datetime"
-  | "boolean";
+  | "boolean"
+  | "file";
 
 export interface Option {
   value: string;
@@ -41,6 +42,33 @@ export interface FieldDef {
   required?: boolean;
   placeholder?: string;
   full?: boolean;
+  /** For `file` fields: the `accept` attribute passed to the input. */
+  accept?: string;
+  /** For `file` fields: form key that stores the original file name. */
+  fileNameKey?: string;
+  /** For `file` fields: form key that stores the file size in bytes. */
+  fileSizeKey?: string;
+  /** For `file` fields: form key that stores the file MIME type. */
+  mimeTypeKey?: string;
+  /** For `file` fields: maximum allowed size in MB (defaults to 4). */
+  maxSizeMB?: number;
+}
+
+function formatBytes(bytes: number): string {
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const value = bytes / Math.pow(1024, i);
+  return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 }
 
 type FormValues = Record<string, string | boolean>;
@@ -76,19 +104,29 @@ export function RecordFormDialog<T>({
   description?: string;
   fields: FieldDef[];
   initial: Partial<T>;
-  onSubmit: (values: Partial<T>) => void;
+  /** Return `false` to keep the dialog open (e.g. when the save failed). */
+  onSubmit: (values: Partial<T>) => unknown;
 }) {
   const buildDefaults = useMemo(() => {
     return () => {
       const v: FormValues = {};
+      const src = initial as Record<string, unknown>;
       for (const f of fields) {
-        const raw = (initial as Record<string, unknown>)[f.key];
+        const raw = src[f.key];
         if (f.type === "boolean") {
           v[f.key] = Boolean(raw);
         } else if (f.type === "datetime") {
           v[f.key] = raw ? toDatetimeLocal(String(raw)) : "";
         } else {
           v[f.key] = raw === undefined || raw === null ? "" : String(raw);
+        }
+        if (f.type === "file") {
+          for (const auxKey of [f.fileNameKey, f.fileSizeKey, f.mimeTypeKey]) {
+            if (auxKey) {
+              const auxRaw = src[auxKey];
+              v[auxKey] = auxRaw === undefined || auxRaw === null ? "" : String(auxRaw);
+            }
+          }
         }
       }
       return v;
@@ -98,11 +136,13 @@ export function RecordFormDialog<T>({
 
   const [values, setValues] = useState<FormValues>(buildDefaults);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (open) {
       setValues(buildDefaults());
       setErrors({});
+      setFileErrors({});
     }
   }, [open, buildDefaults]);
 
@@ -111,7 +151,47 @@ export function RecordFormDialog<T>({
     setErrors((prev) => ({ ...prev, [key]: false }));
   };
 
-  const handleSubmit = () => {
+  const handleFileChange = async (f: FieldDef, file: File | null) => {
+    if (!file) return;
+    const maxMB = f.maxSizeMB ?? 4;
+    if (file.size > maxMB * 1024 * 1024) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [f.key]: `File is too large (${formatBytes(file.size)}). Maximum is ${maxMB} MB.`,
+      }));
+      return;
+    }
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      setValues((prev) => ({
+        ...prev,
+        [f.key]: dataUrl,
+        ...(f.fileNameKey ? { [f.fileNameKey]: file.name } : {}),
+        ...(f.fileSizeKey ? { [f.fileSizeKey]: String(file.size) } : {}),
+        ...(f.mimeTypeKey ? { [f.mimeTypeKey]: file.type } : {}),
+      }));
+      setErrors((prev) => ({ ...prev, [f.key]: false }));
+      setFileErrors((prev) => ({ ...prev, [f.key]: "" }));
+    } catch {
+      setFileErrors((prev) => ({
+        ...prev,
+        [f.key]: "Could not read that file. Please try again.",
+      }));
+    }
+  };
+
+  const clearFile = (f: FieldDef) => {
+    setValues((prev) => ({
+      ...prev,
+      [f.key]: "",
+      ...(f.fileNameKey ? { [f.fileNameKey]: "" } : {}),
+      ...(f.fileSizeKey ? { [f.fileSizeKey]: "" } : {}),
+      ...(f.mimeTypeKey ? { [f.mimeTypeKey]: "" } : {}),
+    }));
+    setFileErrors((prev) => ({ ...prev, [f.key]: "" }));
+  };
+
+  const handleSubmit = async () => {
     const nextErrors: Record<string, boolean> = {};
     for (const f of fields) {
       if (f.required && f.type !== "boolean") {
@@ -134,8 +214,17 @@ export function RecordFormDialog<T>({
       } else {
         out[f.key] = val;
       }
+      if (f.type === "file") {
+        if (f.fileNameKey) out[f.fileNameKey] = values[f.fileNameKey] ?? "";
+        if (f.fileSizeKey) {
+          const sizeVal = values[f.fileSizeKey];
+          out[f.fileSizeKey] = sizeVal ? Number(sizeVal) : 0;
+        }
+        if (f.mimeTypeKey) out[f.mimeTypeKey] = values[f.mimeTypeKey] ?? "";
+      }
     }
-    onSubmit(out as Partial<T>);
+    const result = await onSubmit(out as Partial<T>);
+    if (result === false) return;
     onOpenChange(false);
   };
 
@@ -225,6 +314,57 @@ export function RecordFormDialog<T>({
                     <span className="text-sm text-muted-foreground">
                       {values[f.key] ? "Yes" : "No"}
                     </span>
+                  </div>
+                ) : null}
+
+                {f.type === "file" ? (
+                  <div className="space-y-2">
+                    {values[f.key] && f.fileNameKey && values[f.fileNameKey] ? (
+                      <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-muted/40 px-3 py-2">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-foreground">
+                            {String(values[f.fileNameKey])}
+                          </p>
+                          {f.fileSizeKey && values[f.fileSizeKey] ? (
+                            <p className="text-xs text-muted-foreground">
+                              {formatBytes(Number(values[f.fileSizeKey]))}
+                            </p>
+                          ) : null}
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => clearFile(f)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ) : null}
+                    <Input
+                      type="file"
+                      accept={f.accept}
+                      onChange={(e) =>
+                        handleFileChange(f, e.target.files?.[0] ?? null)
+                      }
+                      aria-invalid={errors[f.key] || undefined}
+                      className={
+                        errors[f.key]
+                          ? "cursor-pointer border-destructive file:mr-3 file:cursor-pointer"
+                          : "cursor-pointer file:mr-3 file:cursor-pointer"
+                      }
+                    />
+                    {fileErrors[f.key] ? (
+                      <p className="text-xs text-destructive">{fileErrors[f.key]}</p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">
+                        {values[f.key]
+                          ? "Choose a new file to replace the current attachment."
+                          : "Optional — attach the actual file (max " +
+                            (f.maxSizeMB ?? 4) +
+                            " MB)."}
+                      </p>
+                    )}
                   </div>
                 ) : null}
               </div>

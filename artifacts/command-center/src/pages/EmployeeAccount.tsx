@@ -5,7 +5,7 @@ import { TonePill } from "@/components/shared/Badges";
 import { RecordFormDialog } from "@/components/shared/RecordFormDialog";
 import { ConfirmDelete } from "@/components/shared/ConfirmDelete";
 import { useToast } from "@/hooks/use-toast";
-import { useDatabase, saveRecord, deleteRecord } from "@/lib/store";
+import { useDatabase, saveRecord, deleteRecord, StorageError } from "@/lib/store";
 import {
   compensationFields,
   reviewTargetFields,
@@ -126,6 +126,23 @@ export default function EmployeeAccount() {
   const openEditDoc = (doc: EmployeeDocument) => {
     setEditingDoc(doc);
     setDocOpen(true);
+  };
+
+  const downloadDoc = (doc: EmployeeDocument) => {
+    if (!doc.fileData) {
+      toast({
+        title: "No file attached",
+        description: `Add a file to “${doc.name}” to download it. Use Edit to attach one.`,
+      });
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = doc.fileData;
+    link.download = doc.fileName || doc.name || "document";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast({ title: "Download started", description: `${doc.fileName || doc.name} is downloading.` });
   };
 
   const details = [
@@ -393,6 +410,7 @@ export default function EmployeeAccount() {
                     <p className="text-sm font-semibold text-slate-800">{doc.name}</p>
                     <p className="text-xs text-slate-400">
                       {doc.type} · Updated {fmtDate(doc.date)}
+                      {doc.fileData ? ` · ${doc.fileName || "File attached"}` : " · No file attached"}
                     </p>
                   </div>
                 </div>
@@ -400,9 +418,7 @@ export default function EmployeeAccount() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      toast({ title: "Download started", description: `${doc.name} is downloading.` })
-                    }
+                    onClick={() => downloadDoc(doc)}
                   >
                     <Download className="mr-2 h-4 w-4" />
                     Download
@@ -491,9 +507,22 @@ export default function EmployeeAccount() {
         description="Track an employment document with its label and last-updated date."
         fields={documentFields}
         initial={editingDoc}
-        onSubmit={(values) =>
-          saveRecord("documents", { ...editingDoc, ...values } as EmployeeDocument)
-        }
+        onSubmit={(values) => {
+          try {
+            saveRecord("documents", { ...editingDoc, ...values } as EmployeeDocument);
+            return true;
+          } catch (err) {
+            toast({
+              title: "Couldn't save document",
+              description:
+                err instanceof StorageError
+                  ? err.message
+                  : "Something went wrong saving this document. Please try again.",
+              variant: "destructive",
+            });
+            return false;
+          }
+        }}
       />
 
       <ConfirmDelete

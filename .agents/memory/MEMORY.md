@@ -1,3 +1,4 @@
 - [Cartographer JSX generics](cartographer-jsx-generics.md) — never write `<Component<T>` in TSX; cartographer babel plugin can't parse it (tsc passes, Vite dev fails).
 - [Executive design pattern](executive-design-pattern.md) — command-center's app-wide visual system: gradient heroes, gradient KPI cards, accent bars, glassmorphism; match Dashboard/Agencies.
 - [Vite new-dep reload error](vite-new-dep-optimize-reload.md) — first import of a new client dep throws a transient "Invalid hook call/duplicate React"; restart the workflow to clear, not a real bug.
+- [localStorage blob persistence](localstorage-blob-persistence.md) — file uploads stored as base64 in the one localStorage blob; keep caps ~1MB, saveRecord is transactional + throws StorageError.

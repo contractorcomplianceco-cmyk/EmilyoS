@@ -197,4 +197,14 @@ export const documentFields: FieldDef[] = [
   { key: "name", label: "Document Name", type: "text", required: true, full: true },
   { key: "type", label: "Type / Label", type: "text", required: true, placeholder: "e.g. PDF · Signed" },
   { key: "date", label: "Updated Date", type: "date", required: true },
+  {
+    key: "fileData",
+    label: "Attached File",
+    type: "file",
+    full: true,
+    fileNameKey: "fileName",
+    fileSizeKey: "fileSize",
+    mimeTypeKey: "mimeType",
+    maxSizeMB: 1,
+  },
 ];
