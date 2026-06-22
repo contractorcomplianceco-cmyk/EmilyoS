@@ -4,7 +4,7 @@ uploads = []
 id = "5IB_WOwjkMjJ9zutODxqJ"
 uri = "file://artifacts/command-center/public/decor/coastal-sidebar.png"
 type = "image"
-title = "coastal sidebar scene"
+title = "vivid coastal beach scene"
 
 [[generated]]
 id = "8uVNx5mXT4Z4E9aUbPsh2"
@@ -17,6 +17,18 @@ id = "oIG_Fy4T0JOQ89WBpiWmz"
 uri = "file://artifacts/command-center/public/decor/emily.png"
 type = "image"
 title = "emily portrait headshot"
+
+[[generated]]
+id = "zMIPhMn7sG_5ol_FyI9po"
+uri = "file://artifacts/command-center/public/decor/cherries-3d.png"
+type = "image"
+title = "glossy 3d cherries"
+
+[[generated]]
+id = "yxE6FA0PslZDJW38eVb7Y"
+uri = "file://artifacts/command-center/public/decor/beach-banner.png"
+type = "image"
+title = "wide beach banner"
 
 [[outputs]]
 id = "zdotcWg99Cv86RJxm5J_5"

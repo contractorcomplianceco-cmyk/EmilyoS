@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Sparkles,
-  Cherry,
   Gem,
   MessageSquare,
   CalendarDays,
@@ -34,15 +33,21 @@ const initials = (name: string) =>
 
 function SectionTitle({
   icon: Icon,
+  img,
   children,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon?: React.ComponentType<{ className?: string }>;
+  img?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="flex items-center gap-2">
       <span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
-      <Icon className="w-4 h-4 text-accent" />
+      {img ? (
+        <img src={img} alt="" className="h-5 w-5 object-contain drop-shadow-sm" />
+      ) : Icon ? (
+        <Icon className="w-4 h-4 text-accent" />
+      ) : null}
       <h3 className="font-bold text-slate-800 text-base">{children}</h3>
     </div>
   );
@@ -288,7 +293,7 @@ export default function Dashboard() {
             {/* Follow-Up Calendar */}
             <Card className="flex flex-col rounded-2xl border border-white bg-white/90 shadow-sm backdrop-blur-xl">
               <div className="flex items-center justify-between border-b border-slate-100 p-4">
-                <SectionTitle icon={Cherry}>Follow-Up Calendar</SectionTitle>
+                <SectionTitle img={asset("decor/cherries-3d.png")}>Follow-Up Calendar</SectionTitle>
                 <Link href="/calendar" className="text-xs font-medium text-primary hover:underline">
                   View all
                 </Link>
@@ -441,6 +446,29 @@ export default function Dashboard() {
               className="w-full max-w-[260px] opacity-95 drop-shadow-sm"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Beach banner */}
+      <div className="relative overflow-hidden rounded-2xl border border-white shadow-sm">
+        <img
+          src={asset("decor/beach-banner.png")}
+          alt=""
+          className="h-28 w-full object-cover sm:h-32"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent" />
+        <img
+          src={asset("decor/cherries-3d.png")}
+          alt=""
+          className="absolute right-5 top-1/2 hidden h-16 w-16 -translate-y-1/2 rotate-6 object-contain drop-shadow-md sm:block"
+        />
+        <div className="absolute inset-0 flex flex-col justify-center p-5">
+          <p className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-800">
+            <Sparkles className="h-4 w-4 text-accent" /> Sunny side of compliance
+          </p>
+          <p className="mt-0.5 text-sm font-medium text-slate-600">
+            Steady follow-ups, calm seas, and everything documented.
+          </p>
         </div>
       </div>
 

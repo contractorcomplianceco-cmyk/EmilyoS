@@ -29,7 +29,6 @@ import {
   AlertCircle,
   Flower2,
   Sparkles,
-  Cherry,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -93,8 +92,8 @@ function SidebarContent({ location }: { location: string }) {
   return (
     <>
       <div className="flex items-center gap-3 border-b border-white/50 bg-white/40 p-6">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-gradient-to-tr from-primary/30 to-accent/40 shadow-sm">
-          <Cherry className="h-5 w-5 text-pink-400" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-gradient-to-tr from-primary/20 to-accent/30 shadow-sm">
+          <img src={asset("decor/cherries-3d.png")} alt="" className="h-7 w-7 object-contain drop-shadow-sm" />
         </div>
         <div>
           <h1 className="flex items-center gap-1 text-lg font-bold tracking-tight text-slate-800">
@@ -141,9 +140,14 @@ function SidebarContent({ location }: { location: string }) {
 
       <div className="mt-auto p-4">
         <div className="relative overflow-hidden rounded-2xl border border-white shadow-sm">
-          <img src={asset("decor/coastal-sidebar.png")} alt="" className="h-32 w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-3">
+          <img src={asset("decor/coastal-sidebar.png")} alt="" className="h-40 w-full object-cover" />
+          <img
+            src={asset("decor/cherries-3d.png")}
+            alt=""
+            className="absolute right-2 top-2 h-9 w-9 rotate-12 object-contain drop-shadow-md"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent" />
+          <div className="absolute bottom-0 left-0 p-3.5">
             <p className="flex items-center gap-1 text-sm font-bold leading-tight text-white drop-shadow">
               Coastal focus. <Sparkles className="h-3 w-3" />
             </p>
@@ -186,6 +190,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="hidden min-w-0 flex-col md:flex">
               <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-800">
                 Good morning, Emily
+                <img src={asset("decor/cherries-3d.png")} alt="" className="h-6 w-6 object-contain drop-shadow-sm" />
                 <Sparkles className="h-4 w-4 text-accent" />
               </h2>
               <p className="truncate text-xs font-medium text-slate-500">
