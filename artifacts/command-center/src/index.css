@@ -67,77 +67,87 @@
 }
 
 :root {
-  --background: 210 40% 98%;
-  --foreground: 220 30% 25%;
-  --muted: 210 30% 95%;
-  --muted-foreground: 215 15% 45%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 220 30% 25%;
+  /* ===== Maison Côte d'Azur — couture atelier meets the Riviera =====
+     Ivory canvas · champagne-gold luxury accent · ink-charcoal text ·
+     refined coastal aqua secondary accent. */
+  --background: 40 33% 97%;        /* Warm ivory / pearl */
+  --foreground: 220 18% 16%;       /* Deep ink charcoal */
+  --muted: 40 24% 93%;             /* Soft champagne mist */
+  --muted-foreground: 220 8% 42%;
+  --popover: 40 40% 99%;
+  --popover-foreground: 220 18% 16%;
   --card: 0 0% 100%;
-  --card-foreground: 220 30% 25%;
-  --border: 214 20% 92%;
-  --input: 214 20% 92%;
-  
-  --primary: 205 75% 65%; /* Soft Baby Blue */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 210 30% 96%; /* Soft Gray/Blue */
-  --secondary-foreground: 220 30% 25%;
-  --accent: 340 70% 85%; /* Blush Pink */
-  --accent-foreground: 220 30% 25%;
-  --destructive: 348 80% 65%; /* Soft Pinkish Red */
-  --destructive-foreground: 0 0% 100%;
-  --ring: 205 75% 65%;
-  --radius: 1rem;
-  
-  --sidebar: 0 0% 100%; /* White / Pearl */
-  --sidebar-foreground: 220 30% 25%;
-  --sidebar-border: 214 20% 92%;
-  --sidebar-primary: 205 75% 65%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 340 50% 95%; /* Light pink hover */
-  --sidebar-accent-foreground: 220 30% 25%;
-  --sidebar-ring: 205 75% 65%;
+  --card-foreground: 220 18% 16%;
+  --border: 38 22% 88%;            /* Sandstone hairline */
+  --input: 38 22% 88%;
 
-  --chart-1: 205 75% 65%;
-  --chart-2: 340 70% 85%;
-  --chart-3: 160 50% 75%;
-  --chart-4: 40 80% 80%;
-  --chart-5: 348 80% 75%;
+  --primary: 38 46% 52%;           /* Champagne gold */
+  --primary-foreground: 40 40% 99%;
+  --secondary: 40 28% 94%;         /* Pearl secondary */
+  --secondary-foreground: 220 18% 16%;
+  --accent: 190 42% 62%;           /* Riviera coastal aqua */
+  --accent-foreground: 220 20% 14%;
+  --destructive: 5 62% 55%;        /* Muted couture red */
+  --destructive-foreground: 40 40% 99%;
+  --ring: 38 46% 52%;
+  --radius: 0.5rem;                /* Crisp couture corners */
+
+  --sidebar: 220 20% 12%;          /* Chanel ink / noir sidebar */
+  --sidebar-foreground: 40 30% 88%;
+  --sidebar-border: 220 14% 22%;
+  --sidebar-primary: 38 52% 58%;   /* Gold active */
+  --sidebar-primary-foreground: 220 20% 12%;
+  --sidebar-accent: 220 16% 18%;   /* Subtle hover on noir */
+  --sidebar-accent-foreground: 40 30% 92%;
+  --sidebar-ring: 38 52% 58%;
+
+  --chart-1: 38 46% 52%;   /* gold */
+  --chart-2: 190 42% 62%;  /* aqua */
+  --chart-3: 25 30% 55%;   /* sand */
+  --chart-4: 200 30% 40%;  /* deep sea */
+  --chart-5: 40 20% 75%;   /* pearl */
+
+  /* Luxe surface tokens used across the app */
+  --gold: 38 46% 52%;
+  --gold-soft: 40 55% 82%;
+  --champagne: 40 40% 90%;
+  --ink: 220 18% 16%;
+  --sea: 190 42% 62%;
 
   --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: Georgia, serif;
+  --app-font-serif: 'Playfair Display', Georgia, serif;
   --app-font-mono: Menlo, monospace;
 }
 
 .dark {
-  --background: 220 30% 20%;
-  --foreground: 210 40% 98%;
-  --muted: 220 20% 30%;
-  --muted-foreground: 215 15% 75%;
-  --popover: 220 30% 25%;
-  --popover-foreground: 210 40% 98%;
-  --card: 220 30% 25%;
-  --card-foreground: 210 40% 98%;
-  --border: 220 20% 35%;
-  --input: 220 20% 35%;
-  --primary: 205 75% 65%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 220 20% 30%;
-  --secondary-foreground: 210 40% 98%;
-  --accent: 340 70% 85%;
-  --accent-foreground: 220 30% 20%;
-  --destructive: 348 80% 65%;
-  --destructive-foreground: 0 0% 100%;
-  --ring: 205 75% 65%;
+  --background: 220 22% 10%;
+  --foreground: 40 30% 90%;
+  --muted: 220 16% 16%;
+  --muted-foreground: 40 12% 65%;
+  --popover: 220 20% 13%;
+  --popover-foreground: 40 30% 90%;
+  --card: 220 20% 13%;
+  --card-foreground: 40 30% 90%;
+  --border: 220 14% 22%;
+  --input: 220 14% 22%;
+  --primary: 38 52% 58%;
+  --primary-foreground: 220 22% 10%;
+  --secondary: 220 16% 18%;
+  --secondary-foreground: 40 30% 90%;
+  --accent: 190 42% 60%;
+  --accent-foreground: 220 22% 10%;
+  --destructive: 5 62% 55%;
+  --destructive-foreground: 40 40% 99%;
+  --ring: 38 52% 58%;
 
-  --sidebar: 220 30% 20%;
-  --sidebar-foreground: 210 40% 98%;
-  --sidebar-border: 220 20% 35%;
-  --sidebar-primary: 205 75% 65%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 340 30% 35%;
-  --sidebar-accent-foreground: 210 40% 98%;
-  --sidebar-ring: 205 75% 65%;
+  --sidebar: 220 24% 8%;
+  --sidebar-foreground: 40 30% 88%;
+  --sidebar-border: 220 14% 20%;
+  --sidebar-primary: 38 52% 58%;
+  --sidebar-primary-foreground: 220 24% 8%;
+  --sidebar-accent: 220 16% 16%;
+  --sidebar-accent-foreground: 40 30% 92%;
+  --sidebar-ring: 38 52% 58%;
 }
 
 @layer base {
@@ -146,5 +156,71 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    background-image:
+      radial-gradient(1200px 600px at 100% -10%, hsl(var(--gold-soft) / 0.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, hsl(var(--sea) / 0.12), transparent 55%);
+    background-attachment: fixed;
   }
+  h1, h2, h3, .font-display {
+    font-family: var(--app-font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Couture gold hairline + soft luxe shadow */
+  .luxe-card {
+    @apply rounded-lg border border-border bg-card;
+    box-shadow:
+      0 1px 2px hsl(var(--ink) / 0.04),
+      0 12px 30px -18px hsl(var(--ink) / 0.18);
+  }
+  .gold-rule {
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+    height: 1px;
+  }
+  .text-gradient-gold {
+    background: linear-gradient(100deg, hsl(var(--gold)) 0%, hsl(40 60% 68%) 50%, hsl(var(--gold)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ===== Motion — refined, subtle luxury ===== */
+@keyframes lux-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes lux-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lux-float {
+  0%, 100% { transform: translateY(0) rotate(var(--tw-rotate, 0)); }
+  50%      { transform: translateY(-10px) rotate(var(--tw-rotate, 0)); }
+}
+@keyframes lux-sway {
+  0%, 100% { transform: translateX(0) rotate(-2deg); }
+  50%      { transform: translateX(6px) rotate(2deg); }
+}
+@keyframes lux-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-lux-rise { animation: lux-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-lux-fade { animation: lux-fade 0.8s ease both; }
+.animate-lux-float { animation: lux-float 7s ease-in-out infinite; }
+.animate-lux-sway  { animation: lux-sway 9s ease-in-out infinite; }
+
+.shimmer-gold {
+  background: linear-gradient(100deg, transparent 20%, hsl(var(--gold-soft) / 0.55) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: lux-shimmer 3.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-lux-rise, .animate-lux-fade, .animate-lux-float,
+  .animate-lux-sway, .shimmer-gold { animation: none; }
 }

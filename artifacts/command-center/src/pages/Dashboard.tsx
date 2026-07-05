@@ -93,13 +93,13 @@ export default function Dashboard() {
     db.deficiencies.filter((d) => d.status === "Resolved").length;
 
   const kpis = [
-    { label: "Open Matters", value: openMatters, icon: FolderKanban, tint: "bg-sky-50", color: "text-sky-500", bar: "from-sky-400 to-blue-400", to: "/matters" },
-    { label: "Due Today", value: dueToday, icon: CalendarCheck, tint: "bg-cyan-50", color: "text-cyan-500", bar: "from-cyan-400 to-sky-400", to: "/calendar" },
-    { label: "Overdue", value: overdueTotal, icon: Clock, tint: "bg-rose-50", color: "text-rose-500", bar: "from-rose-400 to-pink-400", to: "/matters" },
-    { label: "Waiting on Agency", value: waitingOnAgency, icon: Hourglass, tint: "bg-teal-50", color: "text-teal-500", bar: "from-teal-400 to-cyan-400", to: "/matters" },
-    { label: "Deficiencies", value: deficienciesCount, icon: AlertTriangle, tint: "bg-pink-50", color: "text-pink-500", bar: "from-pink-400 to-rose-400", to: "/deficiencies" },
-    { label: "Rose Review", value: roseReviewCount, icon: Flower2, tint: "bg-emerald-50", color: "text-emerald-500", bar: "from-emerald-400 to-teal-400", to: "/escalations" },
-    { label: "Done This Week", value: completedThisWeek, icon: CheckCircle2, tint: "bg-sky-50", color: "text-sky-500", bar: "from-sky-400 to-emerald-400", to: "/my-wins" },
+    { label: "Open Matters", value: openMatters, icon: FolderKanban, tint: "bg-primary/10", color: "text-primary", bar: "from-primary to-accent", to: "/matters" },
+    { label: "Due Today", value: dueToday, icon: CalendarCheck, tint: "bg-accent/10", color: "text-accent", bar: "from-accent to-primary", to: "/calendar" },
+    { label: "Overdue", value: overdueTotal, icon: Clock, tint: "bg-destructive/10", color: "text-destructive", bar: "from-destructive to-primary", to: "/matters" },
+    { label: "Waiting on Agency", value: waitingOnAgency, icon: Hourglass, tint: "bg-accent/10", color: "text-accent", bar: "from-accent to-primary", to: "/matters" },
+    { label: "Deficiencies", value: deficienciesCount, icon: AlertTriangle, tint: "bg-destructive/10", color: "text-destructive", bar: "from-destructive to-accent", to: "/deficiencies" },
+    { label: "Rose Review", value: roseReviewCount, icon: Flower2, tint: "bg-primary/10", color: "text-primary", bar: "from-primary to-accent", to: "/escalations" },
+    { label: "Done This Week", value: completedThisWeek, icon: CheckCircle2, tint: "bg-primary/10", color: "text-primary", bar: "from-primary to-accent", to: "/my-wins" },
   ];
 
   const agencyMatters = db.matters
